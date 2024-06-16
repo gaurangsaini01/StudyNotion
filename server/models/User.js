@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  token: {
+  resetPasswordToken: {
     type: String,
   },
   approved: {

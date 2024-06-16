@@ -36,9 +36,13 @@ async function createRatingAndReviews(req, res) {
       rating,
       review,
     });
-    const updatedCourse = await Course.findByIdAndUpdate(courseId, {
-      $push: { ratingAndReviews: ratingReview._id },
-    });
+    const updatedCourse = await Course.findByIdAndUpdate(
+      courseId,
+      {
+        $push: { ratingAndReviews: ratingReview._id },
+      },
+      { new: true }
+    );
     console.log(updatedCourse);
     //return success response
     return res.status(200).json({
@@ -65,7 +69,7 @@ async function getAvgRating(req, res) {
       {
         $group: {
           _id: null,
-          averageRating: { $avg: "rating" },
+          averageRating: { $avg: "$rating" },
         },
       },
     ]);
@@ -92,6 +96,49 @@ async function getAvgRating(req, res) {
   }
 }
 //course specific all rating and review
+async function getCourseRatingAndReview(req, res) {
+  try {
+    const { courseId } = req.params;
+    // Validate courseId
+    if (!courseId) {
+      return res.status(400).json({
+        success: false,
+        message: "Course ID is required",
+      });
+    }
+    const course = await Course.findById(courseId).populate({
+      path: "ratingAndReviews",
+      populate: {
+        path: "user", // Assuming user information is needed
+        select: "firstName email image", // Select the fields you need from user
+      },
+    });
+    // Check if course exists
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: "Course not found",
+      });
+    }
+    const reviews = course.ratingAndReviews;
+    if (reviews.length === 0) {
+      return res.status(200).json({
+        success: true,
+        message: "No reviews Yet!",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Reviews fetched successfully",
+      data: reviews,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
 
 //getAllRatingAndReviews for home page (it includes diff courses aswell)
 async function getAllRatingAndReviews(req, res) {
@@ -118,4 +165,9 @@ async function getAllRatingAndReviews(req, res) {
   }
 }
 
-module.exports = { createRatingAndReviews, getAvgRating ,getAllRatingAndReviews};
+module.exports = {
+  createRatingAndReviews,
+  getAvgRating,
+  getAllRatingAndReviews,
+  getCourseRatingAndReview,
+};

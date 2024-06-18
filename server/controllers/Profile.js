@@ -102,16 +102,16 @@ async function getAllUserDetails(req, res) {
 
 async function updateDisplayPicture(req, res) {
   try {
-    const file =await req.files.file;
+    const file = await req.files.file;
     const userId = req.user.id;
-    
+
     const response = await uploadImageToCloudinary(
       file,
       process.env.FOLDER_NAME
     );
-    console.log(response)
+    console.log(response);
     const updatedProfile = await User.findByIdAndUpdate(
-      userId, 
+      userId,
       { image: response.secure_url },
       { new: true }
     );
@@ -121,7 +121,7 @@ async function updateDisplayPicture(req, res) {
       data: updatedProfile,
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: err.message,
@@ -151,4 +151,10 @@ async function getEnrolledCourses(req, res) {
   }
 }
 
-module.exports={getAllUserDetails,deleteAccount,updateProfile,updateDisplayPicture,getEnrolledCourses}
+module.exports = {
+  getAllUserDetails,
+  deleteAccount,
+  updateProfile,
+  updateDisplayPicture,
+  getEnrolledCourses,
+};

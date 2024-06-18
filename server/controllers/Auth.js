@@ -192,7 +192,7 @@ async function login(req, res) {
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "2h",
       });
-      user.token = token;
+      // user.token = token;
       user.password = undefined;
       res
         .cookie("token", token, {
@@ -204,6 +204,7 @@ async function login(req, res) {
           success: true,
           message: "Logged In Successfully",
           user,
+          token
         });
     }
     //If passwords are not matching

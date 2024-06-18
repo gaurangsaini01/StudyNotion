@@ -99,3 +99,56 @@ async function getAllUserDetails(req, res) {
     });
   }
 }
+
+async function updateDisplayPicture(req, res) {
+  try {
+    const file =await req.files.file;
+    const userId = req.user.id;
+    
+    const response = await uploadImageToCloudinary(
+      file,
+      process.env.FOLDER_NAME
+    );
+    console.log(response)
+    const updatedProfile = await User.findByIdAndUpdate(
+      userId, 
+      { image: response.secure_url },
+      { new: true }
+    );
+    res.status(200).json({
+      success: true,
+      message: `Image Updated successfully`,
+      data: updatedProfile,
+    });
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+}
+async function getEnrolledCourses(req, res) {
+  try {
+    const userId = req.user.id;
+    const userDetails = await User.findById(userId).populate("courses");
+
+    if (!userDetails) {
+      return res.status(400).json({
+        success: false,
+        message: `Could not find user with id: ${userId}`,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      data: userDetails.courses,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+module.exports={getAllUserDetails,deleteAccount,updateProfile,updateDisplayPicture,getEnrolledCourses}

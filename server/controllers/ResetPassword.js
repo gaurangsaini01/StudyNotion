@@ -1,6 +1,7 @@
 const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
 const mailSender = require("../utils/mailsender.js");
+const passwordReset = require("../mail/templates/passwordReset.js")
 
 //resetPasswordToken
 async function resetPasswordToken(req, res) {
@@ -32,7 +33,7 @@ async function resetPasswordToken(req, res) {
     await mailSender(
       email,
       "Password Reset Email From StudyNotion",
-      `The Link To Reset Your Password is : ${url}`
+      passwordReset(updatedDetails?.firstName,url)
     );
     //response send
     return res.status(200).json({

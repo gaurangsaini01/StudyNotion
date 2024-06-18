@@ -14,7 +14,7 @@ const {
 } = require("../controllers/Profile");
 
 // Delete User Account
-router.delete("/deleteAccount", auth, deleteAccount);
+router.delete("/deleteaccount", auth, deleteAccount);
 router.put("/updateprofile", auth, updateProfile);
 router.get("/getuserdetails", auth, getAllUserDetails);
 

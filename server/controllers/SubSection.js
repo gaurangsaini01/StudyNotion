@@ -88,7 +88,6 @@ async function updateSubSection(req, res) {
           process.env.FOLDER_NAME,
         );
         subSection.videoURL = uploadedVideo.secure_url;
-        subSection.timeDuration=uploadedVideo.timeDuration
       }
   
       if (title !== undefined) {
@@ -96,6 +95,9 @@ async function updateSubSection(req, res) {
       }
       if (description !== undefined) {
         subSection.description = description
+      }
+      if (timeDuration !== undefined) {
+        subSection.timeDuration = timeDuration
       }
   
       await subSection.save();
@@ -154,3 +156,5 @@ async function updateSubSection(req, res) {
       });
     }
   }
+
+  module.exports={createSubSection,updateSubSection,deleteSubSection}

@@ -12,6 +12,7 @@ const port = process.env.PORT || 3000;
 //importing routes
 const userRoutes = require('./routes/User');
 const profileRoutes = require("./routes/Profile")
+const courseRoutes = require("./routes/Course")
 
 //adding middlewares
 app.use(express.json());
@@ -34,6 +35,7 @@ cloudinaryConnect();
 //mouting routes
 app.use('/api/v1/auth', userRoutes);
 app.use('/api/v1/profile',profileRoutes)
+app.use('/api/v1/course',courseRoutes)
 
 //default route
 app.get('/', (req, res) => {

@@ -107,7 +107,7 @@ async function getCourseDetails(req, res) {
     const courseDetails = await Course.findById(courseId)
       .populate({
         path: "courseContent",
-        populate: { path: "SubSection" },
+        populate: { path: "subSection" },
       })
       .populate("ratingAndReviews")
       .populate("category")

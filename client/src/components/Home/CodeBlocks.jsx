@@ -10,17 +10,19 @@ function CodeBlocks({
   ctabtn2,
   codeblock,
   gradientimg,
-  codeColor
+  codeColor,
 }) {
   return (
-    <div className={`flex md:flex-row flex-col md:my-16 my-10 ${position}  gap-10 `}>
+    <div
+      className={`flex md:flex-row flex-col md:my-16 my-10 ${position}  gap-10 `}
+    >
       <div className="md:w-[50%] w-full flex flex-col gap-8">
         {heading}
         <div className="text-richblack-300 font-medium">{subheading}</div>
 
         <div className="flex gap-7  mt-7">
           <CTAButton active={ctabtn1.active} linkto={ctabtn1.linkto}>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 text-sm md:text-base items-center">
               {ctabtn1.text}
               <FaArrowRight />
             </div>
@@ -30,25 +32,24 @@ function CodeBlocks({
           </CTAButton>
         </div>
       </div>
-      <div className="md:w-1/2  w-full relative bg-[#050f1d] p-4 rounded-md flex">
+      <div className="md:w-[50%] w-full relative bg-[#050f1d] p-4 rounded-md flex">
         <img
           className="absolute left-[-150px] top-[-100px]"
           width={500}
           src={gradientimg}
-          alt=""
         />
-        <div
+        {/* <div
           className={`w-full font-mono flex flex-col gap-2 font-bold ${codeColor}`}
-        >
+        > */}
           <TypeAnimation
-            sequence={[codeblock, 2000]}
-            repeat={Infinity}
+            sequence={[codeblock]}
+            speed={75}
+            deletionSpeed={90}
             style={{
               whiteSpace: "pre-line",
-            }}
-            omitDeletionAnimation={true}
+            }} className="font-mono font-bold text-transparent bg-gradient-to-r from-[#ffffff] to-[#3fd1c2] bg-clip-text"
           />
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );

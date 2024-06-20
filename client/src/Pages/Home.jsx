@@ -7,10 +7,13 @@ import banner from "../assets/Images/banner.mp4";
 import CodeBlocks from "../components/Home/CodeBlocks";
 import gradientyellow from "../assets/Images/gradientyellow.svg";
 import gradientblue from "../assets/Images/gradientblue.svg";
+import TimeLine from "../components/Home/TimeLine";
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
     <div className="w-full">
+      {/* //section 1 */}
       <div className="relative w-11/12 mx-auto flex flex-col max-w-maxContent items-center text-white justify-between">
         <Link to="/signup">
           <div className="mt-16 p-1 mx-auto rounded-full bg-richblack-800 font-bold text-richblack-200 transition-all duration-200 hover:scale-95 w-fit">
@@ -38,7 +41,7 @@ const Home = () => {
             Book a Demo
           </CTAButton>
         </div>
-        <div className="w-[90%] relative my-16 shadow-[0_-20px_40px_rgba(8,_112,_184,_0.7)]">
+        <div className="w-[90%] relative my-16 ">
           <div className="absolute w-full h-full bg-white top-2 left-2 md:top-4 md:left-4 z-10"></div>
           <video className="z-50 relative" muted loop autoPlay>
             <source src={banner} />
@@ -86,12 +89,34 @@ const Home = () => {
               active: true,
             }}
             ctabtn2={{ text: "Learn More", linkto: "/login", active: false }}
-            codeblock={`1. <!DOCTYPE html> \n2. <html> \n3. <head> \n4. <title>Study Notion</title> \n5. </head> \n6. <body> \n7. <h1 className="text-green-500">Learn New Coding Skills</h1> \n8. <p>From StudyNotion anytime , anywhere.</p> \n9. <nav><ahref="one/">One</a> <p> hello </p> \n10.  </body> \n11. </html>`}
+            codeblock={`1. <!DOCTYPE html> \n2. <html> \n3. <head> \n4. <title>Study Notion</title> \n5. </head> \n6. <body> \n7. <h1 className="text-green-500">Learn Top Trending skills</h1> \n8. <p>From StudyNotion anytime , anywhere.</p> \n9. <nav><ahref="one/">One</a> <p> hello </p> \n10.  </body> \n11. </html>`}
             codeColor={`text-white`}
             gradientimg={gradientblue}
           />
         </div>
       </div>
+
+      {/* Section 3 */}
+
+      <div className="bg-pure-greys-25 text-richblack-700 ">
+        <div className="homepage_bg flex h-[150px] md:h-[300px]">
+          <div className="w-11/12 max-w-maxContent flex justify-center items-center gap-5 mx-auto">
+            <div className="flex gap-7 text-sm md:text-base text-white">
+              <CTAButton active={true} linkto={"/signup"}>
+                <div className="flex gap-2 items-center">
+                  Explore Full Catalog
+                  <FaArrowRight />
+                </div>
+              </CTAButton>
+              <CTAButton active={false} linkto={"/signup"}>
+                Learn More
+              </CTAButton>
+            </div>
+          </div>
+        </div>
+        <TimeLine />
+      </div>
+      <Footer/>
     </div>
   );
 };

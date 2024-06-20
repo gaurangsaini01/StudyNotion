@@ -9,6 +9,8 @@ import gradientyellow from "../assets/Images/gradientyellow.svg";
 import gradientblue from "../assets/Images/gradientblue.svg";
 import TimeLine from "../components/Home/TimeLine";
 import Footer from "../components/Footer";
+import LearningLanguageSection from "../components/Home/LearningLanguageSection";
+import InstructorSection from "../components/Home/InstructorSection";
 
 const Home = () => {
   return (
@@ -96,7 +98,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Section 3 */}
+      {/* Section 2 */}
 
       <div className="bg-pure-greys-25 text-richblack-700 ">
         <div className="homepage_bg flex h-[150px] md:h-[300px]">
@@ -115,8 +117,22 @@ const Home = () => {
           </div>
         </div>
         <TimeLine />
+        <LearningLanguageSection />
       </div>
-      <Footer/>
+
+      {/* //section3 */}
+
+      <div className="w-11/12 mx-auto max-w-maxContent flex-col items-center justify-between gap-8 first-letter bg-richblack-900 text-white">
+        <InstructorSection/>
+
+        <h2 className="text-center text-4xl font-semobold mt-10">
+          Review from Other Learners
+        </h2>
+        {/* Review Slider here */}
+      </div>
+
+      {/* //footer */}
+      <Footer />
     </div>
   );
 };

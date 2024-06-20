@@ -2,6 +2,7 @@ import React from "react";
 import { FaArrowRight } from "react-icons/fa";
 import CTAButton from "./reusable/CTAButton";
 import { TypeAnimation } from "react-type-animation";
+
 function CodeBlocks({
   position,
   heading,
@@ -10,7 +11,6 @@ function CodeBlocks({
   ctabtn2,
   codeblock,
   gradientimg,
-  codeColor,
 }) {
   return (
     <div
@@ -38,17 +38,17 @@ function CodeBlocks({
           width={500}
           src={gradientimg}
         />
-        {/* <div
-          className={`w-full font-mono flex flex-col gap-2 font-bold ${codeColor}`}
-        > */}
-          <TypeAnimation
-            sequence={[codeblock]}
-            speed={75}
-            deletionSpeed={90}
-            style={{
-              whiteSpace: "pre-line",
-            }} className="font-mono font-bold text-transparent bg-gradient-to-r from-[#ffffff] to-[#3fd1c2] bg-clip-text"
-          />
+        <TypeAnimation
+          sequence={[codeblock, 2000, ""]}
+          speed={75}
+          repeat={Infinity}
+          deletionSpeed={45}
+          cursor={true}
+          style={{
+            whiteSpace: "pre-line",
+          }}
+          className="font-mono font-bold text-transparent bg-gradient-to-r from-[#ffffff] to-[#3fd1c2] bg-clip-text"
+        />
         {/* </div> */}
       </div>
     </div>

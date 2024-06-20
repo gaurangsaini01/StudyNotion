@@ -68,20 +68,20 @@ function TimeLine() {
             </div>
           ))}
         </div>
-        <div className="relative w-[60%] md:mt-0 mt-20">
+        <div className="relative w-full md:w-[60%] md:mt-0 mt-20">
           <img
             src={timelineImage}
             className="shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] rounded-md"
             alt=""
           />
-          <div className="absolute bottom-[-10%] left-[12%] rounded-md bg-caribbeangreen-700 text-white flex flex-row uppercase py-10">
-            <div className="flex flex-row gap-5 items-center border-r border-caribbeangreen-300 px-7">
-              <p className="text-3xl font-bold">10</p>
-              <p className="text-caribbeangreen-300 text-sm">Years of experience</p>
+          <div className="absolute bottom-[-10%] w-[82%] xl:w-[70%] md:w-[85%] left-[12%] rounded-md bg-caribbeangreen-700 text-white flex flex-row uppercase xl:py-10 md:py-4 py-3">
+            <div className="flex flex-row xl:gap-5 md:gap-2 gap-3 items-center border-r border-caribbeangreen-300 px-5 xl:px-7">
+              <p className="md:text-3xl text-base font-bold">10</p>
+              <p className="text-caribbeangreen-300 md:text-sm text-[10px]">Years of experience</p>
             </div>
-            <div className="flex flex-row gap-5 items-center  px-7">
-              <p className="text-3xl font-bold">250</p>
-              <p className="text-caribbeangreen-300 text-sm">types of courses</p>
+            <div className="flex flex-row md:gap-5 gap-3 items-center  px-7">
+              <p className="md:text-3xl text-base font-bold">250</p>
+              <p className="text-caribbeangreen-300 md:text-sm text-[10px]">types of courses</p>
             </div>
           </div>
         </div>

@@ -32,7 +32,7 @@ function CodeBlocks({
           </CTAButton>
         </div>
       </div>
-      <div className="md:w-[50%] w-full relative bg-[#050f1d] p-4 rounded-md flex">
+      <div className="md:w-[50%] min-h-[370px] md:min-h-[300px] w-full relative bg-[#050f1d] p-4 rounded-md flex">
         <img
           className="absolute left-[-150px] top-[-100px]"
           width={500}

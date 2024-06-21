@@ -103,7 +103,7 @@ const Home = () => {
       {/* Section 2 */}
 
       <div className="bg-pure-greys-25 text-richblack-700 ">
-        <div className="homepage_bg flex h-[150px] border-2 md:h-[300px]">
+        <div className="homepage_bg flex h-[150px] md:h-[300px]">
           <div className="w-11/12 max-w-maxContent flex justify-center items-center gap-5 mx-auto">
             <div className="flex gap-7 text-sm md:text-base text-white">
               <CTAButton active={true} linkto={"/signup"}>

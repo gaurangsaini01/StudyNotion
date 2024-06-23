@@ -1,3 +1,6 @@
 .homepage_bg{
     background:url("./assets/Images/bghome.svg");
 }
+.active{
+    color:#ffd60a
+}

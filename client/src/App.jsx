@@ -2,7 +2,9 @@ import './App.css'
 import React from 'react'
 import {Routes, Route} from 'react-router-dom'
 import Home from './Pages/Home'
-import Navbar from './components/navabr/Navbar'
+import Navbar from './components/navbar/Navbar'
+import Signup from './Pages/Signup'
+import Login from './Pages/Login'
 
 function App() {
  
@@ -12,6 +14,8 @@ function App() {
         <Navbar/>
         <Routes>
         <Route path="/" element={<Home/> }/>
+        <Route path="/login" element={<Login/> }/>
+        <Route path="/signup" element={<Signup/> }/>
         {/* <Route path="/about" element={<About />} />
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} /> */}

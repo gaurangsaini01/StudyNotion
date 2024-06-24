@@ -1,9 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  token: localStorage.getItem("token")
-    ? JSON.parse(localStorage.getItem("token"))
-    : null,
+  token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
 };
 
 const authSlice = createSlice({
@@ -16,5 +14,5 @@ const authSlice = createSlice({
   },
 });
 
-export const  {setToken} = authSlice.actions
+export const { setToken } = authSlice.actions;
 export default authSlice.reducer;

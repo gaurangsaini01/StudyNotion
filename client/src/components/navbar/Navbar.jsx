@@ -1,15 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../../assets/Logo/Logo-Full-Light.png";
 import { Link, NavLink } from "react-router-dom";
 import { NavbarLinks } from "../../data/navbar-links";
 import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import ProfileDropdown from "./ProfileDropdown";
+import { apiConnector } from "../../services/apiconnector";
+import { categories } from "../../services/apis";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
 function Navbar() {
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
   const { totalItems } = useSelector((state) => state.cart);
+  const [sublinks, setSublinks] = useState([]);
+
+  useEffect(() => {
+    async function caller() {
+      try {
+        const result = await apiConnector("GET", categories.CATEGORIES_API);
+        // console.log(result);
+        setSublinks(result.data.data);
+        // console.log(sublinks)
+      } catch (err) {
+        console.log("Couldn't fetch the list");
+      }
+    }
+    caller();
+  }, []);
+
   return (
     <div className="bg-richblack-800 flex items-center h-14 border-b-[1px] border-b-richblack-700">
       <div className="flex w-11/12  max-w-maxContent items-center justify-between mx-auto">
@@ -19,11 +38,41 @@ function Navbar() {
           </Link>
         </div>
         <nav>
-          <ul className="flex gap-5">
+          <ul className="flex gap-5 items-center text-richblack-25">
             {NavbarLinks.map((item, index) => (
               <li key={index} className="text-white">
                 {item?.title === "Catalog" ? (
-                  <div></div>
+                  <div className="relative hover:cursor-pointer flex items-center group">
+                    <p>{item.title}</p>
+                    <RiArrowDropDownLine size={25} />
+
+                    <div
+                      className="invisible  absolute left-[50%]
+                      translate-x-[-50%] translate-y-[30%]
+                   top-[50%]
+                  flex flex-col rounded-lg bg-richblack-700 p-4 text-richblack-5
+                  opacity-0 transition-all duration-200 group-hover:visible
+                  group-hover:opacity-100 lg:w-[300px] z-20"
+                    >
+                      <div
+                        className="absolute left-[50%] top-0
+                  translate-x-[80%]
+                  translate-y-[-45%] h-6 w-6 rotate-45 rounded bg-richblack-700 z-20"
+                      ></div>
+
+                      {sublinks.length ? (
+                        sublinks.map((sublink, index) => (
+                          <Link to={`#`} key={index}>
+                            <p className="my-2 font-semibold capitalize ">
+                              {sublink.name}
+                            </p>
+                          </Link>
+                        ))
+                      ) : (
+                        <div></div>
+                      )}
+                    </div>
+                  </div>
                 ) : (
                   <NavLink to={item?.path}>
                     <p>{item?.title}</p>

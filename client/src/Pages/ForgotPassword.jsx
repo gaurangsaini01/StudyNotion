@@ -13,13 +13,13 @@ function ForgotPassword() {
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    dispatch(getPasswordResetToken(email, setEmailSent));
+    dispatch(getPasswordResetToken(email,setEmailSent));
   };
 
   return (
     <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
       {loading ? (
-        <div className="spinner"></div>
+        <div className="loader"></div>
       ) : (
         <div className="max-w-[500px] p-4 lg:p-8">
           <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-5">
@@ -38,12 +38,12 @@ function ForgotPassword() {
                 </p>
                 <input
                   required
-                  type="email"
+                  type="email" 
                   name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter email address"
-                  className="form-style w-full"
+                  className="bg-richblack-800 rounded-[0.5rem] text-richblack-5 p-[10px] mt-4 w-full"
                 />
               </label>
             )}

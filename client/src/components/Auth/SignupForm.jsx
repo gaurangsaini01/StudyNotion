@@ -29,21 +29,14 @@ function SignUpForm() {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords Don't Match");
-    }else{
+    } else {
       const signupData = {
         ...formData,
         accountType,
-      }
+      };
       dispatch(setSignupData(signupData));
-      console.log(formData.email)
+      // console.log(formData.email);
       dispatch(sendOtp(formData.email, navigate));
-      setFormData({
-        firstName: "",
-        lastName: "",
-        password: "",
-        email: "",
-        confirmPassword: "",
-      });
     }
   }
 

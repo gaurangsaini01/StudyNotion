@@ -13,7 +13,7 @@ async function resetPasswordToken(req, res) {
     if (!user) {
       return res.status(401).json({
         success: true,
-        message: "User with this E-mail Doesn't Exist",
+        message: "Enter valid email",
       });
     }
     //token generate

@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSignupData } from "../../redux/slices/authSlice";
+import { sendOtp } from "../../services/operations/authAPI";
 
 function SignUpForm() {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -25,11 +29,21 @@ function SignUpForm() {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords Don't Match");
-    } else {
-      toast.success("Sign-up successfull , Welcome to dashboard");
-      navigate("/");
-      let completeData = {...formData,accountType}
-      console.log(completeData)
+    }else{
+      const signupData = {
+        ...formData,
+        accountType,
+      }
+      dispatch(setSignupData(signupData));
+      console.log(formData.email)
+      dispatch(sendOtp(formData.email, navigate));
+      setFormData({
+        firstName: "",
+        lastName: "",
+        password: "",
+        email: "",
+        confirmPassword: "",
+      });
     }
   }
 

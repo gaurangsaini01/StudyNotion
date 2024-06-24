@@ -1,18 +1,15 @@
 import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { login } from "../../services/apis";
-import { apiConnector } from "../../services/apiconnector";
-import { setToken } from "../../redux/slices/authSlice";
-import { useDispatch } from "react-redux";
+import {login} from "../../services/operations/authAPI"
+import {useDispatch} from "react-redux"
+import {useNavigate} from "react-router-dom"
 
 function LoginForm() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPass, setShowPass] = useState(false);
-  const navigate = useNavigate();
   function changeHandler(event) {
     setFormData((prev) => {
       return { ...prev, [event.target.name]: event.target.value };
@@ -20,16 +17,7 @@ function LoginForm() {
   }
   async function submitHandler(e) {
     e.preventDefault();
-    try {
-      const response = await apiConnector("POST", login.LOGIN_API, formData);
-      console.log(response);
-      localStorage.setItem("token",token);
-      dispatch(setToken(token));
-      toast.success("Logged In");
-      navigate("/");
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
+    dispatch(login(formData.email,formData.password,navigate))
   }
   return (
     <form

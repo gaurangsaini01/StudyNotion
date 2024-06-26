@@ -35,7 +35,6 @@ function SignUpForm() {
         accountType,
       };
       dispatch(setSignupData(signupData));
-      // console.log(formData.email);
       dispatch(sendOtp(formData.email, navigate));
     }
   }

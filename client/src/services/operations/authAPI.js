@@ -24,11 +24,8 @@ export function sendOtp(email, navigate) {
         {
           email,
         }
-        // checkUserPresent: true,
+       
       );
-      console.log("SENDOTP API RESPONSE............", response);
-
-      console.log(response.data.success);
 
       if (!response.data.success) {
         throw new Error(response.data.message);
@@ -36,9 +33,8 @@ export function sendOtp(email, navigate) {
 
       toast.success("OTP Sent Successfully");
       navigate("/verify-email");
-    } catch (error) {
-      console.log("SENDOTP API ERROR............", error);
-      toast.error("Could Not Send OTP");
+    } catch (err) {
+      toast.error(err.response.data.message);
     }
     dispatch(setLoading(false));
     toast.dismiss(toastId);
@@ -163,7 +159,7 @@ export function resetPassword(password, confirmPassword, resetPasswordToken,navi
       }
 
       toast.success("Password reset successfully");
-      navigate("/")
+      navigate("/login")
     } catch (error) {
       console.log("RESET PASSWORD TOKEN Error", error);
       toast.error("Link Expired Try Again");

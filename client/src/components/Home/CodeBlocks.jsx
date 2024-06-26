@@ -1,6 +1,6 @@
 import React from "react";
 import { FaArrowRight } from "react-icons/fa";
-import CTAButton from "./reusable/CTAButton";
+import CTAButton from "../reusable/CTAButton";
 import { TypeAnimation } from "react-type-animation";
 
 function CodeBlocks({

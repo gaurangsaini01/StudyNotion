@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
-import HighlightText from "../components/Home/reusable/HighlightText";
-import CTAButton from "../components/Home/reusable/CTAButton";
+import HighlightText from "../components/reusable/HighlightText";
+import CTAButton from "../components/reusable/CTAButton";
 import banner from "../assets/Images/banner.mp4";
 import CodeBlocks from "../components/Home/CodeBlocks";
 import gradientyellow from "../assets/Images/gradientyellow.svg";

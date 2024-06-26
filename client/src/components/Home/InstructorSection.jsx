@@ -1,7 +1,7 @@
 import React from "react";
 import Instructor from "../../assets/Images/Instructor.png";
-import HighlightText from "../Home/reusable/HighlightText";
-import CTAButton from "../Home/reusable/CTAButton";
+import HighlightText from "../reusable/HighlightText";
+import CTAButton from "../reusable/CTAButton";
 import { FaArrowRight } from "react-icons/fa";
 
 const InstructorSection = () => {

@@ -9,6 +9,9 @@ import VerifyEmail from "./Pages/VerifyEmail";
 import ForgotPassword from "./Pages/ForgotPassword";
 import UpdatePassword from "./Pages/UpdatePassword";
 import About from "./Pages/About";
+import Dashboard from "./Pages/Dashboard";
+import ErrorPage from "./Pages/Error";
+import Contact from "./Pages/Contact";
 
 function App() {
   return (
@@ -26,8 +29,9 @@ function App() {
             element={<UpdatePassword />}
           />
           <Route path="/about" element={<About />} />
-          {/* <Route path="/services" element={<Services />} />
-          <Route path="/contact" element={<Contact />} /> */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>
     </>

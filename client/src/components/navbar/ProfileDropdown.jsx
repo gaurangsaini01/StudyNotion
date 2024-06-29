@@ -2,13 +2,13 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
-import { useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import { logout } from "../../services/operations/authAPI";
 
 function ProfileDropdown() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  function handlelogout(){
+  function handlelogout() {
     dispatch(logout(navigate));
   }
 
@@ -32,7 +32,9 @@ function ProfileDropdown() {
                   translate-x-[80%]
                   translate-y-[-45%] h-6 w-6 rotate-45 rounded bg-richblack-700 z-20"
         ></div>
-        <button onClick={handlelogout} className="text-sm font-semibold">Logout</button>
+        <button onClick={handlelogout} className="text-sm font-semibold">
+          Logout
+        </button>
       </div>
     </div>
   );

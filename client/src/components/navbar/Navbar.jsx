@@ -87,7 +87,7 @@ function Navbar() {
             <Link to={"/dashboard/cart"} className="relative text-white">
               <AiOutlineShoppingCart size={25} className="relative z-0" />
               {totalItems > 0 ? (
-                <span className="absolute z-10 top-[-10px] right-[-10px] text-white rounded-full text-sm px-[6px] bg-pure-greys-400">
+                <span className="absolute z-10 top-[-10px] right-[-10px] text-white rounded-full text-sm px-[6px] bg-puregreys-400">
                   1
                 </span>
               ) : (

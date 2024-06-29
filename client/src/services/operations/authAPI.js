@@ -101,7 +101,7 @@ export function login(email, password, navigate) {
       dispatch(setUser(response.data.user));
       localStorage.setItem("token", JSON.stringify(response.data.token));
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       toast.error(error.response.data.message);
     }

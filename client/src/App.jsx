@@ -12,6 +12,9 @@ import About from "./Pages/About";
 import Dashboard from "./Pages/Dashboard";
 import ErrorPage from "./Pages/Error";
 import Contact from "./Pages/Contact";
+import MyProfile from "./components/Dashboard.jsx/MyProfile";
+import MyCourses from "./components/Dashboard.jsx/MyCourses";
+import MySettings from "./components/Dashboard.jsx/MySettings";
 
 function App() {
   return (
@@ -29,7 +32,11 @@ function App() {
             element={<UpdatePassword />}
           />
           <Route path="/about" element={<About />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route element={<Dashboard />}>
+            <Route path="/dashboard/enrolled-courses" element={<MyCourses />} />
+            <Route path="/dashboard/my-profile" element={<MyProfile />} />
+            <Route path="/dashboard/my-settings" element={<MySettings />} />
+          </Route>
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>

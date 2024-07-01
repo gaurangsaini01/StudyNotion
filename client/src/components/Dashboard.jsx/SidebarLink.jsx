@@ -1,6 +1,5 @@
 import React from "react";
 import * as Icons from "react-icons/vsc";
-import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
@@ -13,10 +12,9 @@ const SidebarLink = ({ link }) => {
   };
   return (
     <NavLink
-      key={link.id}
       to={link.path}
       className={`transition-all duration-100 ease-in-out relative px-8 py-2 flex gap-4 text-sm font-medium ${
-        matchRoute(link.path) ? "bg-yellow-700" : "bg-opacity-0"
+        matchRoute(link.path) ? "bg-yellow-700" : null
       }`}
     >
       <span
@@ -24,8 +22,8 @@ const SidebarLink = ({ link }) => {
           matchRoute(link.path) ? "opacity-100" : "opacity-0"
         } `}
       ></span>
-      <Icon className="text-white text-lg" />
-      <p className="text-white">{link.name}</p>
+      <Icon className="text-richblack-5 text-lg" />
+      <p className="text-richblack-5">{link.name}</p>
     </NavLink>
   );
 };

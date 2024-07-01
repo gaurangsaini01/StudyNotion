@@ -6,7 +6,7 @@ require("dotenv").config();
 
 async function updateProfile(req, res) {
   try {
-    const { dateOfBirth = "", gender, contactNumber, about = "" } = req.body;
+    const {firstName="",lastName="", dateOfBirth = "", gender, contactNumber, about = "" } = req.body;
     //userid nikal lo
     const id = req.user.id;
     //validate
@@ -17,7 +17,7 @@ async function updateProfile(req, res) {
       });
     }
     //find Profile
-    const userDetails = await User.findById(id);
+    const userDetails = await User.findById(id).populate("additionalDetails");
     const profileId = userDetails.additionalDetails;
     const profileDetails = await Profile.findById(profileId);
 
@@ -28,10 +28,20 @@ async function updateProfile(req, res) {
     profileDetails.contactNumber = contactNumber;
     await profileDetails.save();
 
+    userDetails.firstName=firstName;
+    userDetails.lastName=lastName;
+    await userDetails.save();
+    
+    const userUpdatedDetails = await User.findById(id).populate("additionalDetails");
+
+    // console.log("BE Profile",profileDetails)
+    // console.log("BE user ",userUpdatedDetails)
+
     return res.status(200).json({
       success: true,
       message: "Profile Updated Successfully",
       profileDetails,
+      userUpdatedDetails
     });
   } catch (err) {
     return res.status(500).json({

@@ -41,33 +41,25 @@ function Sidebar() {
             if (link.type && link.type !== user.accountType) {
               return null;
             }
-            return <SidebarLink key={index} link={link} />;
+            return <SidebarLink key={link.id} link={link} />;
           })}
-          <div className="w-11/12 mx-auto  border-t-2 border-richblack-700"></div>
+          <div className="w-11/12 mx-auto border-t-2 border-richblack-700"></div>
           <div className="flex flex-col gap-2">
             <SidebarLink
               link={{
                 name: "Settings",
                 icon: "VscSettingsGear",
-                id: 5,
+                id: 7,
                 path: "/dashboard/my-settings",
               }}
             />
-            {/* <button
-              onClick={() => handleOpen()}
-              className="text-sm font-medium hover:text-yellow-50"
-            >
-              <div className="flex items-center gap-x-3 mt-3 ml-8">
-                <VscSignOut color="white" size={22} />
-                <span className=" text-richblack-5">Logout</span>
-              </div>
-            </button> */}
+            
             <button
               onClick={() => handleOpen()}
-              className="text-sm font-medium  px-8 py-2 flex gap-4  hover:text-yellow-50 text-white transition-all duration-200 ease-in-out rounded-md"
+              className="text-sm font-medium px-8 py-2 flex gap-4 hover:text-yellow-50 text-white transition-all duration-200 ease-in-out rounded-md"
             >
               <div className="flex items-center gap-4">
-                <VscSignOut className="text-xl" />
+                <VscSignOut size={20} />
                 <span>Logout</span>
               </div>
             </button>

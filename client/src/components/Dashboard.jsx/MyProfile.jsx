@@ -10,11 +10,11 @@ const MyProfile = () => {
   const { user } = useSelector((state) => state.profile);
   const navigate = useNavigate();
   return (
-    <div className="text-white p-7 flex flex-col gap-5  mx-auto">
-      <h1 className="text-3xl">My Profile</h1>
-      <div className="w-[80%] mx-auto flex flex-col gap-3 ">
+    <div className=" p-7 flex flex-col gap-5  mx-auto">
+      <h1 className="text-3xl text-center font-bold tracking-wider text-richblack-5">My Profile</h1>
+      <div className="min-w-[70%] mx-auto flex flex-col gap-3 ">
         {/* section 1 */}
-        <div className="flex justify-between  items-center w-[60%] bg-richblack-800 p-4 rounded-md border-[1px] border-richblack-700">
+        <div className="flex justify-between w-full items-center bg-richblack-800 p-4 rounded-md border-[1px] border-richblack-700">
           <div className="flex items-center gap-3">
             <img
               src={user?.image}
@@ -22,7 +22,7 @@ const MyProfile = () => {
               className="aspect-square w-[78px] rounded-full object-cover"
             />
             <div>
-              <p> {user?.firstName + " " + user?.lastName} </p>
+              <p className="text-richblack-5"> {user?.firstName + " " + user?.lastName} </p>
               <p className="text-[12px] text-richblack-300 mt-1">
                 {" "}
                 {user?.email}
@@ -32,15 +32,15 @@ const MyProfile = () => {
           <IconBtn
             text="Edit"
             onclick={() => {
-              navigate("/dashboard/settings");
+              navigate("/dashboard/my-settings");
             }}
           >
             <BiSolidEdit />
           </IconBtn>
         </div>
 
-        {/* section 3 */}
-        <div className="flex justify-between flex-col items-center w-[60%] bg-richblack-800 p-4 rounded-md border-[1px] border-richblack-700 gap-5 ">
+        {/* section 2 */}
+        <div className="flex justify-between flex-col items-center w-full bg-richblack-800 p-4 rounded-md border-[1px] border-richblack-700 gap-5 ">
           <div className="w-full flex justify-between ">
             <p className="text-2xl text-richblack-25 font-bold">
               Personal Details
@@ -48,7 +48,7 @@ const MyProfile = () => {
             <IconBtn
               text="Edit"
               onclick={() => {
-                navigate("/dashboard/settings");
+                navigate("/dashboard/my-settings");
               }}
             >
               {" "}
@@ -94,14 +94,14 @@ const MyProfile = () => {
           </div>
         </div>
 
-        {/* section 2 */}
-        <div className="flex justify-between flex-col  w-[60%] bg-richblack-800 p-4 rounded-md border-[1px] border-richblack-700 gap-5 ">
+        {/* section 3 */}
+        <div className="flex justify-between flex-col  w-full bg-richblack-800 p-4 rounded-md border-[1px] border-richblack-700 gap-5 ">
           <div className="w-full flex justify-between">
             <p className="text-2xl text-richblack-25 font-bold">About</p>
             <IconBtn
               text="Edit"
               onclick={() => {
-                navigate("/dashboard/settings");
+                navigate("/dashboard/my-settings");
               }}
             >
               {" "}

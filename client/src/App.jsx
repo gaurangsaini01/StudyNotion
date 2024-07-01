@@ -32,7 +32,7 @@ function App() {
             element={<UpdatePassword />}
           />
           <Route path="/about" element={<About />} />
-          <Route element={<Dashboard />}>
+          <Route path="/dashboard" element={<Dashboard />}>
             <Route path="/dashboard/enrolled-courses" element={<MyCourses />} />
             <Route path="/dashboard/my-profile" element={<MyProfile />} />
             <Route path="/dashboard/my-settings" element={<MySettings />} />

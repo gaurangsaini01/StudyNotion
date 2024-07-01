@@ -1,17 +1,16 @@
 import React from "react";
 import { IoIosArrowBack } from "react-icons/io";
-import IconBtn from "../reusable/IconBtn";
-import { BiSolidEdit } from "react-icons/bi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ProfileUpdate from "../Settings/ProfileUpdate";
+import DeleteAccount from "../Settings/DeleteAccount";
 
 function MySettings() {
   const { user } = useSelector((state) => state.profile);
   const navigate = useNavigate();
 
   return (
-    <div className=" p-7 flex flex-col gap-5  mx-auto">
+    <div className=" p-7 flex flex-col gap-5 w-[70%] mx-auto">
       <div
         onClick={() => navigate("/dashboard/my-profile")}
         className="flex gap-2 items-center text-richblack-300 cursor-pointer"
@@ -46,6 +45,7 @@ function MySettings() {
         </div>
 
         <ProfileUpdate/>
+        <DeleteAccount/>
 
       </div>
     </div>

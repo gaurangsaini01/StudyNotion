@@ -12,12 +12,14 @@ function Dashboard() {
   }
 
   return (
-      <div className="flex w-full min-h-[calc(100vh-3.5rem)]">
+    <div className="flex w-full h-full">
+      <div className="flex-shrink-0">
         <Sidebar />
-        <div className="h-[calc(100vh-3.5rem)] w-full">
-          <Outlet />
-        </div>
       </div>
+      <div className="h-full w-full">
+        <Outlet />
+      </div>
+    </div>
   );
 }
 export default Dashboard;

@@ -148,11 +148,11 @@ async function updateDisplayPicture(req, res) {
       userId,
       { image: response.secure_url },
       { new: true }
-    );
+    ).populate("additionalDetails");
     res.status(200).json({
       success: true,
       message: `Image Updated successfully`,
-      data: updatedProfile,
+      data:updatedProfile,
     });
   } catch (err) {
     console.log(err);

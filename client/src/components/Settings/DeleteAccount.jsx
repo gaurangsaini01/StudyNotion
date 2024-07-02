@@ -1,19 +1,40 @@
-import { FiTrash2 } from "react-icons/fi"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { FiTrash2 } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
 
-import { deleteProfile } from "../../services/operations/settingsAPI"
+import { deleteProfile } from "../../services/operations/settingsAPI";
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  color: "white",
+  width: 400,
+  bgcolor: "#161d29",
+  border: "1px solid #000",
+  boxShadow: 24,
+  p: 4,
+  borderRadius:3
+};
 export default function DeleteAccount() {
-  const { token } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  //for Modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  
+  const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   async function handleDeleteAccount() {
     try {
-      dispatch(deleteProfile(token, navigate))
+      dispatch(deleteProfile(token, navigate));
     } catch (error) {
-      console.log("ERROR MESSAGE - ", error.message)
+      console.log("ERROR MESSAGE - ", error.message);
     }
   }
 
@@ -37,12 +58,29 @@ export default function DeleteAccount() {
           <button
             type="button"
             className="w-fit cursor-pointer italic text-pink-300"
-            onClick={handleDeleteAccount}
+            onClick={handleOpen}
           >
             I want to delete my account.
           </button>
+          <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <div className="text-2xl font-semibold text-richblack-25">
+              Confirm Account Deletion ?
+            </div>
+            <div className="text-sm text-richblack-300">All paid Courses Will Be Gone Forever !</div>
+            <div className="flex w-full gap-4 mt-4">
+              <button className="px-4 hover:scale-95 transition-all duration-200 ease-in-out py-2 bg-yellow-50 font-semibold text-black rounded-md" onClick={handleDeleteAccount}>Delete</button>
+              <button className="text-richblack-25" onClick={()=>handleClose()}>Cancel</button>
+            </div>
+          </Box>
+        </Modal>
         </div>
       </div>
     </>
-  )
+  );
 }

@@ -1,6 +1,7 @@
 import { settingsEndpoints } from "../apis";
 import { setUser } from "../../redux/slices/profileSlice";
 import { apiConnector } from "../apiconnector";
+import {logout} from "../operations/authAPI"
 
 import { toast } from "react-hot-toast";
 const {
@@ -9,6 +10,66 @@ const {
   CHANGE_PASSWORD_API,
   DELETE_PROFILE_API,
 } = settingsEndpoints;
+
+export async function changePasswordService(token,formData){
+    const toastId = toast.loading("Changing...");
+    try {
+      const response = await apiConnector(
+        "PUT",
+        CHANGE_PASSWORD_API,
+        formData,
+        {
+          Authorization: `Bearer ${token}`,
+        }
+      )
+      console.log(
+        "CHANGE_PASSWORD_API API RESPONSE............",
+        response
+      )
+
+      if (!response.data.success) {
+        throw new Error(response.data.message)
+      }
+      toast.success("Password changed Successfully") 
+
+    } catch (error) {
+      console.log("CHANGE_PASSWORD_API API ERROR............", error)
+      toast.error(error.response.data.message)
+    }
+    toast.dismiss(toastId);
+  }
+
+export function updateDisplayPicture(token, formData) {
+  return async (dispatch) => {
+    const toastId = toast.loading("Loading...")
+    try {
+      const response = await apiConnector(
+        "PUT",
+        UPDATE_DISPLAY_PICTURE_API,
+        formData,
+        {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        }
+      )
+      console.log(
+        "UPDATE_DISPLAY_PICTURE_API API RESPONSE............",
+        response
+      )
+
+      if (!response.data.success) {
+        throw new Error(response.data.message)
+      }
+      toast.success("Display Picture Updated Successfully") 
+
+      dispatch(setUser(response.data.data))
+    } catch (error) {
+      console.log("UPDATE_DISPLAY_PICTURE_API API ERROR............", error)
+      toast.error("Could Not Update Display Picture")
+    }
+    toast.dismiss(toastId)
+  }
+}
 
 export function updateProfile(token, formData) {
   return async (dispatch) => {
@@ -22,7 +83,6 @@ export function updateProfile(token, formData) {
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
-      localStorage.setItem("user", JSON.stringify(response.data.userDetails));
       dispatch(setUser(response.data.userDetails));
 
       toast.success("Profile Updated Successfully");

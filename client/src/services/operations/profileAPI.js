@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 import { profileEndpoints } from "../apis";
 import { apiConnector } from "../apiconnector";
 const {GET_USER_ENROLLED_COURSES_API} = profileEndpoints;
+
 export async function getUserEnrolledCourses(token) {
   const toastId = toast.loading("Loading...");
   let result = [];

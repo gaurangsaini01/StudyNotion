@@ -1,4 +1,4 @@
-const User = require("../models/Course");
+const User = require("../models/User");
 const Category = require("../models/Category");
 const Course = require("../models/Course");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
@@ -52,7 +52,7 @@ async function createCourse(req, res) {
     // Update the user's course list
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
-      { $push: { courses: newCourse._id } },
+      { $push: { courses: newCourse._id.toString() } },
       { new: true }
     );
 
@@ -67,6 +67,7 @@ async function createCourse(req, res) {
     return res.status(200).json({
       success: true,
       message: "New Course Created Successfully",
+      updatedUser
     });
   } catch (error) {
     // Log the error

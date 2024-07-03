@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Profile = require("../models/Profile");
 const Course = require("../models/Course");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { populate } = require("../models/OTP");
 require("dotenv").config();
 
 async function updateProfile(req, res) {
@@ -165,7 +166,16 @@ async function updateDisplayPicture(req, res) {
 async function getEnrolledCourses(req, res) {
   try {
     const userId = req.user.id;
-    const userDetails = await User.findById(userId).populate("courses");
+    const userDetails = await User.findById(userId).populate({
+      path:"courses",
+      populate:[{
+        path:"category",
+        model:"Category"
+      },{
+        path:"instructor",
+        model:"User"
+      }]
+    });
 
     if (!userDetails) {
       return res.status(400).json({
@@ -173,6 +183,8 @@ async function getEnrolledCourses(req, res) {
         message: `Could not find user with id: ${userId}`,
       });
     }
+    console.log(userDetails)
+    
     return res.status(200).json({
       success: true,
       data: userDetails.courses,

@@ -23,5 +23,8 @@ export const settingsEndpoints = {
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteaccount",
 }
 
+export const profileEndpoints = {
+  GET_USER_ENROLLED_COURSES_API:BASE_URL+'/profile/getenrolledcourses'
+}
 
 

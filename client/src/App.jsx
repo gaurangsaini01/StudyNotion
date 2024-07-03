@@ -15,6 +15,7 @@ import Contact from "./Pages/Contact";
 import MyProfile from "./components/Dashboard.jsx/MyProfile";
 import MyCourses from "./components/Dashboard.jsx/MyCourses";
 import MySettings from "./components/Dashboard.jsx/MySettings";
+import Wishlist from "./components/Dashboard.jsx/Wishlist";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="/dashboard/enrolled-courses" element={<MyCourses />} />
+            <Route path="/dashboard/wishlist" element={<Wishlist />} />
             <Route path="/dashboard/my-profile" element={<MyProfile />} />
             <Route path="/dashboard/my-settings" element={<MySettings />} />
           </Route>

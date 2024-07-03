@@ -4,29 +4,47 @@ const SubSection = require("../models/SubSection");
 
 async function createSection(req, res) {
   try {
-    //fetch data
-    const { sectionName, courseId } = req.body;
-    //validate data
-    if (!sectionName || !courseId) {
-      return res.status(400).json({
-        success: false,
-        message: "Fields Missing",
-      });
-    }
-    const newSection = await Section.create({ sectionName });
-    //add section entry in course courseContent array
-    const updatedCourse = await Course.findByIdAndUpdate(
-      courseId,
-      {
-        $push: { courseContent: newSection._id },
-      },
-      { new: true }
-    ).populate("courseContent");
+     // Fetch data
+     const { sectionName, courseId } = req.body;
+    console.log("checkpoint 1");
+     // Validate data
+     if (!sectionName || !courseId) {
+       return res.status(400).json({
+         success: false,
+         message: "Fields Missing",
+       });
+     }
+     console.log("checkpoint 2");
+ 
+     // Ensure the course exists
+     const course = await Course.findById(courseId);
+     if (!course) {
+       return res.status(404).json({
+         success: false,
+         message: "Course not found",
+       });
+     }
+     console.log("checkpoint 3");
+ 
+     // Create the new section
+     const newSection = await Section.create({ sectionName });
+     console.log("checkpoint 4");
+ 
+     // Add section entry in course's courseContent array
+     course.courseContent.push(newSection._id);
+     await course.save();
+     console.log("checkpoint 5");
+ 
+     // Populate course content
+     const updatedCourse = await Course.findById(courseId).populate('courseContent');
+     console.log("checkpoint 6");
+ 
+     console.log(updatedCourse);
 
     return res.status(200).json({
       success: true,
       message: "Section Created Successfully",
-      data: updatedCourse,
+      data:updatedCourse,
     });
   } catch (err) {
     return res.status(500).json({

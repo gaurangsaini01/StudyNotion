@@ -5,8 +5,8 @@ const initialState = {
   cart: localStorage.getItem("cart")
     ? JSON.parse(localStorage.getItem("cart"))
     : [],
-  total: localStorage.getItem("total")
-    ? JSON.parse(localStorage.getItem("total"))
+    totalPrice: localStorage.getItem("totalPrice")
+    ? JSON.parse(localStorage.getItem("totalPrice"))
     : 0,
   totalItems: localStorage.getItem("totalItems")
     ? JSON.parse(localStorage.getItem("totalItems"))
@@ -30,10 +30,10 @@ const cartSlice = createSlice({
       state.cart.push(course)
       // Update the total quantity and price
       state.totalItems++
-      state.total += course.price
+      state.totalPrice += course.price
       // Update to localstorage
       localStorage.setItem("cart", JSON.stringify(state.cart))
-      localStorage.setItem("total", JSON.stringify(state.total))
+      localStorage.setItem("totalPrice", JSON.stringify(state.totalPrice))
       localStorage.setItem("totalItems", JSON.stringify(state.totalItems))
       // show toast
       toast.success("Course added to cart")
@@ -45,11 +45,11 @@ const cartSlice = createSlice({
       if (index >= 0) {
         // If the course is found in the cart, remove it
         state.totalItems--
-        state.total -= state.cart[index].price
+        state.totalPrice -= state.cart[index].price
         state.cart.splice(index, 1)
         // Update to localstorage
         localStorage.setItem("cart", JSON.stringify(state.cart))
-        localStorage.setItem("total", JSON.stringify(state.total))
+        localStorage.setItem("totalPrice", JSON.stringify(state.totalPrice))
         localStorage.setItem("totalItems", JSON.stringify(state.totalItems))
         // show toast
         toast.success("Course removed from cart")
@@ -57,11 +57,11 @@ const cartSlice = createSlice({
     },
     resetCart: (state) => {
       state.cart = []
-      state.total = 0
+      state.totalPrice = 0
       state.totalItems = 0
       // Update to localstorage
       localStorage.removeItem("cart")
-      localStorage.removeItem("total")
+      localStorage.removeItem("totalPrice")
       localStorage.removeItem("totalItems")
     },
   },

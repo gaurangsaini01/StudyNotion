@@ -6,7 +6,7 @@ require("dotenv").config();
 
 async function createCourse(req, res) {
   try {
-    const { courseName, courseDescription, whatYouWillLearn, price, category } =
+    const { courseName, courseDescription, whatYouWillLearn, price, category ,status,instructions} =
       req.body;
     const thumbnail = req.files?.thumbnail; // Use optional chaining in case files are not present
 
@@ -17,7 +17,9 @@ async function createCourse(req, res) {
       !category ||
       !thumbnail ||
       !whatYouWillLearn ||
-      !price
+      !price||
+      !status||
+      !instructions
     ) {
       return res.status(400).json({
         success: false,
@@ -47,6 +49,8 @@ async function createCourse(req, res) {
       price,
       category,
       thumbnail: thumbnailImage.secure_url,
+      status,
+      instructions
     });
     console.log("New Course Created:", newCourse);
     // Update the user's course list
@@ -67,7 +71,8 @@ async function createCourse(req, res) {
     return res.status(200).json({
       success: true,
       message: "New Course Created Successfully",
-      updatedUser
+      updatedUser,
+      newCourse
     });
   } catch (error) {
     // Log the error
@@ -92,6 +97,49 @@ async function getAllCourses(req, res) {
       success: false,
       message: "Cannot get Courses Data",
     });
+  }
+}
+
+async function editCourse(req,res){
+  try{
+    const { courseName,courseId, courseDescription, whatYouWillLearn, price,status,instructions} =
+      req.body;
+      if(!courseId){
+        return res.status(400).json({
+          success:false,
+          message:'No CourseId Provided'
+        })
+      }
+    const updatedField ={}
+      if(courseName){
+        updatedField.courseName=courseName;
+      }
+      if(courseDescription){
+        updatedField.courseDescription=courseDescription;
+      }
+      if(whatYouWillLearn){
+        updatedField.whatYouWillLearn=whatYouWillLearn;
+      }
+      if(price){
+        updatedField.price=price;
+      }
+      if(status){
+        updatedField.status=status;
+      }
+      if(instructions){
+        updatedField.instructions=instructions;
+      }
+      const updatedCourse = await Course.findByIdAndUpdate(courseId,updatedField,{new:true});
+      return res.status(200).json({
+        success:true,
+        message:'Course Edited Successfully',
+        updatedCourse
+      })
+  }catch(err){
+    return res.status(500).json({
+      success:false,
+      message:"Couldn't Edit Course"
+    })
   }
 }
 
@@ -137,4 +185,4 @@ async function getCourseDetails(req, res) {
   }
 }
 
-module.exports = { createCourse, getAllCourses, getCourseDetails };
+module.exports = { createCourse, getAllCourses,editCourse, getCourseDetails };

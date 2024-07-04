@@ -60,7 +60,7 @@ const courseSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["Draft", "Published"],
+    enum: ["draft", "published"],
   },
 });
 module.exports = mongoose.model("Course", courseSchema);

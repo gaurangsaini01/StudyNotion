@@ -2,10 +2,10 @@ import React from "react";
 import { FaCheck } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
+import Box from "@mui/material/Box";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
 import CourseInformation from "./forms/CourseInformation";
 import CourseBuilder from "./forms/CourseBuilder";
 import PublishForm from "./forms/PublishForm";
@@ -27,21 +27,24 @@ function RenderSteps() {
     },
   ];
   return (
-    <>
-      <Box sx={{ width: '150%' }}>
-      <Stepper activeStep={step} alternativeLabel>
-        {steps.map((label) => (
-          <Step key={label.id}>
-            <StepLabel><div className="text-richblack-5">
-            {label.title}</div></StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-    </Box>
-    {step === 0 && <CourseInformation/>}
-    {step === 1 && <CourseBuilder/>}
-    {step === 2 && <PublishForm/>}
-    </>
+    <div className="w-full flex flex-col items-center">
+      <Box sx={{ width: "90%" }}>
+        <Stepper activeStep={step} alternativeLabel>
+          {steps.map((label) => (
+            <Step key={label.id}>
+              <StepLabel>
+                <div className="text-richblack-5">{label.title}</div>
+              </StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+      </Box>
+      <div className="w-11/12 mx-auto mt-6">
+        {step === 0 && <CourseInformation />}
+        {step === 1 && <CourseBuilder />}
+        {step === 2 && <PublishForm />}
+      </div>
+    </div>
   );
 }
 

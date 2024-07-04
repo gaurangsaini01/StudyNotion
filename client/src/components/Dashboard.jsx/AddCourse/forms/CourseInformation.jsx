@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCourseCategories,editCourseDetails,addCourseDetails } from "../../../../services/operations/courseDetailsAPI";
-import {HiOutlineCurrencyRupee} from "react-icons/hi"
+import {
+  fetchCourseCategories,
+  editCourseDetails,
+  addCourseDetails,
+} from "../../../../services/operations/courseDetailsAPI";
+import { HiOutlineCurrencyRupee } from "react-icons/hi";
 import { setStep, setCourse } from "../../../../redux/slices/courseSlice";
-import IconBtn from "../../../reusable/IconBtn"
+import IconBtn from "../../../reusable/IconBtn";
 import RequirementField from "./RequirementField";
 
 function CourseInformation() {
@@ -44,7 +48,6 @@ function CourseInformation() {
 
     getCategories();
   }, []);
-
 
   const isFormUpdated = () => {
     const currentValues = getValues();
@@ -109,7 +112,7 @@ function CourseInformation() {
           dispatch(setCourse(result));
         }
       } else {
-        toast.error("NO Changes made so far");
+        toast.error("No Changes made so far");
       }
       console.log("PRINTING FORMDATA", formData);
       console.log("PRINTING result", result);
@@ -143,38 +146,38 @@ function CourseInformation() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="rounded-md border-richblack-700 bg-richblack-800 p-6 space-y-8"
+      className="rounded-md border-richblack-700 bg-richblack-800 p-6  space-y-8"
     >
-      <div>
-        <label htmlFor="courseTitle">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="courseTitle" className="lable-style">
           Course Title<sup>*</sup>
         </label>
         <input
           id="courseTitle"
           placeholder="Enter Course Title"
           {...register("courseTitle", { required: true })}
-          className="w-full"
+          className="w-full form-style"
         />
         {errors.courseTitle && <span>Course Title is Required**</span>}
       </div>
 
-      <div>
-        <label htmlFor="courseShortDesc">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="courseShortDesc" className="lable-style">
           Course Short Description<sup>*</sup>
         </label>
         <textarea
           id="courseShortDesc"
           placeholder="Enter Description"
           {...register("courseShortDesc", { required: true })}
-          className="min-h-[140px] w-full"
+          className="min-h-[140px] w-full form-style"
         />
         {errors.courseShortDesc && (
           <span>Course Description is required**</span>
         )}
       </div>
 
-      <div className="relative">
-        <label htmlFor="coursePrice">
+      <div className="relative flex flex-col gap-2">
+        <label htmlFor="coursePrice lable-style">
           Course Price<sup>*</sup>
         </label>
         <input
@@ -184,18 +187,19 @@ function CourseInformation() {
             required: true,
             valueAsNumber: true,
           })}
-          className="w-full"
+          className="w-full form-style pl-10"
         />
-        <HiOutlineCurrencyRupee className="absolute top-1/2 text-richblack-400" />
+        <HiOutlineCurrencyRupee size={20} className="absolute top-[57%] left-2 text-richblack-50" />
         {errors.coursePrice && <span>Course Price is Required**</span>}
       </div>
 
-      <div>
-        <label htmlFor="courseCategory">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="courseCategory" className="lable-style">
           Course Category<sup>*</sup>
         </label>
         <select
           id="courseCategory"
+          className="form-style"
           defaultValue=""
           {...register("courseCategory", { required: true })}
         >
@@ -223,15 +227,15 @@ function CourseInformation() {
         /> */}
 
       {/*     Benefits of the Course */}
-      <div>
-        <label>
+      <div className="flex flex-col gap-2">
+        <label className="lable-style">
           Benefits of the course<sup>*</sup>
         </label>
         <textarea
           id="coursebenefits"
           placeholder="Enter Benefits of the course"
           {...register("courseBenefits", { required: true })}
-          className="min-h-[130px] w-full"
+          className="min-h-[130px] w-full form-style"
         />
         {errors.courseBenefits && (
           <span>Benefits of the course are required**</span>
@@ -246,11 +250,11 @@ function CourseInformation() {
         setValue={setValue}
         getValues={getValues}
       />
-      <div>
+      <div className="flex gap-4 flex-wrap">
         {editCourse && (
           <button
-            onClick={() => dispatch(setStep(2))}
-            className="flex items-center gap-x-2 bg-richblack-300"
+            onClick={() => dispatch(setStep(1))}
+            className="flex items-center px-6 py-2 hover:scale-95 transition-all duration-150 ease-in-out rounded-md bg-richblack-600"
           >
             Continue Without Saving
           </button>

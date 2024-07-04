@@ -7,6 +7,7 @@ const {
   createCourse,
   getAllCourses,
   getCourseDetails,
+  editCourse
 } = require("../controllers/Course");
 
 //category controllers
@@ -53,6 +54,8 @@ const {
 
 // Courses can Only be Created by Instructors
 router.post("/createcourse", auth, isInstructor, createCourse);
+//update/edit course
+router.put('/editCourse',auth,isInstructor,editCourse)
 //Add a Section to a Course
 router.post("/createsection", auth, isInstructor, createSection);
 // Update a Section

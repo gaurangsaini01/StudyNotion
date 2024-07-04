@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { GoPlusCircle } from "react-icons/go";
 import { getUserEnrolledCourses } from "../../services/operations/profileAPI";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FaRupeeSign } from "react-icons/fa";
 import { MdModeEdit } from "react-icons/md";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import { setEditCourse } from "../../redux/slices/courseSlice";
+import { setCourse} from "../../redux/slices/courseSlice";
 
 function MyCourses() {
   const { token } = useSelector((state) => state.auth);
+  const dispatch=useDispatch();
+  const navigate = useNavigate();
 
   const [enrolledCourses, setEnrolledCourses] = useState(null);
 
@@ -20,6 +25,12 @@ function MyCourses() {
     }
   };
   console.log(enrolledCourses);
+
+  function editHandler(course) {
+    dispatch(setEditCourse(true));
+    dispatch(setCourse(course));
+    navigate('/dashboard/add-course');
+  }
 
   useEffect(() => {
     getEnrolledCourses();
@@ -59,15 +70,22 @@ function MyCourses() {
                       src={course.thumbnail}
                     />
                     <div className="flex gap-1 flex-col">
-                      <p className="text-xl font-semibold">{course.courseName}</p>
+                      <p className="text-xl font-semibold">
+                        {course.courseName}
+                      </p>
                       <p className="text-sm text-richblack-300">
                         {course.courseDescription}
                       </p>
                     </div>
                   </div>
                   <div className="w-[15%]">{course.category[0].name}</div>
-                  <div className="w-[15%] flex items-center gap-1 text-yellow-100"><FaRupeeSign/> {course.price}</div>
-                  <div className="w-[15%] flex items-center gap-2 text-xl text-richblack-200"><MdModeEdit/><RiDeleteBin5Line/></div>
+                  <div className="w-[15%] flex items-center gap-1 text-yellow-100">
+                    <FaRupeeSign /> {course.price}
+                  </div>
+                  <div className="w-[15%] flex items-center gap-2 text-xl text-richblack-200">
+                    <MdModeEdit className="cursor-pointer" onClick={() => editHandler(course)} />
+                    <RiDeleteBin5Line className="cursor-pointer" />
+                  </div>
                 </div>
               ))}
             </div>

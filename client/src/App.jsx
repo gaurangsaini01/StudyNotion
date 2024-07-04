@@ -17,6 +17,7 @@ import MySettings from "./components/Dashboard.jsx/MySettings";
 import Wishlist from "./components/Dashboard.jsx/Wishlist";
 import EnrolledCourses from "./components/Dashboard.jsx/EnrolledCourses";
 import MyCourses from "./components/Dashboard.jsx/MyCourses";
+import AddCourse from "./components/Dashboard.jsx/AddCourse";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}>
             <Route path="/dashboard/enrolled-courses" element={<EnrolledCourses />} />
             <Route path="/dashboard/my-courses" element={<MyCourses />} />
+            <Route path="/dashboard/add-course" element={<AddCourse />} />
             <Route path="/dashboard/wishlist" element={<Wishlist />} />
             <Route path="/dashboard/my-profile" element={<MyProfile />} />
             <Route path="/dashboard/my-settings" element={<MySettings />} />

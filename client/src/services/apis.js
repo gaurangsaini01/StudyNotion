@@ -27,4 +27,24 @@ export const profileEndpoints = {
   GET_USER_ENROLLED_COURSES_API:BASE_URL+'/profile/getenrolledcourses'
 }
 
+export const courseEndpoints = {
+  GET_ALL_COURSE_API: BASE_URL + "/course/getallcourses",
+  COURSE_DETAILS_API: BASE_URL + "/course/getcoursedetails",
+  EDIT_COURSE_API: BASE_URL + "/course/editcourse",
+  COURSE_CATEGORIES_API: BASE_URL + "/course/getallcategories",
+  CREATE_COURSE_API: BASE_URL + "/course/createcourse",
+  CREATE_SECTION_API: BASE_URL + "/course/createsection",
+  CREATE_SUBSECTION_API: BASE_URL + "/course/createsubsection",
+  UPDATE_SECTION_API: BASE_URL + "/course/updatesection",
+  UPDATE_SUBSECTION_API: BASE_URL + "/course/updatesubsection",
+  GET_ALL_INSTRUCTOR_COURSES_API: BASE_URL + "/course/getInstructorCourses",
+  DELETE_SECTION_API: BASE_URL + "/course/deletesection",
+  DELETE_SUBSECTION_API: BASE_URL + "/course/deletesubsection",
+  DELETE_COURSE_API: BASE_URL + "/course/deleteCourse",
+  GET_FULL_COURSE_DETAILS_AUTHENTICATED:
+    BASE_URL + "/course/getcoursedetails",
+  LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",
+  CREATE_RATING_API: BASE_URL + "/course/createRating",
+}
+
 

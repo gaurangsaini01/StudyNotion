@@ -13,10 +13,10 @@ function AddCourse() {
           <RenderSteps />
         </div>
         <div className="w-4/12 h-fit bg-richblack-800 rounded-xl p-4 mr-10">
-          <p className="text-xl flex items-center gap-2 font-semibold">
+          <div className="text-xl flex items-center gap-2 font-semibold">
             <AiTwotoneThunderbolt color="#CFAB08" />
             <p>Code Upload Tips</p>
-          </p>
+          </div>
           <ul className="list-disc pl-4 mt-2 text-sm gap-2 flex flex-col text-richblack-200">
             <li>Set the Course Price option or make it free.</li>
             <li>Standard size for the course thumbnail is 1024x576</li>

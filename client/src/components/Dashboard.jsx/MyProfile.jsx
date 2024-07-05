@@ -1,8 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import IconBtn from '../../common/IconBtn'
-
 import IconBtn from "../reusable/IconBtn";
 import { BiSolidEdit } from "react-icons/bi";
 

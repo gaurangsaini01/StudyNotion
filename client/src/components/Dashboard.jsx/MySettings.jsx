@@ -23,13 +23,10 @@ function MySettings() {
         Edit Profile
       </h1>
       <div className="min-w-[70%] mx-auto flex flex-col gap-3 ">
-        {/* section 1 */}
         <ChangeProfilePicture />
-      
-
         <ProfileUpdate />
         <DeleteAccount />
-        <ChangePassword/>
+        <ChangePassword />
       </div>
     </div>
   );

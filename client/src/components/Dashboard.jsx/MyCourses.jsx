@@ -24,7 +24,6 @@ function MyCourses() {
       console.log("Unable to Fetch Enrolled Courses");
     }
   };
-  console.log(enrolledCourses);
 
   function editHandler(course) {
     dispatch(setEditCourse(true));

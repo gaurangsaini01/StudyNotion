@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { DevTool } from "@hookform/devtools";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCourseCategories,
@@ -31,11 +32,6 @@ function CourseInformation() {
   //IMAGE RELATED
   const fileInputRef = useRef(null);
   const [previewSource, setPreviewSource] = useState(null);
-
-  function handleClick() {
-    fileInputRef.current.click();
-    console.log("clicked");
-  }
 
   function previewFile(file) {
     const reader = new FileReader();
@@ -87,9 +83,9 @@ function CourseInformation() {
       //currentValues.courseTags.toString() !== course.tag.toString() ||
       currentValues.courseBenefits !== course.whatYouWillLearn ||
       currentValues.courseCategory._id !== course.category._id ||
-      currentValues.courseImage !== course.thumbnail ||
-      currentValues.courseRequirements.toString() !==
-        course.instructions.toString()
+      (currentValues.courseImage && currentValues.courseImage !== course.thumbnail)
+      // currentValues.courseRequirements.toString() !==
+      //   course.instructions.toString()
     )
       return true;
     else return false;
@@ -122,29 +118,29 @@ function CourseInformation() {
           formData.append("category", data.courseCategory);
         }
 
-        if (
-          currentValues.courseRequirements.toString() !==
-          course.instructions.toString()
-        ) {
-          formData.append(
-            "instructions",
-            JSON.stringify(data.courseRequirements)
-          );
+        // if (
+        //   currentValues.courseRequirements.toString() !==
+        //   course.instructions.toString()
+        // ) {
+        //   formData.append(
+        //     "instructions",
+        //     JSON.stringify(data.courseRequirements)
+        //   );
+        // }
+        if (currentValues.courseImage !== course.thumbnail) {
+          formData.append("thumbnail", data.courseImage);
         }
 
         setLoading(true);
         const result = await editCourseDetails(formData, token);
         setLoading(false);
         if (result) {
-          setStep(2);
+          setStep(1);
           dispatch(setCourse(result));
         }
       } else {
         toast.error("No Changes made so far");
       }
-      console.log("PRINTING FORMDATA", formData);
-      console.log("PRINTING result", result);
-
       return;
     }
     console.log(data);
@@ -160,13 +156,8 @@ function CourseInformation() {
     if (data.courseImage) {
       formData.append("thumbnail", data.courseImage);
     }
-    
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+
     setLoading(true);
-    console.log("BEFORE add course API call");
-    // console.log("PRINTING FORMDATA", formData);
     const result = await addCourseDetails(formData, token);
     if (result) {
       setStep(1);
@@ -255,19 +246,19 @@ function CourseInformation() {
           {errors.courseCategory && <span>Course Category is Required</span>}
         </div>
 
-        {/* create a component for uploading and showing preview of media */}
+        {/* For uploading and showing preview of Thumbnail */}
 
-        <div className="w-full border-2 p-4 h-[300px]">
-          <div className="w-full flex items-center justify-center h-full border-2">
-            {previewSource && (
+        <div className="w-full p-4 h-fit form-style rounded-md ">
+          <div className="w-full flex flex-col gap-6">
+            {(previewSource || course?.thumbnail) && (
               <img
-                src={previewSource}
+                src={previewSource || course?.thumbnail}
                 className="w-full h-full object-cover"
                 alt="Preview"
               />
             )}
-            {!previewSource && (
-              <div className="w-1/2">
+            {(!previewSource || course?.thumbnail) && (
+              <div className="w-full text-richblack-300">
                 Click
                 <input
                   onChange={handleFileChange}
@@ -275,11 +266,11 @@ function CourseInformation() {
                   type="file"
                   name="courseImage"
                   className="hidden"
-                  // accept="image/*"
+                  accept="image/*"
                 />
                 <span
-                  className="text-yellow-200 cursor-pointer underline"
-                  onClick={handleClick}
+                  className="text-yellow-50 cursor-pointer "
+                  onClick={() => fileInputRef.current.click()}
                 >
                   {" "}
                   Browse
@@ -307,14 +298,14 @@ function CourseInformation() {
           )}
         </div>
 
-        <RequirementField
+        {/* <RequirementField
           name="courseRequirements"
           label="Requirements/Instructions"
           register={register}
           errors={errors}
           setValue={setValue}
           getValues={getValues}
-        />
+        /> */}
         <div className="flex gap-4 flex-wrap">
           {editCourse && (
             <button
@@ -325,7 +316,8 @@ function CourseInformation() {
             </button>
           )}
 
-          <IconBtn text={!editCourse ? "Next" : "Save Changes"} />
+          {editCourse && <IconBtn text="Save Changes" />}
+          {!editCourse && <IconBtn text="Next" />}
         </div>
       </form>
       <DevTool control={control} />

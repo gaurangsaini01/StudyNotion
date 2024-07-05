@@ -55,7 +55,7 @@ const {
 // Courses can Only be Created by Instructors
 router.post("/createcourse", auth, isInstructor, createCourse);
 //update/edit course
-router.put('/editCourse',auth,isInstructor,editCourse)
+router.put('/editcourse',auth,isInstructor,editCourse)
 //Add a Section to a Course
 router.post("/createsection", auth, isInstructor, createSection);
 // Update a Section

@@ -192,16 +192,11 @@ async function login(req, res) {
         accountType: user.accountType,
       };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "2h",
+        expiresIn: "1d",
       });
       user.token = token;
       user.password = undefined;
-      res
-        .cookie("token", token, {
-          expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-          HttpOnly: true,
-        })
-        .status(200)
+      res.status(200)
         .json({
           success: true,
           message: "Logged In Successfully",

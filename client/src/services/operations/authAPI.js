@@ -101,7 +101,7 @@ export function login(email, password, navigate) {
       dispatch(setUser(response.data.user));
       navigate("/dashboard/my-profile");
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data.message);
     }
     dispatch(setLoading(false));
     toast.dismiss(toastId);

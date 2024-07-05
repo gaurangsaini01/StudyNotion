@@ -1,6 +1,6 @@
 import "./App.css";
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./Pages/Home";
 import Navbar from "./components/navbar/Navbar";
 import Signup from "./Pages/Signup";
@@ -18,8 +18,57 @@ import Wishlist from "./components/Dashboard.jsx/Wishlist";
 import EnrolledCourses from "./components/Dashboard.jsx/EnrolledCourses";
 import MyCourses from "./components/Dashboard.jsx/MyCourses";
 import AddCourse from "./components/Dashboard.jsx/AddCourse";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
+import { setToken } from "./redux/slices/authSlice";
+import { setUser } from "./redux/slices/profileSlice";
+import { resetCart } from "./redux/slices/cartSlice";
+import toast from "react-hot-toast";
 
 function App() {
+  const token = useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Function to logout user
+    const logoutUser = () => {
+      dispatch(setToken(null));
+      dispatch(setUser(null));
+      dispatch(resetCart());
+      localStorage.removeItem("token"); // Clear token from local storage
+      localStorage.removeItem("user"); // Clear user from local storage
+      toast.success("Logged Out");
+      navigate("/login");
+    };
+
+    const checkTokenExpiration = () => {
+      if (!token) {
+        // Token not found, logout user
+        logoutUser();
+        return;
+      }
+
+      try {
+        const decodedToken = jwtDecode(token); // Decode token
+        const currentTime = Date.now() / 1000; // Convert current time to seconds
+
+        if (decodedToken.exp < currentTime) {
+          // Token expired, logout user
+          logoutUser();
+        }
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        logoutUser(); 
+      }
+    };
+
+    // Periodically checking token expiration(every minute)
+    const intervalId = setInterval(checkTokenExpiration, 300000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
   return (
     <>
       <div className="min-h-screen w-screen bg-richblack-900 flex flex-col font-inter">
@@ -36,7 +85,10 @@ function App() {
           />
           <Route path="/about" element={<About />} />
           <Route path="/dashboard" element={<Dashboard />}>
-            <Route path="/dashboard/enrolled-courses" element={<EnrolledCourses />} />
+            <Route
+              path="/dashboard/enrolled-courses"
+              element={<EnrolledCourses />}
+            />
             <Route path="/dashboard/my-courses" element={<MyCourses />} />
             <Route path="/dashboard/add-course" element={<AddCourse />} />
             <Route path="/dashboard/wishlist" element={<Wishlist />} />

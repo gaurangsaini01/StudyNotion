@@ -118,7 +118,14 @@ async function editCourse(req, res) {
       status,
       instructions,
     } = req.body;
-    const thumbnail = req.files.thumbnail;
+
+    let thumbnail;
+    if (req.files) {
+      thumbnail = req.files.thumbnail;
+    } else {
+      thumbnail = req.body.thumbnail;
+    }
+
     if (!courseId) {
       return res.status(400).json({
         success: false,

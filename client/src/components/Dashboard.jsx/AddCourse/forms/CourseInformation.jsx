@@ -83,7 +83,8 @@ function CourseInformation() {
       //currentValues.courseTags.toString() !== course.tag.toString() ||
       currentValues.courseBenefits !== course.whatYouWillLearn ||
       currentValues.courseCategory._id !== course.category._id ||
-      (currentValues.courseImage && currentValues.courseImage !== course.thumbnail)
+      (currentValues.courseImage &&
+        currentValues.courseImage !== course.thumbnail)
       // currentValues.courseRequirements.toString() !==
       //   course.instructions.toString()
     )
@@ -134,7 +135,7 @@ function CourseInformation() {
         setLoading(true);
         const result = await editCourseDetails(formData, token);
         setLoading(false);
-        console.log("result is",result)
+        console.log("result is", result);
         if (result) {
           dispatch(setStep(1));
           dispatch(setCourse(result));

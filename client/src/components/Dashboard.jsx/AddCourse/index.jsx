@@ -1,12 +1,22 @@
 import React from "react";
 import RenderSteps from "./RenderSteps";
 import { AiTwotoneThunderbolt } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setEditCourse, setStep } from "../../../redux/slices/courseSlice";
 
 function AddCourse() {
+  const dispatch = useDispatch();
   const { editCourse } = useSelector((state) => state.course);
+  const navigate= useNavigate();
+  function handleExit(){
+    navigate('/dashboard/my-courses');
+    dispatch(setEditCourse(false));
+    dispatch(setStep(0));
+  }
   return (
     <div className="text-richblack-5 p-6 w-full mx-auto">
+      <button onClick={handleExit} className="text-sm text-richblack-300">Exit</button>
       <h1 className="text-3xl">{editCourse ? "Edit Course" : "Add Course"}</h1>
       <div className="flex mt-6 justify-between">
         <div className="w-8/12">

@@ -134,8 +134,9 @@ function CourseInformation() {
         setLoading(true);
         const result = await editCourseDetails(formData, token);
         setLoading(false);
+        console.log("result is",result)
         if (result) {
-          setStep(1);
+          dispatch(setStep(1));
           dispatch(setCourse(result));
         }
       } else {
@@ -160,7 +161,7 @@ function CourseInformation() {
     setLoading(true);
     const result = await addCourseDetails(formData, token);
     if (result) {
-      setStep(1);
+      dispatch(setStep(1));
       dispatch(setCourse(result));
     }
     setLoading(false);

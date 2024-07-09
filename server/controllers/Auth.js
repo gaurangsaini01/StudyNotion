@@ -5,7 +5,7 @@ const Profile = require("../models/Profile");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mailSender = require("../utils/mailsender");
-const passwordUpdated = require("../mail/templates/passwordUpdate")
+const passwordUpdated = require("../mail/templates/passwordUpdate");
 
 //send OTP
 async function sendOTP(req, res) {
@@ -192,17 +192,19 @@ async function login(req, res) {
         accountType: user.accountType,
       };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "1d",
+        expiresIn: "2d",
       });
+      console.log(token);
+      const decodedToken = jwt.decode(token);
+      console.log("Decoded token:", decodedToken);
       user.token = token;
       user.password = undefined;
-      res.status(200)
-        .json({
-          success: true,
-          message: "Logged In Successfully",
-          user,
-          token
-        });
+      res.status(200).json({
+        success: true,
+        message: "Logged In Successfully",
+        user,
+        token,
+      });
     }
     //If passwords are not matching
     else {
@@ -246,7 +248,7 @@ async function changePassword(req, res) {
       { password: encryptedPassword },
       { new: true }
     ).populate("additionalDetails");
-    console.log(updatedUserDetails)
+    console.log(updatedUserDetails);
     // Send notification email
     try {
       const emailResponse = await mailSender(
@@ -282,4 +284,4 @@ async function changePassword(req, res) {
   }
 }
 
-module.exports={changePassword,login,signup,sendOTP}
+module.exports = { changePassword, login, signup, sendOTP };

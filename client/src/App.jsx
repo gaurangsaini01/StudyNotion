@@ -23,7 +23,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "./redux/slices/authSlice";
 import { setUser } from "./redux/slices/profileSlice";
 import { resetCart } from "./redux/slices/cartSlice";
-import toast from "react-hot-toast";
 
 function App() {
   const token = useSelector((state) => state.auth.token);
@@ -31,6 +30,7 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("app started");
     // Function to logout user
     const logoutUser = () => {
       dispatch(setToken(null));
@@ -38,7 +38,6 @@ function App() {
       dispatch(resetCart());
       localStorage.removeItem("token"); // Clear token from local storage
       localStorage.removeItem("user"); // Clear user from local storage
-      toast.success("Logged Out");
       navigate("/login");
     };
 
@@ -52,6 +51,7 @@ function App() {
       try {
         const decodedToken = jwtDecode(token); // Decode token
         const currentTime = Date.now() / 1000; // Convert current time to seconds
+        // console.log(decodedToken)
 
         if (decodedToken.exp < currentTime) {
           // Token expired, logout user
@@ -59,16 +59,16 @@ function App() {
         }
       } catch (error) {
         console.error("Error decoding token:", error);
-        logoutUser(); 
+        logoutUser();
       }
     };
 
-    // Periodically checking token expiration(every minute)
-    const intervalId = setInterval(checkTokenExpiration, 300000);
+    // Periodically checking token expiration(every ten minute)
+    const intervalId = setInterval(checkTokenExpiration, 600000);
 
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
-  }, []);
+  }, [token]);
   return (
     <>
       <div className="min-h-screen w-screen bg-richblack-900 flex flex-col font-inter">

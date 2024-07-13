@@ -194,9 +194,6 @@ async function login(req, res) {
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         expiresIn: "2d",
       });
-      console.log(token);
-      const decodedToken = jwt.decode(token);
-      console.log("Decoded token:", decodedToken);
       user.token = token;
       user.password = undefined;
       res.status(200).json({

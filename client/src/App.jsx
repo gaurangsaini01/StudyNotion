@@ -30,7 +30,6 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("app started");
     // Function to logout user
     const logoutUser = () => {
       dispatch(setToken(null));

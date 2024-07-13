@@ -11,7 +11,7 @@ import {
 import { HiOutlineCurrencyRupee } from "react-icons/hi";
 import { setStep, setCourse } from "../../../../redux/slices/courseSlice";
 import IconBtn from "../../../reusable/IconBtn";
-import RequirementField from "./RequirementField";
+// import RequirementField from "./RequirementField";
 
 function CourseInformation() {
   const {
@@ -50,6 +50,7 @@ function CourseInformation() {
   };
 
   useEffect(() => {
+   
     const getCategories = async () => {
       setLoading(true);
       const categories = await fetchCourseCategories();
@@ -137,7 +138,7 @@ function CourseInformation() {
         setLoading(false);
         console.log("result is", result);
         if (result) {
-          dispatch(setStep(1));
+          dispatch(setStep(2));
           dispatch(setCourse(result));
         }
       } else {
@@ -311,7 +312,7 @@ function CourseInformation() {
         <div className="flex gap-4 flex-wrap">
           {editCourse && (
             <button
-              onClick={() => dispatch(setStep(1))}
+              onClick={() => dispatch(setStep(2))}
               className="flex items-center px-6 py-2 hover:scale-95 transition-all duration-150 ease-in-out rounded-md bg-richblack-600"
             >
               Continue Without Saving

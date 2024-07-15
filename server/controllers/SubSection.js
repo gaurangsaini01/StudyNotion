@@ -55,14 +55,14 @@ async function createSubSection(req, res) {
 async function updateSubSection(req, res) {
     try {
       const {
-        timeDuration,
         title,
         description,
         subSectionId,
+        sectionId
       } = req.body;
       const video = req.files.video;
+      console.log(video)
       if (
-        !timeDuration ||
         !title ||
         !description ||
         !subSectionId
@@ -96,16 +96,18 @@ async function updateSubSection(req, res) {
       if (description !== undefined) {
         subSection.description = description
       }
-      if (timeDuration !== undefined) {
-        subSection.timeDuration = timeDuration
-      }
+      // if (timeDuration !== undefined) {
+      //   subSection.timeDuration = timeDuration
+      // }
   
       await subSection.save();
+      const updatedSection = await Section.findById(sectionId);
   
       return res.status(200).json({
         success: true,
         message: "SubSection updated successfully",
         updatedSubSection: subSection,
+        data:updatedSection
       });
     } catch (err) {
       console.error(err);
@@ -146,8 +148,7 @@ async function updateSubSection(req, res) {
       return res.status(200).json({
         success: true,
         message: "SubSection Deleted successfully",
-        updatedSection,
-        deletedSubSection,
+        data:updatedSection,
       });
     } catch (err) {
       return res.status(500).json({

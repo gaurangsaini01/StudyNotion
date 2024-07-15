@@ -5,7 +5,6 @@ const IconBtn = ({
   onclick,
   children,
   disabled,
-
   outline = false,
   customClasses,
   type,

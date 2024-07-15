@@ -53,70 +53,69 @@ async function createSubSection(req, res) {
 }
 
 async function updateSubSection(req, res) {
-    try {
-      const {
-        title,
-        description,
-        subSectionId,
-        sectionId
-      } = req.body;
-      const video = req.files.video;
-      console.log(video)
-      if (
-        !title ||
-        !description ||
-        !subSectionId
-      ) {
-        return res.status(400).json({
-          success: false,
-          message: "Incomplete Fields",
-        });
-      }
-  
-      const subSection = await SubSection.findById(subSectionId);
-  
-      if (!subSection) {
-        return res.status(404).json({
-          success: false,
-          message: "SubSection not found",
-        });
-      }
-  
-      if (video) {
-        const uploadedVideo = await uploadImageToCloudinary(
-          video,
-          process.env.FOLDER_NAME,
-        );
-        subSection.videoURL = uploadedVideo.secure_url;
-      }
-  
-      if (title !== undefined) {
-        subSection.title = title
-      }
-      if (description !== undefined) {
-        subSection.description = description
-      }
-      // if (timeDuration !== undefined) {
-      //   subSection.timeDuration = timeDuration
-      // }
-  
-      await subSection.save();
-      const updatedSection = await Section.findById(sectionId);
-  
-      return res.status(200).json({
-        success: true,
-        message: "SubSection updated successfully",
-        updatedSubSection: subSection,
-        data:updatedSection
-      });
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({
+  try {
+    const { title, description, subSectionId, sectionId } = req.body;
+    let video = req.body.video;
+    console.log(title,description,subSectionId);
+
+    // if (!title || !description || !subSectionId) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Incomplete Fields",
+    //   });
+    // }
+
+    const subSection = await SubSection.findById(subSectionId);
+
+    if (!subSection) {
+      return res.status(404).json({
         success: false,
-        message: err.message,
+        message: "SubSection not found",
       });
     }
+
+    // Check if video is a URL or file
+    if (req.files && req.files.video) {
+      const uploadedVideo = await uploadImageToCloudinary(
+        req.files.video,
+        process.env.FOLDER_NAME,
+      );
+      subSection.videoURL = uploadedVideo.secure_url;
+    } else if (video && !video.startsWith('http')) {
+      // Handle case when video is not a valid URL
+      return res.status(400).json({
+        success: false,
+        message: "Invalid video URL",
+      });
+    } else if (video) {
+      subSection.videoURL = video;
+    }
+
+    if (title !== undefined) {
+      subSection.title = title;
+    }
+    if (description !== undefined) {
+      subSection.description = description;
+    }
+
+    await subSection.save();
+    const updatedSection = await Section.findById(sectionId).populate("subSection");
+
+    return res.status(200).json({
+      success: true,
+      message: "SubSection updated successfully",
+      updatedSubSection: subSection,
+      data: updatedSection,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
+}
+
 
   async function deleteSubSection(req, res) {
     try {

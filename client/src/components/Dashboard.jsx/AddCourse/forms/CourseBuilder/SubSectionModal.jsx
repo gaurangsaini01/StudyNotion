@@ -38,12 +38,14 @@ export default function SubSectionModal({
   const { token } = useSelector((state) => state.auth);
   const { course } = useSelector((state) => state.course);
 
+  console.log("course",course);
+
   useEffect(() => {
     console.log(modalData);
     if (view || edit) {
       setValue("lectureTitle", modalData.title);
       setValue("lectureDesc", modalData.description);
-      setValue("lectureVideo", modalData.videoUrl);
+      setValue("lectureVideo", modalData.videoURL);
     }
   }, [setValue,modalData]);
 
@@ -54,7 +56,7 @@ export default function SubSectionModal({
     if (
       currentValues.lectureTitle !== modalData.title ||
       currentValues.lectureDesc !== modalData.description ||
-      currentValues.lectureVideo !== modalData.videoUrl
+      currentValues.lectureVideo !== modalData.videoURL
     ) {
       return true;
     }
@@ -64,9 +66,9 @@ export default function SubSectionModal({
   // handle the editing of subsection
   const handleEditSubsection = async () => {
     const currentValues = getValues();
-    console.log("changes after editing form values:", currentValues)
+    console.log("changes after editing form values:", currentValues);
     const formData = new FormData();
-    // console.log("Values After Editing form values:", currentValues)
+  
     formData.append("sectionId", modalData.sectionId);
     formData.append("subSectionId", modalData._id);
     if (currentValues.lectureTitle !== modalData.title) {
@@ -75,14 +77,19 @@ export default function SubSectionModal({
     if (currentValues.lectureDesc !== modalData.description) {
       formData.append("description", currentValues.lectureDesc);
     }
-    if (currentValues.lectureVideo !== modalData.videoUrl) {
+    if (currentValues.lectureVideo !== modalData.videoURL) {
       formData.append("video", currentValues.lectureVideo);
+     
     }
+  
     setLoading(true);
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    });
+  
     const result = await updateSubSection(formData, token);
     if (result) {
-      // console.log("result", result)
-      // update the structure of course
+      // Update the structure of course
       const updatedCourseContent = course.courseContent.map((section) =>
         section._id === modalData.sectionId ? result : section
       );
@@ -92,6 +99,7 @@ export default function SubSectionModal({
     setModalData(null);
     setLoading(false);
   };
+  
 
   const onSubmit = async (data) => {
     // console.log(data)
@@ -105,7 +113,7 @@ export default function SubSectionModal({
       }
       return;
     }
-
+     console.log("data",data);
     const formData = new FormData();
     formData.append("sectionId", modalData);
     formData.append("title", data.lectureTitle);
@@ -124,6 +132,8 @@ export default function SubSectionModal({
     setModalData(null);
     setLoading(false);
   };
+
+  console.log("modal data",modalData)
  
 
   return (
@@ -151,8 +161,8 @@ export default function SubSectionModal({
             setValue={setValue}
             errors={errors}
             video={true}
-            viewData={view ? modalData.videoUrl : null}
-            editData={edit ? modalData.videoUrl : null}
+            viewData={view ? modalData.videoURL : null}
+            editData={edit ? modalData.videoURL : null}
           />
           {/* Lecture Title */}
           <div className="flex flex-col space-y-2">

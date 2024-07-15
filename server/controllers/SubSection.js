@@ -8,10 +8,10 @@ async function createSubSection(req, res) {
     //fetch data from req body
     const { timeDuration, title, description, sectionId } = req.body;
     //video
-    const video = req.files.videoFile;
-    // console.log(video)
+    const video = req.files.video;
+    console.log(video)
     //validate
-    if (!timeDuration || !title || !description || !video || !sectionId) {
+    if ( !title || !description || !video || !sectionId) {
       return res.status(400).json({
         success: false,
         message: "Field Missing",
@@ -41,7 +41,7 @@ async function createSubSection(req, res) {
     return res.status(200).json({
       success: true,
       message: "SubSection Created Successfully",
-      updatedSection,
+      data:updatedSection,
       newSubSection,
     });
   } catch (err) {

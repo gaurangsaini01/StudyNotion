@@ -167,14 +167,26 @@ async function getEnrolledCourses(req, res) {
   try {
     const userId = req.user.id;
     const userDetails = await User.findById(userId).populate({
-      path:"courses",
-      populate:[{
-        path:"category",
-        model:"Category"
-      },{
-        path:"instructor",
-        model:"User"
-      }]
+      path: "courses",
+      populate: [
+        {
+          path: "category",
+          model: "Category",
+        },
+        {
+          path: "courseContent",
+          model: "Section",
+          populate: {
+            path: "subSection",
+            model:"SubSection"
+          }
+        },
+        
+        {
+          path: "instructor",
+          model: "User",
+        },
+      ],
     });
 
     if (!userDetails) {
@@ -183,8 +195,6 @@ async function getEnrolledCourses(req, res) {
         message: `Could not find user with id: ${userId}`,
       });
     }
-    console.log(userDetails)
-    
     return res.status(200).json({
       success: true,
       data: userDetails.courses,

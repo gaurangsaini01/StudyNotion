@@ -93,7 +93,17 @@ async function createCourse(req, res) {
 }
 async function getAllCourses(req, res) {
   try {
-    const allCourses = await Course.find({}).populate("instructor");
+    const allCourses = await Course.find({}).populate({
+      path: "courseContent",
+      populate: { path: "subSection" }
+    })
+    .populate("ratingAndReviews")
+    .populate("category")
+    .populate("studentsEnrolled")
+    .populate({
+      path: "instructor",
+      populate: { path: "additionalDetails" },
+    });
     return res.status(200).json({
       success: true,
       message: "All Courses Fetched Successfully",
@@ -111,6 +121,7 @@ async function editCourse(req, res) {
   try {
     const {
       courseName,
+      category,
       courseId,
       courseDescription,
       whatYouWillLearn,
@@ -140,6 +151,9 @@ async function editCourse(req, res) {
       );
       updatedField.thumbnail = thumbnailImage.secure_url;
     }
+    if(category){
+      updatedField.category=category;
+    }
     if (courseName) {
       updatedField.courseName = courseName;
     }
@@ -162,7 +176,17 @@ async function editCourse(req, res) {
       courseId,
       updatedField,
       { new: true }
-    );
+    ).populate({
+      path: "courseContent",
+      populate: { path: "subSection" },
+    })
+    .populate("ratingAndReviews")
+    .populate("category")
+    .populate("studentsEnrolled")
+    .populate({
+      path: "instructor",
+      populate: { path: "additionalDetails" },
+    });
     return res.status(200).json({
       success: true,
       message: "Course Edited Successfully",
@@ -178,7 +202,8 @@ async function editCourse(req, res) {
 
 async function getCourseDetails(req, res) {
   try {
-    const { courseId } = req.body;
+    const  {courseId}  = req.body;
+    console.log(courseId);
     if (!courseId) {
       return res.status(404).json({
         success: false,
@@ -207,7 +232,7 @@ async function getCourseDetails(req, res) {
     return res.status(200).json({
       success: true,
       message: "Details Fetched Successfully",
-      courseDetails,
+      data:courseDetails,
     });
   } catch (err) {
     console.log(err);

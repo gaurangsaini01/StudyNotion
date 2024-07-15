@@ -10,6 +10,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { setEditCourse } from "../../redux/slices/courseSlice";
 import { GoClockFill } from "react-icons/go";
 import { setCourse } from "../../redux/slices/courseSlice";
+import { getFullDetailsOfCourse } from "../../services/operations/courseDetailsAPI";
 
 function MyCourses() {
   const { token } = useSelector((state) => state.auth);
@@ -18,6 +19,17 @@ function MyCourses() {
 
   const [enrolledCourses, setEnrolledCourses] = useState(null);
 
+  const getCourseDetails = async (courseId) => {
+    try {
+      console.log(courseId);
+      const response = await getFullDetailsOfCourse(courseId, token);
+      dispatch(setEditCourse(true));
+      dispatch(setCourse(response));
+      navigate("/dashboard/add-course");
+    } catch (err) {
+      console.log("error");
+    }
+  };
   const getEnrolledCourses = async () => {
     try {
       const response = await getUserEnrolledCourses(token);
@@ -26,12 +38,6 @@ function MyCourses() {
       console.log("Unable to Fetch Enrolled Courses");
     }
   };
-
-  function editHandler(course) {
-    dispatch(setEditCourse(true));
-    dispatch(setCourse(course));
-    navigate("/dashboard/add-course");
-  }
 
   useEffect(() => {
     getEnrolledCourses();
@@ -108,7 +114,7 @@ function MyCourses() {
                   <div className="w-[15%] flex items-center gap-2 text-xl text-richblack-200">
                     <MdModeEdit
                       className="cursor-pointer"
-                      onClick={() => editHandler(course)}
+                      onClick={() => getCourseDetails(course._id)}
                     />
                     <RiDeleteBin5Line className="cursor-pointer" />
                   </div>

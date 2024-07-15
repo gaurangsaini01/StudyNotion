@@ -7,7 +7,7 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import CourseInformation from "./forms/CourseInformation";
-import CourseBuilder from "./forms/CourseBuilder";
+import CourseBuilder from "./forms/CourseBuilder/CourseBuilderForm";
 import PublishForm from "./forms/PublishForm";
 
 function RenderSteps() {

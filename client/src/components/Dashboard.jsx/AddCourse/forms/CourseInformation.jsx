@@ -27,7 +27,7 @@ function CourseInformation() {
   const dispatch = useDispatch();
   const { course, editCourse } = useSelector((state) => state.course);
   const [loading, setLoading] = useState(false);
-  const [courseCategory, setCourseCategory] = useState([]);
+  const [courseCategories, setCourseCategories] = useState([]);
 
   //IMAGE RELATED
   const fileInputRef = useRef(null);
@@ -50,23 +50,24 @@ function CourseInformation() {
   };
 
   useEffect(() => {
-   
     const getCategories = async () => {
       setLoading(true);
       const categories = await fetchCourseCategories();
+      console.log("Categories are :-", categories);
       if (categories.length > 0) {
-        setCourseCategory(categories);
+        setCourseCategories(categories);
       }
       setLoading(false);
     };
 
     if (editCourse) {
+      console.log("course is :-", course);
       setValue("courseTitle", course.courseName);
       setValue("courseShortDesc", course.courseDescription);
       setValue("coursePrice", course.price);
       setValue("courseTags", course.tag);
       setValue("courseBenefits", course.whatYouWillLearn);
-      setValue("courseCategory", course.category);
+      setValue("courseCategory", course.category._id);
       setValue("courseRequirements", course.instructions);
       setValue("courseImage", course.thumbnail);
     }
@@ -76,18 +77,16 @@ function CourseInformation() {
 
   const isFormUpdated = () => {
     const currentValues = getValues();
+    console.log("Current Values",currentValues);
     if (
       currentValues.courseTitle !== course.courseName ||
       currentValues.courseShortDesc !== course.courseDescription ||
       currentValues.coursePrice !== course.price ||
       currentValues.courseTitle !== course.courseName ||
-      //currentValues.courseTags.toString() !== course.tag.toString() ||
       currentValues.courseBenefits !== course.whatYouWillLearn ||
       currentValues.courseCategory._id !== course.category._id ||
       (currentValues.courseImage &&
         currentValues.courseImage !== course.thumbnail)
-      // currentValues.courseRequirements.toString() !==
-      //   course.instructions.toString()
     )
       return true;
     else return false;
@@ -116,7 +115,7 @@ function CourseInformation() {
           formData.append("whatYouWillLearn", data.courseBenefits);
         }
 
-        if (currentValues.courseCategory._id !== course.category._id) {
+        if (currentValues.courseCategory !== course.category._id) {
           formData.append("category", data.courseCategory);
         }
 
@@ -138,7 +137,7 @@ function CourseInformation() {
         setLoading(false);
         console.log("result is", result);
         if (result) {
-          dispatch(setStep(2));
+          dispatch(setStep(1));
           dispatch(setCourse(result));
         }
       } else {
@@ -232,7 +231,7 @@ function CourseInformation() {
           <select
             id="courseCategory"
             className="form-style"
-            defaultValue=""
+            // defaultValue={currentValues.cour}
             {...register("courseCategory", { required: true })}
           >
             <option value="" disabled>
@@ -240,7 +239,7 @@ function CourseInformation() {
             </option>
 
             {!loading &&
-              courseCategory.map((category, index) => (
+              courseCategories.map((category, index) => (
                 <option key={index} value={category?._id}>
                   {category?.name}
                 </option>
@@ -312,7 +311,7 @@ function CourseInformation() {
         <div className="flex gap-4 flex-wrap">
           {editCourse && (
             <button
-              onClick={() => dispatch(setStep(2))}
+              onClick={() => dispatch(setStep(1))}
               className="flex items-center px-6 py-2 hover:scale-95 transition-all duration-150 ease-in-out rounded-md bg-richblack-600"
             >
               Continue Without Saving

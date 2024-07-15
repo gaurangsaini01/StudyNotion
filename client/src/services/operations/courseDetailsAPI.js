@@ -143,7 +143,7 @@ export const getAllCourses = async () => {
         throw new Error("Could Not Create Section")
       }
       toast.success("Course Section Created")
-      result = response?.data?.updatedCourse
+      result = response?.data?.data
     } catch (error) {
       console.log("CREATE SECTION API ERROR............", error)
       toast.error(error.message)
@@ -179,7 +179,7 @@ export const getAllCourses = async () => {
     let result = null
     const toastId = toast.loading("Loading...")
     try {
-      const response = await apiConnector("POST", UPDATE_SECTION_API, data, {
+      const response = await apiConnector("PUT", UPDATE_SECTION_API, data, {
         Authorization: `Bearer ${token}`,
       })
       console.log("UPDATE SECTION API RESPONSE............", response)
@@ -223,7 +223,7 @@ export const getAllCourses = async () => {
     let result = null
     const toastId = toast.loading("Loading...")
     try {
-      const response = await apiConnector("POST", DELETE_SECTION_API, data, {
+      const response = await apiConnector("DELETE", DELETE_SECTION_API, data, {
         Authorization: `Bearer ${token}`,
       })
       console.log("DELETE SECTION API RESPONSE............", response)
@@ -244,7 +244,7 @@ export const getAllCourses = async () => {
     let result = null
     const toastId = toast.loading("Loading...")
     try {
-      const response = await apiConnector("POST", DELETE_SUBSECTION_API, data, {
+      const response = await apiConnector("DELETE", DELETE_SUBSECTION_API, data, {
         Authorization: `Bearer ${token}`,
       })
       console.log("DELETE SUB-SECTION API RESPONSE............", response)
@@ -307,20 +307,18 @@ export const getAllCourses = async () => {
   }
   
   // get full details of a course
-  export const getFullDetailsOfCourse = async (courseId, token) => {
+  export const getFullDetailsOfCourse = async (courseId) => {
     const toastId = toast.loading("Loading...")
     //   dispatch(setLoading(true));
+    console.log(courseId);
     let result = null
     try {
       const response = await apiConnector(
         "POST",
         GET_FULL_COURSE_DETAILS_AUTHENTICATED,
         {
-          courseId,
+          courseId:courseId,
         },
-        {
-          Authorization: `Bearer ${token}`,
-        }
       )
       console.log("COURSE_FULL_DETAILS_API API RESPONSE............", response)
   

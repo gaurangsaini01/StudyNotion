@@ -247,7 +247,7 @@ async function getCourseDetails(req, res) {
   }
 }
 
-deleteCourse = async (req, res) => {
+async function deleteCourse(req, res) {
   try {
     const { courseId } = req.body;
 
@@ -289,7 +289,7 @@ deleteCourse = async (req, res) => {
       $pull: { courses: courseId },
     });
     //removing course from category array
-    await Category.findByIdAndUpdate(course.category,{
+    await Category.findByIdAndUpdate(course.category, {
       $pull: { courses: courseId },
     });
 
@@ -305,8 +305,7 @@ deleteCourse = async (req, res) => {
       error: error.message,
     });
   }
-};
-
+}
 
 module.exports = {
   createCourse,

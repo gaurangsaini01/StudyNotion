@@ -56,7 +56,6 @@ async function updateSubSection(req, res) {
   try {
     const { title, description, subSectionId, sectionId } = req.body;
     let video = req.body.video;
-    console.log(title,description,subSectionId);
 
     // if (!title || !description || !subSectionId) {
     //   return res.status(400).json({

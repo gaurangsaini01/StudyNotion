@@ -2,6 +2,8 @@ const User = require("../models/User");
 const Category = require("../models/Category");
 const Course = require("../models/Course");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const Section = require("../models/Section");
+const SubSection = require("../models/SubSection");
 require("dotenv").config();
 
 async function createCourse(req, res) {
@@ -93,17 +95,18 @@ async function createCourse(req, res) {
 }
 async function getAllCourses(req, res) {
   try {
-    const allCourses = await Course.find({}).populate({
-      path: "courseContent",
-      populate: { path: "subSection" }
-    })
-    .populate("ratingAndReviews")
-    .populate("category")
-    .populate("studentsEnrolled")
-    .populate({
-      path: "instructor",
-      populate: { path: "additionalDetails" },
-    });
+    const allCourses = await Course.find({})
+      .populate({
+        path: "courseContent",
+        populate: { path: "subSection" },
+      })
+      .populate("ratingAndReviews")
+      .populate("category")
+      .populate("studentsEnrolled")
+      .populate({
+        path: "instructor",
+        populate: { path: "additionalDetails" },
+      });
     return res.status(200).json({
       success: true,
       message: "All Courses Fetched Successfully",
@@ -151,8 +154,8 @@ async function editCourse(req, res) {
       );
       updatedField.thumbnail = thumbnailImage.secure_url;
     }
-    if(category){
-      updatedField.category=category;
+    if (category) {
+      updatedField.category = category;
     }
     if (courseName) {
       updatedField.courseName = courseName;
@@ -176,17 +179,18 @@ async function editCourse(req, res) {
       courseId,
       updatedField,
       { new: true }
-    ).populate({
-      path: "courseContent",
-      populate: { path: "subSection" },
-    })
-    .populate("ratingAndReviews")
-    .populate("category")
-    .populate("studentsEnrolled")
-    .populate({
-      path: "instructor",
-      populate: { path: "additionalDetails" },
-    });
+    )
+      .populate({
+        path: "courseContent",
+        populate: { path: "subSection" },
+      })
+      .populate("ratingAndReviews")
+      .populate("category")
+      .populate("studentsEnrolled")
+      .populate({
+        path: "instructor",
+        populate: { path: "additionalDetails" },
+      });
     return res.status(200).json({
       success: true,
       message: "Course Edited Successfully",
@@ -202,7 +206,7 @@ async function editCourse(req, res) {
 
 async function getCourseDetails(req, res) {
   try {
-    const  {courseId}  = req.body;
+    const { courseId } = req.body;
     console.log(courseId);
     if (!courseId) {
       return res.status(404).json({
@@ -232,7 +236,7 @@ async function getCourseDetails(req, res) {
     return res.status(200).json({
       success: true,
       message: "Details Fetched Successfully",
-      data:courseDetails,
+      data: courseDetails,
     });
   } catch (err) {
     console.log(err);
@@ -243,4 +247,43 @@ async function getCourseDetails(req, res) {
   }
 }
 
-module.exports = { createCourse, getAllCourses, editCourse, getCourseDetails };
+async function deleteCourse(req, res) {
+  try {
+    const { courseId } = req.body;
+    const course = await Course.findById(courseId)
+      .populate({
+        path: "courseContent",
+        populate: { path: "subSection" },
+      })
+      .populate("ratingAndReviews")
+      .populate("category")
+      .populate("studentsEnrolled")
+      .populate({
+        path: "instructor",
+        populate: { path: "additionalDetails" },
+      });
+    console.log(course);
+    // const deletedCourse = await Course.findByIdAndDelete(courseId);
+    // await SubSection.deleteMany({
+    //   _id: { $in: deletedCourse.courseContent.subSection },
+    // });
+    // await Section.deleteMany({ _id: { $in: deleteCourse.courseContent } });
+    // await Category.findByIdAndUpdate(deletedCourse.category,{
+    //   $pull:{courses:deletedCourse._id}
+    // })
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while deleting Course",
+    });
+  }
+}
+
+module.exports = {
+  createCourse,
+  getAllCourses,
+  editCourse,
+  deleteCourse,
+  getCourseDetails,
+};

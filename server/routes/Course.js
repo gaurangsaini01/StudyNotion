@@ -7,7 +7,8 @@ const {
   createCourse,
   getAllCourses,
   getCourseDetails,
-  editCourse
+  editCourse,
+  deleteCourse
 } = require("../controllers/Course");
 
 //category controllers
@@ -56,6 +57,8 @@ const {
 router.post("/createcourse", auth, isInstructor, createCourse);
 //update/edit course
 router.put('/editcourse',auth,isInstructor,editCourse)
+//delete Course
+router.delete('/deletecourse',auth,isInstructor,deleteCourse);
 //Add a Section to a Course
 router.post("/createsection", auth, isInstructor, createSection);
 // Update a Section

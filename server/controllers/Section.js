@@ -86,10 +86,11 @@ async function deleteSection(req, res) {
         message: "Field Missing",
       });
     }
-
     const deletedSection = await Section.findByIdAndDelete(sectionId, {
       new: true,
     });
+    console.log(deletedSection);
+    await SubSection.deleteMany({_id:{$in:deletedSection.subSection}});
     const updatedCourse = await Course.findByIdAndUpdate(
       courseId,
       {
@@ -106,7 +107,6 @@ async function deleteSection(req, res) {
     return res.status(200).json({
       success: true,
       message: "Section Deleted successfully",
-      deletedSection,
       data:updatedCourse
     });
   } catch (err) {

@@ -10,7 +10,10 @@ import { FaCheckCircle } from "react-icons/fa";
 import { setEditCourse } from "../../redux/slices/courseSlice";
 import { GoClockFill } from "react-icons/go";
 import { setCourse } from "../../redux/slices/courseSlice";
-import { getFullDetailsOfCourse } from "../../services/operations/courseDetailsAPI";
+import {
+  deleteCourse,
+  getFullDetailsOfCourse,
+} from "../../services/operations/courseDetailsAPI";
 
 function MyCourses() {
   const { token } = useSelector((state) => state.auth);
@@ -36,6 +39,14 @@ function MyCourses() {
       setEnrolledCourses(response);
     } catch (error) {
       console.log("Unable to Fetch Enrolled Courses");
+    }
+  };
+  const handleDeleteCourse = async (courseId) => {
+    try {
+      const result = await deleteCourse({courseId}, token);
+      console.log("result of deleting is", result);
+    } catch (error) {
+      console.log("Error Deleting Course");
     }
   };
 
@@ -116,7 +127,10 @@ function MyCourses() {
                       className="cursor-pointer"
                       onClick={() => getCourseDetails(course._id)}
                     />
-                    <RiDeleteBin5Line className="cursor-pointer" />
+                    <RiDeleteBin5Line
+                      onClick={() => handleDeleteCourse(course._id)}
+                      className="cursor-pointer"
+                    />
                   </div>
                 </div>
               ))}

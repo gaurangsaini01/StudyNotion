@@ -247,38 +247,66 @@ async function getCourseDetails(req, res) {
   }
 }
 
-async function deleteCourse(req, res) {
+deleteCourse = async (req, res) => {
   try {
     const { courseId } = req.body;
-    const course = await Course.findById(courseId)
-      .populate({
-        path: "courseContent",
-        populate: { path: "subSection" },
-      })
-      .populate("ratingAndReviews")
-      .populate("category")
-      .populate("studentsEnrolled")
-      .populate({
-        path: "instructor",
-        populate: { path: "additionalDetails" },
+
+    // Find the course
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    // Unenroll students from the course
+    const studentsEnrolled = course.studentsEnrolled;
+    for (const studentId of studentsEnrolled) {
+      await User.findByIdAndUpdate(studentId, {
+        $pull: { courses: courseId },
       });
-    console.log(course);
-    // const deletedCourse = await Course.findByIdAndDelete(courseId);
-    // await SubSection.deleteMany({
-    //   _id: { $in: deletedCourse.courseContent.subSection },
-    // });
-    // await Section.deleteMany({ _id: { $in: deleteCourse.courseContent } });
-    // await Category.findByIdAndUpdate(deletedCourse.category,{
-    //   $pull:{courses:deletedCourse._id}
-    // })
-  } catch (err) {
-    console.log(err);
+    }
+
+    // Delete sections and sub-sections
+    const courseSections = course.courseContent;
+    for (const sectionId of courseSections) {
+      // Delete sub-sections of the section
+      const section = await Section.findById(sectionId);
+      if (section) {
+        const subSections = section.subSection;
+        for (const subSectionId of subSections) {
+          await SubSection.findByIdAndDelete(subSectionId);
+        }
+      }
+
+      // Delete the section
+      await Section.findByIdAndDelete(sectionId);
+    }
+
+    // Delete the course
+    await Course.findByIdAndDelete(courseId);
+
+    // Removing course from instructor courses array
+    await User.findByIdAndUpdate(course.instructor, {
+      $pull: { courses: courseId },
+    });
+    //removing course from category array
+    await Category.findByIdAndUpdate(course.category,{
+      $pull: { courses: courseId },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Course deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
     return res.status(500).json({
       success: false,
-      message: "Something went wrong while deleting Course",
+      message: "Server error",
+      error: error.message,
     });
   }
-}
+};
+
 
 module.exports = {
   createCourse,

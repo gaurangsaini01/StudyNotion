@@ -2,10 +2,11 @@ export const NavbarLinks = [
   {
     title: "Home",
     path: "/",
+    icon:"IoHomeOutline"
   },
   {
     title: "Catalog",
-    // path: '/catalog',
+    path: '/catalog',
   },
   {
     title: "About Us",

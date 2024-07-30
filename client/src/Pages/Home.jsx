@@ -19,8 +19,8 @@ const Home = () => {
       {/* //section 1 */}
       <div className="relative w-11/12 mx-auto flex flex-col max-w-maxContent items-center text-white justify-between">
         <Link to="/signup">
-          <div className="mt-16 p-1 mx-auto rounded-full bg-richblack-800 font-bold text-richblack-200 transition-all duration-200 hover:scale-95 w-fit">
-            <div className="flex hover:bg-richblack-900  items-center px-10 py-[6px] gap-2 rounded-full transition-all duration-200">
+          <div className="md:mt-16 mt-8  p-1 mx-auto rounded-full bg-richblack-800 font-bold text-richblack-200 transition-all duration-200 hover:scale-95 w-fit">
+            <div className="flex hover:bg-richblack-900 items-center px-10 py-[6px] gap-2 rounded-full transition-all duration-200">
               <p className="text-white">Become an Instructor</p>
               <FaArrowRight />
             </div>
@@ -44,9 +44,9 @@ const Home = () => {
             Book a Demo
           </CTAButton>
         </div>
-        <div className="w-[90%] relative my-16 ">
+        <div className="w-[90%] relative mb-8 mt-12 md:my-16 ">
           <div className="absolute w-full h-full bg-white top-2 left-2 md:top-4 md:left-4 z-10"></div>
-          <video className="z-50 relative" muted loop autoPlay>
+          <video className="z-40 relative" muted loop autoPlay>
             <source src={banner} />
           </video>
         </div>
@@ -124,12 +124,12 @@ const Home = () => {
 
       {/* //section3 */}
 
-      <div className="w-11/12 mx-auto max-w-maxContent flex-col items-center justify-between gap-8 first-letter bg-richblack-900 text-white">
+      <div className="w-11/12 mx-auto max-w-maxContent flex-col items-center justify-between gap-8 first-letter bg-richblack-900 text-white mb-8">
         <InstructorSection/>
 
-        <h2 className="text-center text-4xl font-semobold mt-10">
+        {/* <h2 className="text-center text-4xl font-semobold mt-10">
           Review from Other Learners
-        </h2>
+        </h2> */}
         {/* Review Slider here */}
       </div>
 

@@ -8,8 +8,10 @@ import ProfileDropdown from "./ProfileDropdown";
 import { apiConnector } from "../../services/apiconnector";
 import { categories } from "../../services/apis";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { RxHamburgerMenu } from "react-icons/rx";
+import { IoCloseSharp } from "react-icons/io5";
 
-function Navbar() {
+function Navbar({ open, setOpen }) {
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
   const { totalItems } = useSelector((state) => state.cart);
@@ -38,7 +40,7 @@ function Navbar() {
           </Link>
         </div>
         <nav>
-          <ul className="flex gap-5 items-center text-richblack-25">
+          <ul className="hidden md:flex gap-5 items-center text-richblack-25">
             {NavbarLinks.map((item, index) => (
               <li key={index} className="text-white">
                 {item?.title === "Catalog" ? (
@@ -82,7 +84,7 @@ function Navbar() {
             ))}
           </ul>
         </nav>
-        <div className="flex gap-4 items-center">
+        <div className="hidden md:flex gap-4 items-center">
           {user && user.accountType !== "instructor" && (
             <Link to={"/dashboard/cart"} className="relative text-white">
               <AiOutlineShoppingCart size={25} className="relative z-0" />
@@ -110,6 +112,13 @@ function Navbar() {
             </div>
           )}
           {token !== null && <ProfileDropdown />}
+        </div>
+        <div className="text-xl cursor-pointer text-richblack-5 md:hidden block">
+          {!open ? (
+            <RxHamburgerMenu onClick={() => setOpen(true)} />
+          ) : (
+            <IoCloseSharp onClick={() => setOpen(false)} />
+          )}
         </div>
       </div>
     </div>

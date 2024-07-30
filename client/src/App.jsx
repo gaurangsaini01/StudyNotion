@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./Pages/Home";
 import Navbar from "./components/navbar/Navbar";
@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "./redux/slices/authSlice";
 import { setUser } from "./redux/slices/profileSlice";
 import { resetCart } from "./redux/slices/cartSlice";
+import HamburgerMenu from "./components/HamburgerMenu";
 
 function App() {
   const token = useSelector((state) => state.auth.token);
@@ -68,10 +69,14 @@ function App() {
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
   }, [token]);
+
+  const [open, setOpen] = useState(false);
+
   return (
     <>
-      <div className="min-h-screen w-screen bg-richblack-900 flex flex-col font-inter">
-        <Navbar />
+      <div className="min-h-screen relative w-screen bg-richblack-900 flex flex-col font-inter">
+        <Navbar open={open} setOpen={setOpen} />
+        {open && <HamburgerMenu open={open} setOpen={setOpen} />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />

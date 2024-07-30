@@ -15,7 +15,7 @@ const About = () => {
     <div>
       <section className="bg-richblack-800">
         <div className="relative mx-auto flex  w-11/12 max-w-maxContent flex-col justify-between gap-10 text-center text-white">
-          <header className="mx-auto py-20 xl:text-4xl text-2xl font-semibold lg:w-[70%]">
+          <header className="mx-auto py-12 md:py-20 xl:text-4xl text-3xl font-semibold lg:w-[70%]">
             Driving Innovation in Online Education for a
             <HighlightText text={"Brighter Future"} />
             <p className="mx-auto mt-3 text-center leading-5 md:leading-7 md:text-base text-[14px] font-medium text-richblack-300 lg:w-[95%]">
@@ -112,12 +112,12 @@ const About = () => {
       <LearningGrid />
       <ContactFormSection />
 
-      <section>
+      {/* <section>
         <div>
           Reviews from other learners
-          {/* <ReviewSlider /> */}
+          <ReviewSlider />
         </div>
-      </section>
+      </section> */}
 
       <Footer />
     </div>

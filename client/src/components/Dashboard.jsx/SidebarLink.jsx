@@ -3,7 +3,7 @@ import * as Icons from "react-icons/vsc";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { setCourse, setEditCourse } from "../../redux/slices/courseSlice";
+import { setCourse, setEditCourse, setStep } from "../../redux/slices/courseSlice";
 
 const SidebarLink = ({ link }) => {
   const Icon = Icons[link.icon];
@@ -18,6 +18,7 @@ const SidebarLink = ({ link }) => {
     onClick={()=>{
       dispatch(setEditCourse(false))
       dispatch(setCourse(null))
+      dispatch(setStep(0))
     }}
       to={link.path}
       className={`transition-all duration-100 ease-in-out relative px-8 py-2 flex gap-4 text-sm font-medium ${

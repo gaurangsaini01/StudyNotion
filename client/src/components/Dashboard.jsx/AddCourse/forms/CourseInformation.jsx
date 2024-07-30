@@ -20,7 +20,7 @@ function CourseInformation() {
     register,
     setValue,
     getValues,
-    control,
+    // control,
   } = useForm();
 
   const { token } = useSelector((state) => state.auth);
@@ -77,7 +77,7 @@ function CourseInformation() {
 
   const isFormUpdated = () => {
     const currentValues = getValues();
-    console.log("Current Values",currentValues);
+    console.log("Current Values", currentValues);
     if (
       currentValues.courseTitle !== course.courseName ||
       currentValues.courseShortDesc !== course.courseDescription ||
@@ -322,7 +322,7 @@ function CourseInformation() {
           {!editCourse && <IconBtn text="Next" />}
         </div>
       </form>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </>
   );
 }

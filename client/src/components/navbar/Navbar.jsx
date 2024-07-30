@@ -32,7 +32,7 @@ function Navbar({ open, setOpen }) {
   }, []);
 
   return (
-    <div className="bg-richblack-800 flex items-center h-14 border-b-[1px] border-b-richblack-700">
+    <div className="bg-richblack-800 fixed w-full z-60 flex items-center h-14 border-b-[1px] border-b-richblack-700">
       <div className="flex w-11/12  max-w-maxContent items-center justify-between mx-auto">
         <div>
           <Link to={"/"}>

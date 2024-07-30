@@ -77,31 +77,33 @@ function App() {
       <div className="min-h-screen relative w-screen bg-richblack-900 flex flex-col font-inter">
         <Navbar open={open} setOpen={setOpen} />
         {open && <HamburgerMenu open={open} setOpen={setOpen} />}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route
-            path="/update-password/:resetPasswordToken"
-            element={<UpdatePassword />}
-          />
-          <Route path="/about" element={<About />} />
-          <Route path="/dashboard" element={<Dashboard />}>
+        <div className="pt-12">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route
-              path="/dashboard/enrolled-courses"
-              element={<EnrolledCourses />}
+              path="/update-password/:resetPasswordToken"
+              element={<UpdatePassword />}
             />
-            <Route path="/dashboard/my-courses" element={<MyCourses />} />
-            <Route path="/dashboard/add-course" element={<AddCourse />} />
-            <Route path="/dashboard/wishlist" element={<Wishlist />} />
-            <Route path="/dashboard/my-profile" element={<MyProfile />} />
-            <Route path="/dashboard/my-settings" element={<MySettings />} />
-          </Route>
-          <Route path="/contact" element={<Contact />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
+            <Route path="/about" element={<About />} />
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route
+                path="/dashboard/enrolled-courses"
+                element={<EnrolledCourses />}
+              />
+              <Route path="/dashboard/my-courses" element={<MyCourses />} />
+              <Route path="/dashboard/add-course" element={<AddCourse />} />
+              <Route path="/dashboard/wishlist" element={<Wishlist />} />
+              <Route path="/dashboard/my-profile" element={<MyProfile />} />
+              <Route path="/dashboard/my-settings" element={<MySettings />} />
+            </Route>
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </div>
       </div>
     </>
   );

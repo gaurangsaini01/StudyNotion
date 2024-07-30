@@ -8,7 +8,7 @@ async function createSection(req, res) {
     const { sectionName, courseId } = req.body;
     //validate data
     if (!sectionName || !courseId) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
         message: "Fields Missing",
       });
@@ -22,11 +22,11 @@ async function createSection(req, res) {
       },
       { new: true }
     ).populate({
-			path:"courseContent",
-			populate:{
-				path:"subSection",
-			},
-		})
+      path: "courseContent",
+      populate: {
+        path: "subSection",
+      },
+    });
 
     return res.status(200).json({
       success: true,
@@ -43,7 +43,7 @@ async function createSection(req, res) {
 
 async function updateSection(req, res) {
   try {
-    const { sectionName, sectionId ,courseId} = req.body;
+    const { sectionName, sectionId, courseId } = req.body;
     if (!sectionName || !sectionId || !courseId) {
       return res.status(400).json({
         success: false,
@@ -55,13 +55,12 @@ async function updateSection(req, res) {
       { sectionName: sectionName },
       { new: true }
     );
-    const course = await Course.findById(courseId)
-		.populate({
-			path:"courseContent",
-			populate:{
-				path:"subSection",
-			},
-		})
+    const course = await Course.findById(courseId).populate({
+      path: "courseContent",
+      populate: {
+        path: "subSection",
+      },
+    });
     console.log(course);
 
     return res.status(200).json({
@@ -90,7 +89,7 @@ async function deleteSection(req, res) {
       new: true,
     });
     console.log(deletedSection);
-    await SubSection.deleteMany({_id:{$in:deletedSection.subSection}});
+    await SubSection.deleteMany({ _id: { $in: deletedSection.subSection } });
     const updatedCourse = await Course.findByIdAndUpdate(
       courseId,
       {
@@ -98,16 +97,16 @@ async function deleteSection(req, res) {
       },
       { new: true }
     ).populate({
-			path:"courseContent",
-			populate:{
-				path:"subSection",
-			},
-		})
+      path: "courseContent",
+      populate: {
+        path: "subSection",
+      },
+    });
 
     return res.status(200).json({
       success: true,
       message: "Section Deleted successfully",
-      data:updatedCourse
+      data: updatedCourse,
     });
   } catch (err) {
     return res.status(500).json({

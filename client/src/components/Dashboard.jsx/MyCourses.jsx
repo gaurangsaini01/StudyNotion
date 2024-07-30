@@ -144,9 +144,9 @@ function MyCourses() {
                             text2: "This Course will be prermanently deleted",
                             btn1Text: "Delete",
                             btn2Text: "Cancel",
-                            btn1Handler: () =>{
+                            btn1Handler: () => {
                               handleDeleteCourse(course._id),
-                              setShowConfirmationModal(false);
+                                setShowConfirmationModal(false);
                             },
                             btn2Handler: handleClose,
                           });
@@ -161,7 +161,7 @@ function MyCourses() {
             </div>
           )}
         </div>
-      </div>
+      </div> 
       {showConfirmationModal && (
         <ConfirmationModal
           modalData={showConfirmationModal}

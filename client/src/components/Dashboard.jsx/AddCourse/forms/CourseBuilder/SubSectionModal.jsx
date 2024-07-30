@@ -11,7 +11,7 @@ import {
 import { setCourse } from "../../../../../redux/slices/courseSlice";
 import IconBtn from "../../../../reusable/IconBtn";
 import Upload from "../../Upload";
-import { DevTool } from "@hookform/devtools";
+// import { DevTool } from "@hookform/devtools";
 
 export default function SubSectionModal({
   modalData,
@@ -210,7 +210,7 @@ export default function SubSectionModal({
             </div>
           )}
         </form>
-        <DevTool control={control} />
+        {/* <DevTool control={control} /> */}
       </div>
     </div>
   );

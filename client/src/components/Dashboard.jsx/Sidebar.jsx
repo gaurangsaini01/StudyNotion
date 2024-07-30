@@ -35,7 +35,7 @@ function Sidebar() {
 
   return (
     <div>
-      <div className="flex min-w-[222px] flex-col border-r-[1px] border-r-richblack-700 py-10 h-[calc(100vh-3.5rem)] bg-richblack-800">
+      <div className="flex min-w-[222px] flex-col border-r-[1px] border-r-richblack-700 py-10 h-[calc(100vh-3rem)] bg-richblack-800">
         <div className="flex flex-col gap-2">
           {sidebarLinks.map((link, index) => {
             if (link.type && link.type !== user.accountType) {

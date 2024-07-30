@@ -12,11 +12,11 @@ function Dashboard() {
   }
 
   return (
-    <div className="flex w-full h-full">
-      <div className="flex-shrink-0">
+    <div className="flex w-full relative h-full">
+      <div className="flex-shrink-0 fixed">
         <Sidebar />
       </div>
-      <div className="h-full w-full">
+      <div className="h-full w-full ml-[222px]">
         <Outlet />
       </div>
     </div>

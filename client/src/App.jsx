@@ -24,6 +24,7 @@ import { setToken } from "./redux/slices/authSlice";
 import { setUser } from "./redux/slices/profileSlice";
 import { resetCart } from "./redux/slices/cartSlice";
 import HamburgerMenu from "./components/HamburgerMenu";
+import Catalog from "./Pages/Catalog";
 
 function App() {
   const token = useSelector((state) => state.auth.token);
@@ -100,6 +101,7 @@ function App() {
               <Route path="/dashboard/my-profile" element={<MyProfile />} />
               <Route path="/dashboard/my-settings" element={<MySettings />} />
             </Route>
+            <Route path="/catalog/:catalogname/:categoryid" element={<Catalog/>}></Route>
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>

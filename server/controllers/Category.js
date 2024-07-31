@@ -49,19 +49,36 @@ async function categoryPageDetails(req, res) {
       categoryId
     ).populate({
       path: "courses",
-    });
-    //validate if there is no course
+      match: { status: "published" },
+      populate: "ratingAndReviews",
+    })
+    //validate if there is no category of such type
     if (!selectedCategoryCourses) {
-      return res.status(404).json({
+      return res.status(401).json({
         success: false,
-        message: "No Courses with such Category",
+        message: "No  such Category",
       });
     }
+
+     // Handle the case when there are no courses
+    //  if (selectedCategoryCourses.courses.length === 0) {
+    //   console.log("No courses found for the selected category.")
+    //   return res.status(200).json({
+    //     success: true,
+    //     message: "No courses found for the selected category.",
+    //     data:selectedCategoryCourses
+    //   })
+    // }
+
     //get courses for different categories
     const differentCategoryCourses = await Category.find({
       _id: { $ne: categoryId },
-    }).populate("courses");
-    //HW:- get top Selling Courses
+    }).populate({
+      path:"courses",
+      match:{status:"published"},
+      populate:"ratingAndReviews"
+    });
+    // get top Selling Courses
     // const topSellingCourses =await Course.aggregate([
     //     {$match:}
     // ])
@@ -83,4 +100,4 @@ async function categoryPageDetails(req, res) {
   }
 }
 
-module.exports={getAllCategories,createCategory,categoryPageDetails}
+module.exports = { getAllCategories, createCategory, categoryPageDetails };

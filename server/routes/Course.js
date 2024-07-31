@@ -83,7 +83,7 @@ router.post("/getcoursedetails" ,getCourseDetails);
 // TODO: Put IsAdmin Middleware here
 router.post("/createcategory", auth, isAdmin, createCategory);
 router.get("/getallcategories", getAllCategories);
-router.get("/getcategorypagedetails", categoryPageDetails);
+router.post("/getcategorypagedetails", categoryPageDetails);
 
 // ********************************************************************************************************
 //                                      Rating and Review

@@ -21,7 +21,7 @@ function Navbar({ open, setOpen }) {
     async function caller() {
       try {
         const result = await apiConnector("GET", categories.CATEGORIES_API);
-        // console.log(result);
+        console.log(result);
         setSublinks(result.data.data);
         // console.log(sublinks)
       } catch (err) {
@@ -50,22 +50,28 @@ function Navbar({ open, setOpen }) {
 
                     <div
                       className="invisible  absolute left-[50%]
-                      translate-x-[-50%] translate-y-[30%]
+                      translate-x-[-50%] translate-y-[20%]
                    top-[50%]
-                  flex flex-col rounded-lg bg-richblack-700 p-4 text-richblack-5
+                  flex flex-col rounded-lg bg-richblack-5 p-4 text-richblack-700
                   opacity-0 transition-all duration-200 group-hover:visible
                   group-hover:opacity-100 lg:w-[300px] z-20"
                     >
                       <div
                         className="absolute left-[50%] top-0
                   translate-x-[80%]
-                  translate-y-[-45%] h-6 w-6 rotate-45 rounded bg-richblack-700 z-20"
+                  translate-y-[-45%] h-6 w-6 rotate-45 rounded bg-richblack-5 z-20"
                       ></div>
 
                       {sublinks.length ? (
                         sublinks.map((sublink, index) => (
-                          <Link to={`#`} key={index}>
-                            <p className="my-2 font-semibold capitalize ">
+                          <Link
+                            to={`/catalog/${sublink?.name
+                              ?.split(" ")
+                              .join("-")
+                              .toLowerCase().replace(/--+/g, '-').trim()}/${sublink?._id}`}
+                            key={index}
+                          >
+                            <p className="my-2 hover:bg-richblack-300 px-4 hover:text-richblack-700 py-2 rounded-md font-semibold capitalize ">
                               {sublink.name}
                             </p>
                           </Link>

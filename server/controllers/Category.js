@@ -50,8 +50,8 @@ async function categoryPageDetails(req, res) {
     ).populate({
       path: "courses",
       match: { status: "published" },
-      populate: "ratingAndReviews",
-    })
+      populate: [{ path: "ratingAndReviews" }, { path: "instructor" }],
+    });
     //validate if there is no category of such type
     if (!selectedCategoryCourses) {
       return res.status(401).json({
@@ -60,7 +60,7 @@ async function categoryPageDetails(req, res) {
       });
     }
 
-     // Handle the case when there are no courses
+    // Handle the case when there are no courses
     //  if (selectedCategoryCourses.courses.length === 0) {
     //   console.log("No courses found for the selected category.")
     //   return res.status(200).json({
@@ -74,9 +74,9 @@ async function categoryPageDetails(req, res) {
     const differentCategoryCourses = await Category.find({
       _id: { $ne: categoryId },
     }).populate({
-      path:"courses",
-      match:{status:"published"},
-      populate:"ratingAndReviews"
+      path: "courses",
+      match: { status: "published" },
+      populate: [{ path: "ratingAndReviews" }, { path: "instructor" }],
     });
     // get top Selling Courses
     // const topSellingCourses =await Course.aggregate([

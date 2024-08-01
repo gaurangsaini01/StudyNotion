@@ -65,10 +65,10 @@ function PublishForm() {
           <input
             type="checkbox"
             id="public"
-            className="h-4 w-4 rounded-md"
+            className="text-richblack-400 h-4 w-4 rounded-md"
             {...register("public")}
           />
-          <label htmlFor="public">Mark This Course As Public</label>
+          <label htmlFor="public" className="text-richblack-400">Mark This Course As Public</label>
         </div>
         <div className="flex justify-end gap-4">
           <button

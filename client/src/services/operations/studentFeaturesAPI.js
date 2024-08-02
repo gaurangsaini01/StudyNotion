@@ -5,6 +5,7 @@ const { COURSE_PAYMENT_API, COURSE_VERIFY_API, PAYMENT_SUCCESS_EMAIL_API } =
   studentEndPoints;
 import checkImg from "../../assets/Images/check.png";
 import { setPaymentLoading } from "../../redux/slices/courseSlice";
+import { resetCart } from "../../redux/slices/cartSlice";
 
 function loadScript(src) {
   return new Promise((resolve) => {
@@ -87,10 +88,16 @@ export async function buyCourse(
         Authorization: `Bearer ${token}`,
       }
     );
+    console.log(orderRes)
+
+    if(orderRes?.data?.ap){
+      toast.error('User Already enrolled')
+      return;
+    }
+
     if (!orderRes?.data?.success) {
       throw new Error(orderRes?.data.message);
     }
-    console.log(orderRes)
   
     const options = {
       key: import.meta.env.VITE_APP_RAZORPAY_KEY,
@@ -124,7 +131,7 @@ export async function buyCourse(
     });
   } catch (err) {
     console.log("error in payment", err);
-    toast.error("Payment Failed");
+    toast.error("Already Purchased");
   }
   toast.dismiss(toastId);
 }

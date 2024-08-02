@@ -48,20 +48,26 @@ async function capturePayment(req, res) {
   for (const courseId of courses) {
     let course;
     try {
-      course = await Course.findById(courseId);
+      course = await Course.findById(courseId).populate();
       if (!course) {
         return res.status(200).json({
           success: false,
           message: "Couldn't Find Course",
         });
       }
-      // const uid = new mongoose.Types.ObjectId(userId);
-      if (course.studentsEnrolled.includes(courseId)) {
-        return res.status(200).json({
+
+      if (
+        course?.studentsEnrolled?.some(
+          (studentId) => studentId._id.toString() === courseId.toString()
+        )
+      ) {
+        return res.status(500).json({
           success: false,
+          ap: true,
           message: "Student is already enrolled",
         });
       }
+
       totalAmount += course.price;
       console.log(typeof totalAmount);
     } catch (err) {

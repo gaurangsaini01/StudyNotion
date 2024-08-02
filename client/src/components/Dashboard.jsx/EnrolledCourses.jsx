@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getUserEnrolledCourses } from "../../services/operations/profileAPI";
+import { useNavigate } from "react-router-dom";
 
 function EnrolledCourses() {
+  const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
 
   const [enrolledCourses, setEnrolledCourses] = useState(null);
@@ -41,7 +43,7 @@ function EnrolledCourses() {
           <div className="flex flex-col gap-3 pl-6">
             {enrolledCourses.map((course, index) => (
               <div key={index} className="flex items-center">
-                <div className="flex gap-4 w-1/2 items-center">
+                <div onClick={()=>navigate(`/courses/${course?._id}`)} className="cursor-pointer flex gap-4 w-1/2 items-center">
                   <div className="w-[45px] h-[45px] rounded-full overflow-hidden">
                     <img className="h-full w-full object-contain" src={course.thumbnail} />
                   </div>

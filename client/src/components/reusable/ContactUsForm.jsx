@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
+// import { DevTool } from "@hookform/devtools";
 import { apiConnector } from "../../services/apiconnector";
 import { CONTACT_US_API } from "../../services/apis";
 import CountryCode from "../../data/countrycode.json";
@@ -176,7 +176,7 @@ const ContactUsForm = () => {
           </button>
         </div>
       </form>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </>
   );
 };

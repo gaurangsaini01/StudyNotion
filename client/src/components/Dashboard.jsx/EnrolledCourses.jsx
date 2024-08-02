@@ -42,10 +42,9 @@ function EnrolledCourses() {
             {enrolledCourses.map((course, index) => (
               <div key={index} className="flex items-center">
                 <div className="flex gap-4 w-1/2 items-center">
-                  <img
-                    className="w-[45px] h-[45px] rounded-full"
-                    src={course.thumbnail}
-                  />
+                  <div className="w-[45px] h-[45px] rounded-full overflow-hidden">
+                    <img className="h-full w-full object-contain" src={course.thumbnail} />
+                  </div>
                   <div className="flex gap-1 flex-col">
                     <p>{course.courseName}</p>
                     <p className="text-sm text-richblack-300">
@@ -53,8 +52,8 @@ function EnrolledCourses() {
                     </p>
                   </div>
                 </div>
-                <div className="w-1/4">{course.category[0].name}</div>
-                <div className="w-1/4">{course.instructor.firstName}</div>
+                <div className="w-1/4">{course?.category?.name}</div>
+                <div className="w-1/4">{course?.instructor?.firstName}</div>
               </div>
             ))}
           </div>

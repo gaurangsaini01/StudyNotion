@@ -1,8 +1,39 @@
 const User = require("../models/User");
 const Course = require("../models/Course");
 const mailSender = require("../utils/mailsender");
+const { createHmac } = require("node:crypto");
 const instance = require("../config/razorpay");
 const courseEnrollmentEmail = require("../mail/templates/courseEnrollmentTemplate");
+const paymentSuccessEmail = require("../mail/templates/paymentSuccessEmail");
+
+const sendPaymentSuccessEmail = async (req, res) => {
+  const { orderId, paymentId, amount } = req.body;
+  const userId = req.user.id;
+  if (!orderId || !amount || !paymentId) {
+    return res.status(400).json({
+      success: false,
+      message: "Please Provide all fields",
+    });
+  }
+  try {
+    const user = await User.findById(userId);
+    const mailRes = mailSender(
+      user.email,
+      "Payment Success",
+      paymentSuccessEmail(user.firstName, amount / 100, orderId, paymentId)
+    );
+    return res.status(200).json({
+      success: true,
+      message: "Mail Sent",
+      data: mailRes,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Couldn't send payment success mail",
+    });
+  }
+};
 
 async function capturePayment(req, res) {
   const { courses } = req.body;
@@ -24,14 +55,15 @@ async function capturePayment(req, res) {
           message: "Couldn't Find Course",
         });
       }
-      const uid = new mongoose.Types.ObjectId(userId);
-      if (course.studentsEnrolled.includes(uid)) {
+      // const uid = new mongoose.Types.ObjectId(userId);
+      if (course.studentsEnrolled.includes(courseId)) {
         return res.status(200).json({
           success: false,
           message: "Student is already enrolled",
         });
       }
       totalAmount += course.price;
+      console.log(typeof totalAmount);
     } catch (err) {
       return res.status(500).json({
         success: false,
@@ -46,6 +78,7 @@ async function capturePayment(req, res) {
     //order create
     try {
       const paymentResponse = await instance.orders.create(options);
+      console.log(paymentResponse);
       return res.status(200).json({
         success: true,
         message: paymentResponse,
@@ -79,11 +112,15 @@ async function verifySignature(req, res) {
       message: "Field missing",
     });
   }
+
   let body = razorpay_order_id + "|" + razorpay_payment_id;
-  const expectedSignature = crypto
-    .createHMAC("sha256", process.env.RAZORPAY_SECRET)
+  const expectedSignature = createHmac("sha256", process.env.RAZORPAY_SECRET)
     .update(body.toString())
     .digest("hex");
+  // const expectedSignature = crypto.hmac_sha256(
+  //   body,
+  //   process.env.RAZORPAY_SECRET
+  // );
 
   if (expectedSignature === razorpay_signature) {
     //enroll student
@@ -278,4 +315,4 @@ const enrollStudent = async (userId, courses, res) => {
 //   }
 // }
 
-module.exports = { verifySignature, capturePayment };
+module.exports = { verifySignature, capturePayment, sendPaymentSuccessEmail };

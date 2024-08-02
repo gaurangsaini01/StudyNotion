@@ -18,6 +18,7 @@ async function auth(req, res, next) {
         message: "Token Missing",
       });
     }
+    console.log("TOken is ",token)
     //verify token if present
     try {
       const decode = jwt.verify(token, process.env.JWT_SECRET);

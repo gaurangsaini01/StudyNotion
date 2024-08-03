@@ -28,6 +28,9 @@ import Catalog from "./Pages/Catalog";
 import CoursePage from "./Pages/CoursePage";
 import Cart from "./components/Dashboard.jsx/Cart/Cart";
 import ScrollToTop from "./components/ScrollToTop";
+import ViewCourse from "./Pages/ViewCourse";
+import PrivateRoute from "./components/Auth/PrivateRoute"
+import VideoDetails from "./components/ViewCourse/VideoDetails";
 
 function App() {
   const { user } = useSelector((state) => state.profile);
@@ -95,6 +98,7 @@ function App() {
               element={<UpdatePassword />}
             />
             <Route path="/about" element={<About />} />
+            <Route path="/viewcourse/:courseId" element={<ViewCourse />} />
             <Route element={<Dashboard />}>
               {user?.accountType === "student" && (
                 <>
@@ -111,6 +115,22 @@ function App() {
               <Route path="/dashboard/wishlist" element={<Wishlist />} />
               <Route path="/dashboard/my-profile" element={<MyProfile />} />
               <Route path="/dashboard/my-settings" element={<MySettings />} />
+            </Route>
+            <Route
+              element={
+                <PrivateRoute>
+                  <ViewCourse />
+                </PrivateRoute>
+              }
+            >
+              {user?.accountType === "student" && (
+                <>
+                  <Route
+                    path="viewcourse/:courseId/section/:sectionid/subsection/:subsectionid"
+                    element={<VideoDetails />}
+                  />
+                </>
+              )}
             </Route>
             <Route
               path="/catalog/:catalogname/:categoryid"

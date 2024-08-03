@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineCurrencyRupee } from "react-icons/md";
 import GetAvgRating from "../../utils/averageRating";
-import ReactStars from "react-rating-stars-component";
+
 import { useNavigate } from "react-router-dom";
+import { StarRating } from "../StarComponent/Star";
 
 function CourseCard({ course }) {
   const navigate = useNavigate();
@@ -15,7 +16,10 @@ function CourseCard({ course }) {
 
   const shortDesc = course?.courseDescription.substr(0, 37) + "...";
   return (
-    <div onClick={()=>navigate(`/courses/${course._id}`)} className=" bg-richblack-800 p-4 rounded-xl flex  flex-col w-[350px] hover:scale-95 transition-all duration-300 cursor-pointer ease-in-out shadow-2xl shadow-blue-500/20">
+    <div
+      onClick={() => navigate(`/courses/${course._id}`)}
+      className=" bg-richblack-800 p-4 rounded-xl flex  flex-col w-[350px] hover:scale-95 transition-all duration-300 cursor-pointer ease-in-out shadow-2xl shadow-blue-500/20"
+    >
       <div className="w-full rounded-md h-[200px] overflow-hidden">
         <img
           className="w-full h-full object-contain"
@@ -33,14 +37,9 @@ function CourseCard({ course }) {
           {course?.courseName}
         </h1>
         <div className=" text-yellow-50 flex gap-2 items-center">
-          {/* <div className="pt-1 ">{avgRating}</div> */}
-          <ReactStars
-            count={5}
-            edit={false}
-            value={avgRating}
-            size={24}
-            activeColor="#FFD60A"
-          />
+          <div className="pt-1 ">{avgRating}</div>
+
+          <StarRating rating={avgRating} />
           <div className="text-sm"> ({course?.ratingAndReviews?.length})</div>
         </div>
         <p className="text-sm capitalize text-left text-richblack-400">

@@ -8,7 +8,8 @@ const {
   getAllCourses,
   getCourseDetails,
   editCourse,
-  deleteCourse
+  deleteCourse,
+  getFullCourseDetails
 } = require("../controllers/Course");
 
 //category controllers
@@ -75,6 +76,8 @@ router.post("/createsubsection", auth, isInstructor, createSubSection);
 router.get("/getallcourses", getAllCourses);
 // Get Details for a Specific Courses
 router.post("/getcoursedetails" ,getCourseDetails);
+
+router.post('/getfullcoursedetails',auth,getFullCourseDetails)
 
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)

@@ -4,6 +4,7 @@ const Course = require("../models/Course");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
+const CourseProgress = require("../models/CourseProgress");
 require("dotenv").config();
 
 async function createCourse(req, res) {
@@ -247,6 +248,58 @@ async function getCourseDetails(req, res) {
   }
 }
 
+async function getFullCourseDetails(req, res) {
+  try {
+    const { courseId } = req.body;
+    const userId = req.user.id;
+    const courseDetails = await Course.findById(courseId)
+      .populate({
+        path: "instructor",
+        populate: {
+          path: "additionalDetails",
+        },
+      })
+      .populate("category")
+      .populate("ratingAndReviews")
+      .populate({
+        path: "courseContent",
+        populate: {
+          path: "subSection",
+        },
+      })
+      .exec();
+
+    let courseProgressCount = await CourseProgress.findOne({
+      courseId: courseId,
+      userId: userId,
+    });
+
+    console.log("courseProgressCount : ", courseProgressCount);
+
+    if (!courseDetails) {
+      return res.status(400).json({
+        success: false,
+        message: `Could not find course with id: ${courseId}`,
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        courseDetails,
+        completedVideos: courseProgressCount?.completedVideos
+          ? courseProgressCount?.completedVideos
+          : [],
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
 async function deleteCourse(req, res) {
   try {
     const { courseId } = req.body;
@@ -313,4 +366,5 @@ module.exports = {
   editCourse,
   deleteCourse,
   getCourseDetails,
+  getFullCourseDetails,
 };

@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { buyCourse } from "../services/operations/studentFeaturesAPI";
 import GetAvgRating from "../utils/averageRating";
 import { fetchCourseDetails } from "../services/operations/courseDetailsAPI";
-import ReactStars from "react-rating-stars-component";
 import ConfirmationModal from "../components/reusable/Confirmationmodal";
 import { IoIosGlobe } from "react-icons/io";
 import { GoDotFill } from "react-icons/go";
@@ -14,6 +13,7 @@ import { RxDropdownMenu } from "react-icons/rx";
 import { IoMdArrowDropdown } from "react-icons/io";
 import Footer from "../components/Footer";
 import toast from "react-hot-toast";
+import { StarRating } from "../components/StarComponent/Star";
 
 function CoursePage() {
   //modal
@@ -27,15 +27,18 @@ function CoursePage() {
   const [rating, setRating] = useState(0);
   const [confirmationModal, setConfirmationModal] = useState(null);
   const [totalLectures, setTotalLectures] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getCourseFullDetails = async () => {
+      setLoading(true);
       try {
         const result = await fetchCourseDetails(courseId);
         setCourseData(result?.data);
       } catch (error) {
         console.log("Could not fetch coursse details");
       }
+      setLoading(false);
     };
     getCourseFullDetails();
   }, [courseId]);
@@ -53,8 +56,6 @@ function CoursePage() {
     calculateTotalLec(courseData?.courseContent);
     GetAvgRating();
   }, [courseData]);
-
-  console.log("CourseData", courseData);
 
   const handleBuyCourse = () => {
     if (user && user.accountType === "instructor") {
@@ -77,7 +78,9 @@ function CoursePage() {
     });
   };
 
-  return (
+  return loading ? (
+    <div className="text-3xl">Loading...</div>
+  ) : (
     <div className="text-richblack-5">
       <div className="bg-richblack-800">
         <div className="py-8 relative px-4 w-10/12 mx-auto  ">
@@ -113,18 +116,20 @@ function CoursePage() {
             <div className="text-richblack-300 mb-2">
               {courseData?.courseDescription}
             </div>
-            <div className="flex items-center gap-2 text-richblack-300">
+            <div className="flex  gap-2 text-richblack-300">
               <div className="text-[#FFD60A]">{rating}</div>
-              <div>
-                <ReactStars
+              <div> 
+                {/* <ReactStars
                   count={5}
                   edit={false}
                   value={rating}
+                  onChange={()=>ratingChanged(value)}
                   size={24}
                   activeColor="#FFD60A"
-                />
+                /> */}
+                <StarRating rating={rating} />
               </div>
-              <div className="text-sm">
+              <div className="">
                 ({courseData?.ratingAndReviews?.length} Ratings)
               </div>
               <div>
@@ -141,7 +146,7 @@ function CoursePage() {
             </div>
           </div>
           <AbsoluteCourseCard
-          setOpen={setOpen}
+            setOpen={setOpen}
             setConfirmationModal={setConfirmationModal}
             user={user}
             courseData={courseData}
@@ -173,11 +178,16 @@ function CoursePage() {
             <details key={section._id} className="py-1" open>
               {/* Section Dropdown Content */}
               <summary className="flex cursor-pointer items-center justify-between pb-2 border-b-2 border-b-richblack-600 py-2">
-                <div className="flex items-center gap-x-3">
-                  <RxDropdownMenu className="text-2xl text-richblack-50" />
-                  <p className="font-semibold text-richblack-50">
-                    {section?.sectionName}
-                  </p>
+                <div className="flex items-center justify-between w-full pr-4">
+                  <div className="flex items-center gap-x-3">
+                    <RxDropdownMenu className="text-2xl text-richblack-50" />
+                    <p className="font-semibold text-richblack-50">
+                      {section?.sectionName}
+                    </p>
+                  </div>
+                  <div className="text-sm text-richblack-200">
+                    {section?.subSection?.length} Lecture
+                  </div>
                 </div>
               </summary>
               <div className="px-6 ">

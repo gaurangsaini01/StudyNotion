@@ -68,7 +68,9 @@ function Navbar({ open, setOpen }) {
                             to={`/catalog/${sublink?.name
                               ?.split(" ")
                               .join("-")
-                              .toLowerCase().replace(/--+/g, '-').trim()}/${sublink?._id}`}
+                              .toLowerCase()
+                              .replace(/--+/g, "-")
+                              .trim()}/${sublink?._id}`}
                             key={index}
                           >
                             <p className="my-2 hover:bg-richblack-300 px-4 hover:text-richblack-700 py-2 rounded-md font-semibold capitalize ">
@@ -96,7 +98,7 @@ function Navbar({ open, setOpen }) {
               <AiOutlineShoppingCart size={25} className="relative z-0" />
               {totalItems > 0 ? (
                 <span className="absolute z-10 top-[-10px] right-[-10px] text-white rounded-full text-sm px-[6px] bg-puregreys-400">
-                  1
+                  {totalItems}
                 </span>
               ) : (
                 <span></span>

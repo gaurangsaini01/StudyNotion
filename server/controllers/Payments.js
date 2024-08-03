@@ -44,11 +44,14 @@ async function capturePayment(req, res) {
       message: "Please Provide courseID",
     });
   }
+  courses.map((course, index) => console.log(index, course));
   let totalAmount = 0;
   for (const courseId of courses) {
+    console.log("courseid", courseId);
+
     let course;
     try {
-      course = await Course.findById(courseId).populate();
+      course = await Course.findById(courseId);
       if (!course) {
         return res.status(200).json({
           success: false,
@@ -68,34 +71,34 @@ async function capturePayment(req, res) {
         });
       }
 
-      totalAmount += course.price;
-      console.log(typeof totalAmount);
+      totalAmount += course?.price;
+      // console.log(typeof totalAmount);
     } catch (err) {
       return res.status(500).json({
         success: false,
         message: "Something Went Wrong in calculating total Amount",
       });
     }
-    const options = {
-      amount: totalAmount * 100,
-      currency: "INR",
-      receipt: Math.random(Date.now()).toString(),
-    };
-    //order create
-    try {
-      const paymentResponse = await instance.orders.create(options);
-      console.log(paymentResponse);
-      return res.status(200).json({
-        success: true,
-        message: paymentResponse,
-      });
-    } catch (error) {
-      console.log(error.message);
-      return res.status(500).json({
-        success: false,
-        message: "Problem while creating Order",
-      });
-    }
+  }
+  const options = {
+    amount: totalAmount * 100,
+    currency: "INR",
+    receipt: Math.random(Date.now()).toString(),
+  };
+  //order create
+  try {
+    const paymentResponse = await instance.orders.create(options);
+    console.log(paymentResponse);
+    return res.status(200).json({
+      success: true,
+      message: paymentResponse,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Problem while creating Order",
+    });
   }
 }
 
@@ -176,7 +179,6 @@ const enrollStudent = async (userId, courses, res) => {
         courseEnrollmentEmail(course.courseName, student.firstName)
       );
       console.log("email,sent successfully", emailRes);
-      return;
     } catch (error) {
       return res.status(500).json({
         success: false,

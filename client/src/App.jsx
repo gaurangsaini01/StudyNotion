@@ -26,8 +26,10 @@ import { resetCart } from "./redux/slices/cartSlice";
 import HamburgerMenu from "./components/HamburgerMenu";
 import Catalog from "./Pages/Catalog";
 import CoursePage from "./Pages/CoursePage";
+import Cart from "./components/Dashboard.jsx/Cart/Cart";
 
 function App() {
+  const { user } = useSelector((state) => state.profile);
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -91,11 +93,17 @@ function App() {
               element={<UpdatePassword />}
             />
             <Route path="/about" element={<About />} />
-            <Route path="/dashboard" element={<Dashboard />}>
-              <Route
-                path="/dashboard/enrolled-courses"
-                element={<EnrolledCourses />}
-              />
+            <Route  element={<Dashboard />}>
+              {user?.accountType === "student" && (
+                <>
+                  <Route path="dashboard/cart" element={<Cart />} />
+                  <Route
+                    path="/dashboard/enrolled-courses"
+                    element={<EnrolledCourses />}
+                  />
+                </>
+              )}
+              
               <Route path="/dashboard/my-courses" element={<MyCourses />} />
               <Route path="/dashboard/add-course" element={<AddCourse />} />
               <Route path="/dashboard/wishlist" element={<Wishlist />} />

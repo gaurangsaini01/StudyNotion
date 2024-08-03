@@ -7,6 +7,13 @@ import { fetchCourseDetails } from "../services/operations/courseDetailsAPI";
 import ReactStars from "react-rating-stars-component";
 import ConfirmationModal from "../components/reusable/Confirmationmodal";
 import { IoIosGlobe } from "react-icons/io";
+import { GoDotFill } from "react-icons/go";
+import AbsoluteCourseCard from "../components/CoursePage/AbsoluteCourseCard";
+import { IoVideocamOutline } from "react-icons/io5";
+import { RxDropdownMenu } from "react-icons/rx";
+import { IoMdArrowDropdown } from "react-icons/io";
+import Footer from "../components/Footer";
+import toast from "react-hot-toast";
 
 function CoursePage() {
   //modal
@@ -19,6 +26,8 @@ function CoursePage() {
   const [courseData, setCourseData] = useState(null);
   const [rating, setRating] = useState(0);
   const [confirmationModal, setConfirmationModal] = useState(null);
+  const [totalLectures, setTotalLectures] = useState(0);
+
   useEffect(() => {
     const getCourseFullDetails = async () => {
       try {
@@ -34,16 +43,29 @@ function CoursePage() {
   useEffect(() => {
     const count = GetAvgRating(courseData?.ratingAndReviews);
     setRating(count);
+
+    function calculateTotalLec(sections) {
+      let total = sections?.reduce((acc, section) => {
+        return acc + (section?.subSection.length || 0);
+      }, 0);
+      setTotalLectures(total);
+    }
+    calculateTotalLec(courseData?.courseContent);
     GetAvgRating();
   }, [courseData]);
 
   console.log("CourseData", courseData);
 
   const handleBuyCourse = () => {
+    if (user && user.accountType === "instructor") {
+      toast.error("Instructor Cannot Buy");
+      return;
+    }
     if (token) {
       buyCourse(navigate, dispatch, [courseId], token, user);
       return;
     }
+
     setOpen(true);
     setConfirmationModal({
       text1: "You are not Logged in",
@@ -58,7 +80,7 @@ function CoursePage() {
   return (
     <div className="text-richblack-5">
       <div className="bg-richblack-800">
-        <div className="py-8 relative p-4 w-10/12 mx-auto  ">
+        <div className="py-8 relative px-4 w-10/12 mx-auto  ">
           <div className="w-3/4 ">
             <div className="flex text-sm gap-2 mb-6">
               <p
@@ -118,43 +140,71 @@ function CoursePage() {
               <div>English</div>
             </div>
           </div>
-          <div className="absolute p-4 w-[350px] rounded-xl min-h-[400px] bg-richblack-700 right-0 top-10">
-            <div className="w-full h-[200px] overflow-hidden rounded-md ">
-              <img
-                className="w-full h-full object-contain"
-                src={courseData?.thumbnail}
-                alt="Course Thumbnail was Here"
-              />
-            </div>
-            <div className="text-3xl font-semibold">
-              Rs. {courseData?.price}
-            </div>
-            <div className="space-y-4 my-6">
-              <button className="w-full text-center py-2 bg-yellow-100 text-black rounded-xl">
-                Add To Cart
-              </button>
-              <button
-                className="bg-yellow-50 w-full rounded-xl py-2 text-center text-richblack-900"
-                onClick={
-                  user &&
-                  courseData?.studentsEnrolled.some(
-                    (studentId) => studentId._id.toString() === user.id
-                  )
-                    ? () => navigate("/dashboard/enrolled-courses")
-                    : handleBuyCourse
-                }
-              >
-                {user &&
-                courseData?.studentsEnrolled.some(
-                  (studentId) => studentId._id.toString() === user._id
-                )
-                  ? "Go to Course "
-                  : "Buy Now"}
-              </button>
+          <AbsoluteCourseCard
+          setOpen={setOpen}
+            setConfirmationModal={setConfirmationModal}
+            user={user}
+            courseData={courseData}
+            handleBuyCourse={handleBuyCourse}
+          />
+        </div>
+      </div>
+      <div className="w-10/12 py-12 px-4 flex flex-col gap-8 mx-auto">
+        <div className="w-[60%] border py-6 space-y-2  px-4 border-richblack-500 rounded-md">
+          <h1 className="text-3xl font-semibold">What You'll Learn</h1>
+          <p className="text-richblack-300">{courseData?.whatYouWillLearn}</p>
+        </div>
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-semibold">Course Content</h1>
+          <div className="flex items-center gap-2 text-richblack-300">
+            <div>{courseData?.courseContent?.length} Sections</div>
+            <div className="flex items-center">
+              <div>
+                <GoDotFill size={10} />
+              </div>
+              <div className="flex items-center">{totalLectures} Lectures</div>
             </div>
           </div>
         </div>
+
+        <div className="rounded-lg w-[60%] bg-richblack-700 p-4">
+          {courseData?.courseContent?.map((section) => (
+            // Section Dropdown
+            <details key={section._id} className="py-1" open>
+              {/* Section Dropdown Content */}
+              <summary className="flex cursor-pointer items-center justify-between pb-2 border-b-2 border-b-richblack-600 py-2">
+                <div className="flex items-center gap-x-3">
+                  <RxDropdownMenu className="text-2xl text-richblack-50" />
+                  <p className="font-semibold text-richblack-50">
+                    {section?.sectionName}
+                  </p>
+                </div>
+              </summary>
+              <div className="px-6 ">
+                {/* Render All Sub Sections Within a Section */}
+                {section?.subSection?.map((data, index) => (
+                  <details
+                    key={index}
+                    className="flex cursor-pointer items-center justify-between gap-x-3 "
+                  >
+                    <summary className="flex items-center gap-x-3  border-b-2 border-b-richblack-600 py-2">
+                      <IoVideocamOutline className="text-2xl text-richblack-50" />
+                      <p className="font-semibold flex capitalize text-richblack-50">
+                        {data?.title}
+                        <IoMdArrowDropdown className="text-2xl text-richblack-50" />
+                      </p>
+                    </summary>
+                    <div className="text-sm pl-6 py-2 capitalize text-richblack-200">
+                      Summary : {data?.description}
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </details>
+          ))}
+        </div>
       </div>
+      <Footer />
       {confirmationModal && (
         <ConfirmationModal
           open={open}

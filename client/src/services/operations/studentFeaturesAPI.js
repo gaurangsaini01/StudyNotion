@@ -3,9 +3,9 @@ import { studentEndPoints } from "../apis";
 import { apiConnector } from "../apiconnector";
 const { COURSE_PAYMENT_API, COURSE_VERIFY_API, PAYMENT_SUCCESS_EMAIL_API } =
   studentEndPoints;
-import checkImg from "../../assets/Images/check.png";
 import { setPaymentLoading } from "../../redux/slices/courseSlice";
 import { resetCart } from "../../redux/slices/cartSlice";
+import LogoSmallDark from "../../assets/Logo/Logo-Small-Dark.png"
 
 function loadScript(src) {
   return new Promise((resolve) => {
@@ -106,7 +106,7 @@ export async function buyCourse(
       order_id: orderRes?.data?.message?.id,
       name: "StudyNotion",
       description: "Thank You For purchasing course",
-      image: checkImg,
+      image:LogoSmallDark,
       prefill: {
         name: userDetails.firstName,
         email: userDetails.email,

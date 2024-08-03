@@ -50,7 +50,7 @@ function Navbar({ open, setOpen }) {
 
                     <div
                       className="invisible  absolute left-[50%]
-                      translate-x-[-50%] translate-y-[20%]
+                      translate-x-[-50%] translate-y-[10%]
                    top-[50%]
                   flex flex-col rounded-lg bg-richblack-5 p-4 text-richblack-700
                   opacity-0 transition-all duration-200 group-hover:visible

@@ -43,9 +43,15 @@ function EnrolledCourses() {
           <div className="flex flex-col gap-3 pl-6">
             {enrolledCourses.map((course, index) => (
               <div key={index} className="flex items-center">
-                <div onClick={()=>navigate(`/courses/${course?._id}`)} className="cursor-pointer flex gap-4 w-1/2 items-center">
+                <div
+                  onClick={() => navigate(`/courses/${course?._id}`)}
+                  className="cursor-pointer flex gap-4 w-1/2 items-center"
+                >
                   <div className="w-[45px] h-[45px] rounded-full overflow-hidden">
-                    <img className="h-full w-full object-contain" src={course.thumbnail} />
+                    <img
+                      className="h-full w-full object-contain"
+                      src={course.thumbnail}
+                    />
                   </div>
                   <div className="flex gap-1 flex-col">
                     <p>{course.courseName}</p>

@@ -27,6 +27,7 @@ import HamburgerMenu from "./components/HamburgerMenu";
 import Catalog from "./Pages/Catalog";
 import CoursePage from "./Pages/CoursePage";
 import Cart from "./components/Dashboard.jsx/Cart/Cart";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const { user } = useSelector((state) => state.profile);
@@ -82,6 +83,7 @@ function App() {
         <Navbar open={open} setOpen={setOpen} />
         {open && <HamburgerMenu open={open} setOpen={setOpen} />}
         <div className="pt-12">
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -93,7 +95,7 @@ function App() {
               element={<UpdatePassword />}
             />
             <Route path="/about" element={<About />} />
-            <Route  element={<Dashboard />}>
+            <Route element={<Dashboard />}>
               {user?.accountType === "student" && (
                 <>
                   <Route path="dashboard/cart" element={<Cart />} />
@@ -103,7 +105,7 @@ function App() {
                   />
                 </>
               )}
-              
+
               <Route path="/dashboard/my-courses" element={<MyCourses />} />
               <Route path="/dashboard/add-course" element={<AddCourse />} />
               <Route path="/dashboard/wishlist" element={<Wishlist />} />

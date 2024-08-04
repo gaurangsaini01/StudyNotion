@@ -331,8 +331,44 @@ async function updateCourseProgress(req, res) {
     await courseProgress.save();
     return res.status(200).json({ message: "Course progress updated" });
   } catch (err) {
-    console.error(error);
+    console.error(err);
     return res.status(500).json({ error: "Internal server error" });
+  }
+}
+async function getCourseProgress(req, res) {
+  try {
+    const { courseId } = req.body;
+    const userId = req.user.id;
+    if (!courseId || !userId) {
+      return res.status(400).json({
+        success: false,
+        message: "Fields Missing",
+      });
+    }
+    //find Course Progress
+    const courseProgress = await CourseProgress.findOne({
+      userId,
+      courseId,
+    });
+    if (!courseProgress) {
+      return res.status(400).json({
+        success: false,
+        message: "No course Progress for such user and Course Found",
+      });
+    }
+    console.log("courseProgress", courseProgress);
+    let completedVideos = courseProgress.completedVideos.length;
+    console.log("completedVideos", completedVideos);
+    return res.status(200).json({
+      success:true,
+      message:'Completed Lectures Retrieved',
+      data:completedVideos
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Something Went Wrong",
+    });
   }
 }
 
@@ -404,4 +440,5 @@ module.exports = {
   getCourseDetails,
   getFullCourseDetails,
   updateCourseProgress,
+  getCourseProgress,
 };

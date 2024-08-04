@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getUserEnrolledCourses } from "../../services/operations/profileAPI";
 import { useNavigate } from "react-router-dom";
+import EnrolledCourseCard from "./EnrolledCourseCard";
 
 function EnrolledCourses() {
   const navigate = useNavigate();
@@ -36,33 +37,20 @@ function EnrolledCourses() {
         <div className="flex flex-col w-full">
           <div className="flex bg-richblack-700 my-6 pl-6 rounded-md py-4">
             <p className="w-1/2">Course Name</p>
-            <p className="w-1/4">Category</p>
-            <p className="w-1/4">Instructor Name</p>
+            <div className="flex justify-between items-center w-full pr-20">
+              <p className="">Category</p>
+              <p className="">Instructor Name</p>
+              <p>Progress</p>
+            </div>
           </div>
           {/* Cards starting */}
           <div className="flex flex-col gap-3 pl-6">
-            {enrolledCourses.map((course, index) => (
-              <div key={index} className="flex items-center">
-                <div
-                  onClick={() => navigate(`/viewcourse/${course._id}/section/${course?.courseContent?.[0]._id}/subsection/${course?.courseContent?.[0]?.subSection?.[0]?._id}`)}
-                  className="cursor-pointer flex gap-4 w-1/2 items-center"
-                >
-                  <div className="w-[45px] h-[45px] rounded-full overflow-hidden">
-                    <img
-                      className="h-full w-full object-contain"
-                      src={course.thumbnail}
-                    />
-                  </div>
-                  <div className="flex gap-1 flex-col">
-                    <p>{course.courseName}</p>
-                    <p className="text-sm text-richblack-300">
-                      {course.courseDescription}
-                    </p>
-                  </div>
-                </div>
-                <div className="w-1/4">{course?.category?.name}</div>
-                <div className="w-1/4">{course?.instructor?.firstName}</div>
-              </div>
+            {enrolledCourses.map((course) => (
+              <EnrolledCourseCard
+                key={course._id}
+                navigate={navigate}
+                course={course}
+              />
             ))}
           </div>
         </div>

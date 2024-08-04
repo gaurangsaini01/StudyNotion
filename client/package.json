@@ -13,6 +13,7 @@
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^5.16.6",
+    "@ramonak/react-progress-bar": "^5.2.0",
     "@reduxjs/toolkit": "^2.2.5",
     "axios": "^1.7.2",
     "copy-to-clipboard": "^3.3.3",

@@ -22,6 +22,7 @@ const {
   GET_FULL_COURSE_DETAILS_AUTHENTICATED,
   CREATE_RATING_API,
   LECTURE_COMPLETION_API,
+  COURSE_PROGRESS_API,
 } = courseEndpoints;
 
 export const getAllCourses = async () => {
@@ -308,10 +309,10 @@ export const deleteCourse = async (data, token) => {
 
 // get full details of a course
 export const getFullDetailsOfCourse = async (courseId, token) => {
-  console.log(courseId,token)
-  const toastId = toast.loading("Loading...")
+  console.log(courseId, token);
+  const toastId = toast.loading("Loading...");
   //   dispatch(setLoading(true));
-  let result = null
+  let result = null;
   try {
     const response = await apiConnector(
       "POST",
@@ -322,22 +323,22 @@ export const getFullDetailsOfCourse = async (courseId, token) => {
       {
         Authorization: `Bearer ${token}`,
       }
-    )
-    console.log("COURSE_FULL_DETAILS_API API RESPONSE............", response)
+    );
+    console.log("COURSE_FULL_DETAILS_API API RESPONSE............", response);
 
     if (!response.data.success) {
-      throw new Error(response.data.message)
+      throw new Error(response.data.message);
     }
-    result = response?.data?.data
+    result = response?.data?.data;
   } catch (error) {
-    console.log("COURSE_FULL_DETAILS_API API ERROR............", error)
-    result = error.response.data
+    console.log("COURSE_FULL_DETAILS_API API ERROR............", error);
+    result = error.response.data;
     // toast.error(error.response.data.message);
   }
-  toast.dismiss(toastId)
+  toast.dismiss(toastId);
   //   dispatch(setLoading(false));
-  return result
-}
+  return result;
+};
 
 // mark a lecture as complete
 export const markLectureAsComplete = async (data, token) => {
@@ -388,4 +389,20 @@ export const createRating = async (data, token) => {
   }
   toast.dismiss(toastId);
   return success;
+};
+
+export const getCourseProgress = async (data, token) => {
+  let result = null;
+  try {
+    const response = await apiConnector("POST", COURSE_PROGRESS_API, data, {
+      Authorization: `Bearer ${token}`,
+    });
+    if (!response?.data?.success) {
+      throw new Error("Could Not Get Progress");
+    }
+    result = response?.data?.data;
+  } catch (err) {
+    console.log("Progress me lafda");
+  }
+  return result;
 };

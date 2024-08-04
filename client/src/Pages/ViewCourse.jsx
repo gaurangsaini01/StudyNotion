@@ -40,11 +40,11 @@ function ViewCourse() {
   }, [courseId]);
 
   return (
-    <div className="flex w-full relative h-full">
+    <div className="flex w-full relative h-full ">
       <div className="flex-shrink-0 fixed">
         <ViewCourseSidebar setReviewModal={setReviewModal} />
       </div>
-      <div className="h-full w-full ml-[320px]">
+      <div className="h-screen w-full ml-[320px]">
         <Outlet />
       </div>
       {reviewModal && <CourseReviewModal setReviewModal={setReviewModal} />}

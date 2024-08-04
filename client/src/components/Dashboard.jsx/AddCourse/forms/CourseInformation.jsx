@@ -62,14 +62,14 @@ function CourseInformation() {
 
     if (editCourse) {
       console.log("course is :-", course);
-      setValue("courseTitle", course.courseName);
-      setValue("courseShortDesc", course.courseDescription);
-      setValue("coursePrice", course.price);
-      setValue("courseTags", course.tag);
-      setValue("courseBenefits", course.whatYouWillLearn);
-      setValue("courseCategory", course.category._id);
-      setValue("courseRequirements", course.instructions);
-      setValue("courseImage", course.thumbnail);
+      setValue("courseTitle", course?.courseDetails?.courseName);
+      setValue("courseShortDesc", course?.courseDetails?.courseDescription);
+      setValue("coursePrice", course?.courseDetails?.price);
+      setValue("courseTags", course?.courseDetails?.tag);
+      setValue("courseBenefits", course?.courseDetails?.whatYouWillLearn);
+      setValue("courseCategory", course?.courseDetails?.category?._id);
+      setValue("courseRequirements", course?.courseDetails?.instructions);
+      setValue("courseImage", course?.courseDetails?.thumbnail);
     }
 
     getCategories();
@@ -79,14 +79,17 @@ function CourseInformation() {
     const currentValues = getValues();
     console.log("Current Values", currentValues);
     if (
-      currentValues.courseTitle !== course.courseName ||
-      currentValues.courseShortDesc !== course.courseDescription ||
-      currentValues.coursePrice !== course.price ||
-      currentValues.courseTitle !== course.courseName ||
-      currentValues.courseBenefits !== course.whatYouWillLearn ||
-      currentValues.courseCategory._id !== course.category._id ||
+      currentValues.courseTitle !== course?.courseDetails?.courseName ||
+      currentValues.courseShortDesc !==
+        course?.courseDetails?.courseDescription ||
+      currentValues.coursePrice !== course?.courseDetails?.price ||
+      currentValues.courseTitle !== course?.courseDetails?.courseName ||
+      currentValues.courseBenefits !==
+        course?.courseDetails?.whatYouWillLearn ||
+      currentValues.courseCategory._id !==
+        course?.courseDetails?.category._id ||
       (currentValues.courseImage &&
-        currentValues.courseImage !== course.thumbnail)
+        currentValues.courseImage !== course?.courseDetails?.thumbnail)
     )
       return true;
     else return false;
@@ -98,24 +101,32 @@ function CourseInformation() {
         const currentValues = getValues();
         const formData = new FormData();
 
-        formData.append("courseId", course._id);
-        if (currentValues.courseTitle !== course.courseName) {
+        formData.append("courseId", course?.courseDetails?._id);
+        if (currentValues.courseTitle !== course?.courseDetails?.courseName) {
           formData.append("courseName", data.courseTitle);
         }
 
-        if (currentValues.courseShortDesc !== course.courseDescription) {
+        if (
+          currentValues.courseShortDesc !==
+          course?.courseDetails?.courseDescription
+        ) {
           formData.append("courseDescription", data.courseShortDesc);
         }
 
-        if (currentValues.coursePrice !== course.price) {
+        if (currentValues.coursePrice !== course?.courseDetails?.price) {
           formData.append("price", data.coursePrice);
         }
 
-        if (currentValues.courseBenefits !== course.whatYouWillLearn) {
+        if (
+          currentValues.courseBenefits !==
+          course?.courseDetails?.whatYouWillLearn
+        ) {
           formData.append("whatYouWillLearn", data.courseBenefits);
         }
 
-        if (currentValues.courseCategory !== course.category._id) {
+        if (
+          currentValues.courseCategory !== course?.courseDetails?.category._id
+        ) {
           formData.append("category", data.courseCategory);
         }
 
@@ -128,7 +139,7 @@ function CourseInformation() {
         //     JSON.stringify(data.courseRequirements)
         //   );
         // }
-        if (currentValues.courseImage !== course.thumbnail) {
+        if (currentValues.courseImage !== course?.courseDetails?.thumbnail) {
           formData.append("thumbnail", data.courseImage);
         }
 
@@ -252,14 +263,14 @@ function CourseInformation() {
 
         <div className="w-full p-4 h-fit form-style rounded-md ">
           <div className="w-full flex flex-col gap-6">
-            {(previewSource || course?.thumbnail) && (
+            {(previewSource || course?.courseDetails?.thumbnail) && (
               <img
-                src={previewSource || course?.thumbnail}
+                src={previewSource || course?.courseDetails?.thumbnail}
                 className="w-full h-full object-cover"
                 alt="Preview"
               />
             )}
-            {(!previewSource || course?.thumbnail) && (
+            {(!previewSource || course?.courseDetails?.thumbnail) && (
               <div className="w-full text-richblack-300">
                 Click
                 <input

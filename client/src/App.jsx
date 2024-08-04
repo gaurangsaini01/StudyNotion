@@ -14,7 +14,6 @@ import ErrorPage from "./Pages/Error";
 import Contact from "./Pages/Contact";
 import MyProfile from "./components/Dashboard.jsx/MyProfile";
 import MySettings from "./components/Dashboard.jsx/MySettings";
-import Wishlist from "./components/Dashboard.jsx/Wishlist";
 import EnrolledCourses from "./components/Dashboard.jsx/EnrolledCourses";
 import MyCourses from "./components/Dashboard.jsx/MyCourses";
 import AddCourse from "./components/Dashboard.jsx/AddCourse";
@@ -29,7 +28,7 @@ import CoursePage from "./Pages/CoursePage";
 import Cart from "./components/Dashboard.jsx/Cart/Cart";
 import ScrollToTop from "./components/ScrollToTop";
 import ViewCourse from "./Pages/ViewCourse";
-import PrivateRoute from "./components/Auth/PrivateRoute"
+import PrivateRoute from "./components/Auth/PrivateRoute";
 import VideoDetails from "./components/ViewCourse/VideoDetails";
 
 function App() {
@@ -112,7 +111,7 @@ function App() {
 
               <Route path="/dashboard/my-courses" element={<MyCourses />} />
               <Route path="/dashboard/add-course" element={<AddCourse />} />
-              <Route path="/dashboard/wishlist" element={<Wishlist />} />
+              {/* <Route path="/dashboard/wishlist" element={<Wishlist />} /> */}
               <Route path="/dashboard/my-profile" element={<MyProfile />} />
               <Route path="/dashboard/my-settings" element={<MySettings />} />
             </Route>
@@ -126,7 +125,7 @@ function App() {
               {user?.accountType === "student" && (
                 <>
                   <Route
-                    path="viewcourse/:courseId/section/:sectionid/subsection/:subsectionid"
+                    path="viewcourse/:courseId/section/:sectionId/subsection/:subSectionId"
                     element={<VideoDetails />}
                   />
                 </>

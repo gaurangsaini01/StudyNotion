@@ -5,6 +5,7 @@ const { createHmac } = require("node:crypto");
 const instance = require("../config/razorpay");
 const courseEnrollmentEmail = require("../mail/templates/courseEnrollmentTemplate");
 const paymentSuccessEmail = require("../mail/templates/paymentSuccessEmail");
+const CourseProgress = require("../models/CourseProgress");
 
 const sendPaymentSuccessEmail = async (req, res) => {
   const { orderId, paymentId, amount } = req.body;
@@ -164,10 +165,15 @@ const enrollStudent = async (userId, courses, res) => {
         { new: true }
       );
 
+      const courseProgress = await CourseProgress.create({
+        courseId: courseId,
+        userId: userId,
+        completedVideos: [],
+      });
       // now give course to student
       const student = await User.findByIdAndUpdate(
         userId,
-        { $push: { courses: courseId } },
+        { $push: { courses: courseId, courseProgress: courseProgress._id } },
         { new: true }
       );
 

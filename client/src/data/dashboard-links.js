@@ -36,7 +36,7 @@ export const sidebarLinks = [
   {
     id: 6,
     name: "Wishlist",
-    path: "/dashboard/wishlist",
+    path: "/dashboard/cart",
     type: "student",
     icon: "VscBookmark",
   },

@@ -9,7 +9,8 @@ const {
   getCourseDetails,
   editCourse,
   deleteCourse,
-  getFullCourseDetails
+  getFullCourseDetails,
+  updateCourseProgress
 } = require("../controllers/Course");
 
 //category controllers
@@ -78,6 +79,8 @@ router.get("/getallcourses", getAllCourses);
 router.post("/getcoursedetails" ,getCourseDetails);
 
 router.post('/getfullcoursedetails',auth,getFullCourseDetails)
+router.post('/updateCourseProgress',auth,updateCourseProgress)
+
 
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)

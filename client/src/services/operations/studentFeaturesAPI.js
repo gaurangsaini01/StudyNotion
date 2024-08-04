@@ -88,7 +88,7 @@ export async function buyCourse(
         Authorization: `Bearer ${token}`,
       }
     );
-    console.log(orderRes)
+  
 
     if(orderRes?.data?.ap){
       toast.error('User Already enrolled')

@@ -5,6 +5,7 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
 const CourseProgress = require("../models/CourseProgress");
+const fs = require("fs");
 require("dotenv").config();
 
 async function createCourse(req, res) {
@@ -18,7 +19,7 @@ async function createCourse(req, res) {
       status,
       instructions,
     } = req.body;
-    const thumbnail = req.files?.thumbnail; // Use optional chaining in case files are not present
+    const thumbnail = req.files?.thumbnail;
 
     // Validate the received data
     if (
@@ -49,6 +50,11 @@ async function createCourse(req, res) {
       thumbnail,
       process.env.FOLDER_NAME
     );
+    fs.unlink(thumbnail.tempFilePath, (err) => {
+      if (err) {
+        console.error("Error deleting temporary file:", err);
+      }
+    });
 
     // Create an entry for the new course in the DB
     const newCourse = await Course.create({
@@ -58,7 +64,7 @@ async function createCourse(req, res) {
       whatYouWillLearn,
       price,
       category,
-      thumbnail: thumbnailImage.secure_url,
+      thumbnail: thumbnailImage?.secure_url,
       status,
       instructions,
     });

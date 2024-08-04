@@ -31,12 +31,12 @@ function ReviewSlider() {
           slidesPerView={width > 1300 ? 4 : width > 900 ? 2 : 1}
           spaceBetween={25}
           loop={true}
-          freeMode={true}
+        //   freeMode={true}
           autoplay={{
             delay: 2000,
             disableOnInteraction: false,
           }}
-          modules={[Autoplay, FreeMode]}
+          modules={[Autoplay]}
           className="w-full "
         >
           {reviews.map((review, i) => {

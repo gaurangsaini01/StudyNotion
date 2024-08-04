@@ -30,6 +30,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import ViewCourse from "./Pages/ViewCourse";
 import PrivateRoute from "./components/Auth/PrivateRoute";
 import VideoDetails from "./components/ViewCourse/VideoDetails";
+import Instructor from "./components/Dashboard.jsx/instructorDashboard/InstructorDashboard";
 
 function App() {
   const { user } = useSelector((state) => state.profile);
@@ -108,7 +109,7 @@ function App() {
                   />
                 </>
               )}
-
+              <Route path='/dashboard/instructor' element={<Instructor/>}/>
               <Route path="/dashboard/my-courses" element={<MyCourses />} />
               <Route path="/dashboard/add-course" element={<AddCourse />} />
               {/* <Route path="/dashboard/wishlist" element={<Wishlist />} /> */}

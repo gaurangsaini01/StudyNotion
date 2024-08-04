@@ -11,7 +11,8 @@ const {
   deleteCourse,
   getFullCourseDetails,
   updateCourseProgress,
-  getCourseProgress
+  getCourseProgress,
+  getInstructorCourses
 } = require("../controllers/Course");
 
 //category controllers
@@ -91,8 +92,8 @@ router.post('/getReviews',getAllRatingAndReviews)
 //                                      Category routes (Only by Admin)
 // ********************************************************************************************************
 // Category can Only be Created by Admin
-// TODO: Put IsAdmin Middleware here
 router.post("/createcategory", auth, isAdmin, createCategory);
+
 router.get("/getallcategories", getAllCategories);
 router.post("/getcategorypagedetails", categoryPageDetails);
 
@@ -103,5 +104,6 @@ router.post("/createRating", auth, isStudent, createRatingAndReviews);
 router.get("/getAverageRating", getAvgRating);
 router.get("/getReviews", getAllRatingAndReviews);
 router.get('/getcoursereviews',getCourseRatingAndReview)
+router.get('/getInstructorCourses',auth,isInstructor,getInstructorCourses)
 
 module.exports = router;

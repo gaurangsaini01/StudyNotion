@@ -7,6 +7,11 @@ import CourseCard from "../components/Catalog/CourseCard";
 import useWindowWidth from "../hooks/useWindowWidth";
 import { PiSmileySadLight } from "react-icons/pi";
 import Footer from "../components/Footer";
+import "swiper/css/free-mode"
+import { Autoplay } from "swiper/modules"
+import 'swiper/css/autoplay'
+
+
 
 function Catalog() {
   //custom Hook
@@ -74,6 +79,11 @@ function Catalog() {
               <Swiper
                 slidesPerView={width > 1300 ? 3 : width > 900 ? 2 : 1}
                 loop={true}
+                modules={[ Autoplay]}
+                autoplay={{
+                  delay: 1500,
+                  disableOnInteraction: false,
+                }}
                 className="mySwiper"
               >
                 {selectedCategoryCourses?.map((course, index) => {
@@ -99,6 +109,12 @@ function Catalog() {
               <Swiper
                 slidesPerView={width > 1300 ? 3 : width > 900 ? 2 : 1}
                 loop={true}
+                modules={[ Autoplay]}
+                autoplay={{
+                  delay: 1500,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter:true
+                }}
                 className="mySwiper"
               >
                 {differentCategories?.map((category) => {

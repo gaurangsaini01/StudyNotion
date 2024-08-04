@@ -3,6 +3,7 @@ import React from "react"
 import Footer from "../components/Footer"
 import ContactDetails from "../components/ContactUsPage/ContactDetails"
 import ContactForm from "../components/ContactUsPage/ContactForm"
+import ReviewSlider from "../components/reusable/ReviewSlider"
 
 const Contact = () => {
   return (
@@ -19,11 +20,10 @@ const Contact = () => {
         </div>
       </div>
       <div className="relative mx-auto my-8 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">
-        {/* Reviws from Other Learner */}
-        {/* <h1 className="text-center text-4xl font-semibold mt-8">
+        <h1 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners
-        </h1> */}
-        {/* <ReviewSlider /> */}
+        </h1>
+        <ReviewSlider />
       </div>
       <Footer />
     </div>

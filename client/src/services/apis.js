@@ -4,6 +4,11 @@ export const categories = {
   CATEGORIES_API: BASE_URL + "/course/getallcategories",
 };
 
+// Rating and review
+export const ratingsEndpoints = {
+  REVIEWS_DETAILS_API: BASE_URL + "/course/getReviews",
+}
+
 // AUTH ENDPOINTS
 export const endpoints = {
   SENDOTP_API: BASE_URL + "/auth/sendotp",

@@ -82,6 +82,8 @@ router.post("/getcoursedetails" ,getCourseDetails);
 router.post('/getfullcoursedetails',auth,getFullCourseDetails)
 router.post('/updateCourseProgress',auth,updateCourseProgress)
 router.post('/getCourseProgress',auth,getCourseProgress)
+router.post('/getReviews',getAllRatingAndReviews)
+
 
 
 

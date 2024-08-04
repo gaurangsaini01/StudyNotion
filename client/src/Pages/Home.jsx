@@ -12,6 +12,7 @@ import Footer from "../components/Footer";
 import LearningLanguageSection from "../components/Home/LearningLanguageSection";
 import InstructorSection from "../components/Home/InstructorSection";
 import ExploreMore from "../components/Home/ExploreMore";
+import ReviewSlider from "../components/reusable/ReviewSlider";
 
 const Home = () => {
   return (
@@ -97,7 +98,7 @@ const Home = () => {
             gradientimg={gradientblue}
           />
         </div>
-        <ExploreMore/>
+        <ExploreMore />
       </div>
 
       {/* Section 2 */}
@@ -124,16 +125,19 @@ const Home = () => {
 
       {/* //section3 */}
 
-      <div className="w-11/12 mx-auto max-w-maxContent flex-col items-center justify-between gap-8 first-letter bg-richblack-900 text-white mb-8">
-        <InstructorSection/>
-
-        {/* <h2 className="text-center text-4xl font-semobold mt-10">
-          Review from Other Learners
-        </h2> */}
-        {/* Review Slider here */}
+      <div className="w-11/12 mx-auto max-w-maxContent flex flex-col gap-24 my-10 items-center bg-richblack-900 text-white mb-8">
+        <div>
+          <InstructorSection />
+        </div>
+        <div>
+          <h2 className="text-center text-4xl font-semibold">
+            Review from Other Learners
+          </h2>
+          <ReviewSlider />
+        </div>
       </div>
 
-      {/* //footer */}
+      {/* //footeer */}
       <Footer />
     </div>
   );

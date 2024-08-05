@@ -41,7 +41,7 @@ const Footer = () => {
                       key={i}
                       className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                     >
-                      <Link to={ele.toLowerCase()}>{ele}</Link>
+                      <div to={ele.toLowerCase()}>{ele}</div>
                     </div>
                   );
                 })}
@@ -67,9 +67,9 @@ const Footer = () => {
                       key={index}
                       className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                     >
-                      <Link to={ele.split(" ").join("-").toLowerCase()}>
+                      <div to={ele.split(" ").join("-").toLowerCase()}>
                         {ele}
-                      </Link>
+                      </div>
                     </div>
                   );
                 })}
@@ -79,7 +79,7 @@ const Footer = () => {
                 Support
               </h1>
               <div className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200 mt-2">
-                <Link to={"/help-center"}>Help Center</Link>
+                <div to={"/help-center"}>Help Center</div>
               </div>
             </div>
 
@@ -95,9 +95,9 @@ const Footer = () => {
                       key={index}
                       className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                     >
-                      <Link to={ele.split(" ").join("-").toLowerCase()}>
+                      <div to={ele.split(" ").join("-").toLowerCase()}>
                         {ele}
-                      </Link>
+                      </div>
                     </div>
                   );
                 })}
@@ -113,9 +113,9 @@ const Footer = () => {
                       key={index}
                       className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                     >
-                      <Link to={ele.split(" ").join("-").toLowerCase()}>
+                      <div to={ele.split(" ").join("-").toLowerCase()}>
                         {ele}
-                      </Link>
+                      </div>
                     </div>
                   );
                 })}
@@ -132,13 +132,13 @@ const Footer = () => {
                     {ele.title}
                   </h1>
                   <div className="flex flex-col gap-2 mt-2">
-                    {ele.links.map((link, index) => {
+                    {ele.links.map((div, index) => {
                       return (
                         <div
                           key={index}
                           className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200"
                         >
-                          <Link to={link.link}>{link.title}</Link>
+                          <div to={div.div}>{div.title}</div>
                         </div>
                       );
                     })}
@@ -164,9 +164,9 @@ const Footer = () => {
                       : "border-r border-richblack-700 cursor-pointer hover:text-richblack-50 transition-all duration-200"
                   } px-3 `}
                 >
-                  <Link to={ele.split(" ").join("-").toLocaleLowerCase()}>
+                  <div to={ele.split(" ").join("-").toLocaleLowerCase()}>
                     {ele}
-                  </Link>
+                  </div>
                 </div>
               );
             })}

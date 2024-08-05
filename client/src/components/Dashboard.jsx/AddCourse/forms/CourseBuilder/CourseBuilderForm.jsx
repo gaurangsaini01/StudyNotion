@@ -44,7 +44,7 @@ export default function CourseBuilderForm() {
         {
           sectionName: data.sectionName,
           sectionId: editSectionName,
-          courseId: course._id,
+          courseId: course?._id,
         },
         token
       );
@@ -53,7 +53,7 @@ export default function CourseBuilderForm() {
       result = await createSection(
         {
           sectionName: data.sectionName,
-          courseId: course._id,
+          courseId: course?._id,
         },
         token
       );

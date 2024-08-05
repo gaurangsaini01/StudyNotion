@@ -62,14 +62,14 @@ function CourseInformation() {
 
     if (editCourse) {
       console.log("course is :-", course);
-      setValue("courseTitle", course?.courseDetails?.courseName);
-      setValue("courseShortDesc", course?.courseDetails?.courseDescription);
-      setValue("coursePrice", course?.courseDetails?.price);
-      setValue("courseTags", course?.courseDetails?.tag);
-      setValue("courseBenefits", course?.courseDetails?.whatYouWillLearn);
-      setValue("courseCategory", course?.courseDetails?.category?._id);
-      setValue("courseRequirements", course?.courseDetails?.instructions);
-      setValue("courseImage", course?.courseDetails?.thumbnail);
+      setValue("courseTitle", course?.courseName);
+      setValue("courseShortDesc", course?.courseDescription);
+      setValue("coursePrice", course?.price);
+      setValue("courseTags", course?.tag);
+      setValue("courseBenefits", course?.whatYouWillLearn);
+      setValue("courseCategory", course?.category?._id);
+      setValue("courseRequirements", course?.instructions);
+      setValue("courseImage", course?.thumbnail);
     }
 
     getCategories();
@@ -79,17 +79,17 @@ function CourseInformation() {
     const currentValues = getValues();
     console.log("Current Values", currentValues);
     if (
-      currentValues.courseTitle !== course?.courseDetails?.courseName ||
+      currentValues.courseTitle !== course?.courseName ||
       currentValues.courseShortDesc !==
-        course?.courseDetails?.courseDescription ||
-      currentValues.coursePrice !== course?.courseDetails?.price ||
-      currentValues.courseTitle !== course?.courseDetails?.courseName ||
+        course?.courseDescription ||
+      currentValues.coursePrice !== course?.price ||
+      currentValues.courseTitle !== course?.courseName ||
       currentValues.courseBenefits !==
-        course?.courseDetails?.whatYouWillLearn ||
+        course?.whatYouWillLearn ||
       currentValues.courseCategory._id !==
-        course?.courseDetails?.category._id ||
+        course?.category._id ||
       (currentValues.courseImage &&
-        currentValues.courseImage !== course?.courseDetails?.thumbnail)
+        currentValues.courseImage !== course?.thumbnail)
     )
       return true;
     else return false;
@@ -101,31 +101,31 @@ function CourseInformation() {
         const currentValues = getValues();
         const formData = new FormData();
 
-        formData.append("courseId", course?.courseDetails?._id);
-        if (currentValues.courseTitle !== course?.courseDetails?.courseName) {
+        formData.append("courseId", course?._id);
+        if (currentValues.courseTitle !== course?.courseName) {
           formData.append("courseName", data.courseTitle);
         }
 
         if (
           currentValues.courseShortDesc !==
-          course?.courseDetails?.courseDescription
+          course?.courseDescription
         ) {
           formData.append("courseDescription", data.courseShortDesc);
         }
 
-        if (currentValues.coursePrice !== course?.courseDetails?.price) {
+        if (currentValues.coursePrice !== course?.price) {
           formData.append("price", data.coursePrice);
         }
 
         if (
           currentValues.courseBenefits !==
-          course?.courseDetails?.whatYouWillLearn
+          course?.whatYouWillLearn
         ) {
           formData.append("whatYouWillLearn", data.courseBenefits);
         }
 
         if (
-          currentValues.courseCategory !== course?.courseDetails?.category._id
+          currentValues.courseCategory !== course?.category._id
         ) {
           formData.append("category", data.courseCategory);
         }
@@ -139,7 +139,7 @@ function CourseInformation() {
         //     JSON.stringify(data.courseRequirements)
         //   );
         // }
-        if (currentValues.courseImage !== course?.courseDetails?.thumbnail) {
+        if (currentValues.courseImage !== course?.thumbnail) {
           formData.append("thumbnail", data.courseImage);
         }
 
@@ -185,7 +185,7 @@ function CourseInformation() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="rounded-md border-richblack-700 bg-richblack-800 p-6  space-y-8"
+        className="rounded-md border-richblack-700 bg-richblack-800 md:p-6 py-4 px-2  space-y-8"
       >
         <div className="flex flex-col gap-2">
           <label htmlFor="courseTitle" className="lable-style">
@@ -197,7 +197,7 @@ function CourseInformation() {
             {...register("courseTitle", { required: true })}
             className="w-full form-style"
           />
-          {errors.courseTitle && <span>Course Title is Required**</span>}
+          {errors.courseTitle && <span className="text-red-600 text-sm mt-1">Course Title is Required**</span>}
         </div>
 
         <div className="flex flex-col gap-2">
@@ -211,7 +211,7 @@ function CourseInformation() {
             className="min-h-[140px] w-full form-style"
           />
           {errors.courseShortDesc && (
-            <span>Course Description is required**</span>
+            <span className="text-red-600 text-sm mt-1">Course Description is required**</span>
           )}
         </div>
 
@@ -232,7 +232,7 @@ function CourseInformation() {
             size={20}
             className="absolute top-[57%] left-2 text-richblack-50"
           />
-          {errors.coursePrice && <span>Course Price is Required**</span>}
+          {errors.coursePrice && <span className="text-red-600 text-sm mt-1">Course Price is Required**</span>}
         </div>
 
         <div className="flex flex-col gap-2">
@@ -256,21 +256,21 @@ function CourseInformation() {
                 </option>
               ))}
           </select>
-          {errors.courseCategory && <span>Course Category is Required</span>}
+          {errors.courseCategory && <span className="text-red-600 text-sm mt-1">Course Category is Required</span>}
         </div>
 
         {/* For uploading and showing preview of Thumbnail */}
 
         <div className="w-full p-4 h-fit form-style rounded-md ">
           <div className="w-full flex flex-col gap-6">
-            {(previewSource || course?.courseDetails?.thumbnail) && (
+            {(previewSource || course?.thumbnail) && (
               <img
-                src={previewSource || course?.courseDetails?.thumbnail}
+                src={previewSource || course?.thumbnail}
                 className="w-full h-full object-cover"
                 alt="Preview"
               />
             )}
-            {(!previewSource || course?.courseDetails?.thumbnail) && (
+            {(!previewSource || course?.thumbnail) && (
               <div className="w-full text-richblack-300">
                 Click
                 <input
@@ -292,7 +292,7 @@ function CourseInformation() {
               </div>
             )}
           </div>
-          {errors.courseImage && <span>Thumbnail Is required**</span>}
+          {errors.courseImage && <span className="text-red-600 text-sm mt-1">Thumbnail Is required**</span>}
         </div>
 
         {/*     Benefits of the Course */}
@@ -307,18 +307,10 @@ function CourseInformation() {
             className="min-h-[130px] w-full form-style"
           />
           {errors.courseBenefits && (
-            <span>Benefits of the course are required**</span>
+            <span className="text-red-600 text-sm mt-1">Benefits of the course are required**</span>
           )}
         </div>
 
-        {/* <RequirementField
-          name="courseRequirements"
-          label="Requirements/Instructions"
-          register={register}
-          errors={errors}
-          setValue={setValue}
-          getValues={getValues}
-        /> */}
         <div className="flex gap-4 flex-wrap">
           {editCourse && (
             <button

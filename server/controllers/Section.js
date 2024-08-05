@@ -6,6 +6,7 @@ async function createSection(req, res) {
   try {
     //fetch data
     const { sectionName, courseId } = req.body;
+    console.log(sectionName,courseId)
     //validate data
     if (!sectionName || !courseId) {
       return res.status(400).json({

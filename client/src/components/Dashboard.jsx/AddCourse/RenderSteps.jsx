@@ -27,7 +27,7 @@ function RenderSteps() {
     },
   ];
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full  flex flex-col items-center">
       <Box sx={{ width: "90%" }}>
         <Stepper activeStep={step} alternativeLabel>
           {steps.map((label) => (
@@ -39,7 +39,7 @@ function RenderSteps() {
           ))}
         </Stepper>
       </Box>
-      <div className="w-11/12 mx-auto mt-6">
+      <div className="md:w-11/12 w-full mx-auto mt-6">
         {step === 0 && <CourseInformation />}
         {step === 1 && <CourseBuilder />}
         {step === 2 && <PublishForm />}

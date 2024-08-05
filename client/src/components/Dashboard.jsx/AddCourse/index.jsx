@@ -15,14 +15,14 @@ function AddCourse() {
     dispatch(setStep(0));
   }
   return (
-    <div className="text-richblack-5 p-6 w-full mx-auto">
+    <div className="text-richblack-5 md:p-6 py-6 px-4 w-full mx-auto">
       <button onClick={handleExit} className="text-sm text-richblack-300">Exit</button>
       <h1 className="text-3xl">{editCourse ? "Edit Course" : "Add Course"}</h1>
       <div className="flex mt-6 justify-between">
-        <div className="w-8/12">
+        <div className="md:w-8/12 w-full">
           <RenderSteps />
         </div>
-        <div className="w-4/12 h-fit bg-richblack-800 rounded-xl p-4 mr-10">
+        <div className="md:w-4/12 hidden md:block h-fit bg-richblack-800 rounded-xl p-4 mr-10">
           <div className="text-xl flex items-center gap-2 font-semibold">
             <AiTwotoneThunderbolt color="#CFAB08" />
             <p>Code Upload Tips</p>

@@ -5,10 +5,10 @@ async function mailSender(email, title, body) {
   try {
     var transport = nodemailer.createTransport({
       host:process.env.NODE_ENV==='dev'? process.env.DEV_MAIL_HOST:process.env.MAIL_HOST,
-      port: 2525,
+      port: process.env.NODE_ENV==='dev'?2525:587,
       auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
+        user: process.env.NODE_ENV==='dev'?process.env.DEV_MAIL_USER:process.env.MAIL_USER,
+        pass: process.env.NODE_ENV==='dev'?process.env.DEV_MAIL_PASS:process.env.MAIL_PASS,
       },
     });
     let info = await transport.sendMail({

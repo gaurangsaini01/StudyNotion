@@ -8,9 +8,11 @@ const MyProfile = () => {
   const { user } = useSelector((state) => state.profile);
   const navigate = useNavigate();
   return (
-    <div className=" p-7 flex flex-col gap-5  mx-auto">
-      <h1 className="text-3xl text-center font-bold tracking-wider text-richblack-5">My Profile</h1>
-      <div className="min-w-[70%] mx-auto flex flex-col gap-3 ">
+    <div className="md:p-7 py-4 flex flex-col gap-5  mx-auto">
+      <h1 className="md:text-3xl text-2xl text-center font-bold tracking-wider text-richblack-5">
+        My Profile
+      </h1>
+      <div className="md:min-w-[70%] max-w-[95%] mx-auto flex flex-col gap-3 ">
         {/* section 1 */}
         <div className="flex justify-between w-full items-center bg-richblack-800 p-4 rounded-md border-[1px] border-richblack-700">
           <div className="flex items-center gap-3">
@@ -20,7 +22,10 @@ const MyProfile = () => {
               className="aspect-square w-[78px] rounded-full object-cover"
             />
             <div>
-              <p className="text-richblack-5"> {user?.firstName + " " + user?.lastName} </p>
+              <p className="text-richblack-5">
+                {" "}
+                {user?.firstName + " " + user?.lastName}{" "}
+              </p>
               <p className="text-[12px] text-richblack-300 mt-1">
                 {" "}
                 {user?.email}
@@ -53,7 +58,7 @@ const MyProfile = () => {
               <BiSolidEdit />{" "}
             </IconBtn>
           </div>
-          <div className="flex gap-28 w-full ">
+          <div className="flex md:gap-28 gap-12 w-full ">
             <div className="flex flex-col gap-4">
               <div>
                 <p className="text-richblack-300 ">First Name</p>

@@ -53,7 +53,7 @@ function Sidebar() {
                 path: "/dashboard/my-settings",
               }}
             />
-            
+
             <button
               onClick={() => handleOpen()}
               className="text-sm font-medium px-8 py-2 flex gap-4 hover:text-yellow-50 text-white transition-all duration-200 ease-in-out rounded-md"
@@ -76,8 +76,11 @@ function Sidebar() {
                   component="h2"
                   className="text-richblack-25"
                 >
-                  Are you Sure , you will be Logged out of your Account ?
+                  Are you Sure ?
                 </Typography>
+                <div className="text-richblack-200 text-sm">
+                  you will be Logged out of your Account ?
+                </div>
                 <div className="flex w-full gap-4 mt-4">
                   <button
                     className="px-4 hover:scale-95 transition-all duration-200 ease-in-out py-2 bg-yellow-50 font-semibold text-black rounded-md"

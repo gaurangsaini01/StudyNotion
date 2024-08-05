@@ -20,20 +20,20 @@ function EnrolledCourseCard({ course, navigate }) {
         return acc + (section?.subSection.length || 0);
       }, 0);
       console.log("totalLectures", totalLectures);
-      setProgress((completedLectures/totalLectures)*100);
+      setProgress((completedLectures / totalLectures) * 100);
     }
     getProgress();
   }, []);
 
   return (
-    <div className="flex items-center">
+    <div className="flex md:flex-nowrap flex-wrap items-center">
       <div
         onClick={() =>
           navigate(
             `/viewcourse/${course._id}/section/${course?.courseContent?.[0]._id}/subsection/${course?.courseContent?.[0]?.subSection?.[0]?._id}`
           )
         }
-        className="cursor-pointer flex gap-4 w-1/2 items-center"
+        className="cursor-pointer flex gap-4 md:w-1/2 w-full items-center"
       >
         <div className="w-[45px] h-[45px] rounded-full overflow-hidden">
           <img
@@ -48,12 +48,12 @@ function EnrolledCourseCard({ course, navigate }) {
           </p>
         </div>
       </div>
-      <div className="flex w-full justify-between items-center">
-        <div className="text-sm text-richblack-200">
+      <div className="flex w-full md:flex-row flex-col md:gap-0 gap-1 md:mt-0 mt-2 justify-between items-start md:items-center">
+        <div className="text-sm md:w-2/3 text-richblack-200">
           {course?.category?.name}
         </div>
-        <div className="text-sm text-richblack-200">
-          {course?.instructor?.firstName}
+        <div className="text-sm flex md:w-1/2 items-center gap-2 text-richblack-200">
+          <div className="md:hidden block">Instructor : </div>{course?.instructor?.firstName}
         </div>
         <div className="min-w-[250px] flex flex-col gap-2">
           <div className="text-sm text-richblack-200">

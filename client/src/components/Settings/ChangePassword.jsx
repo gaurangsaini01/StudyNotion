@@ -32,7 +32,7 @@ function ChangePassword() {
         className="flex w-full flex-col gap-5 lg:flex-row"
       >
         <div className="flex flex-col w-full gap-8">
-          <div className="flex flex-row mx-auto  gap-5 w-full">
+          <div className="flex flex-col md:flex-row mx-auto  gap-5 w-full">
             <div className="flex flex-col gap-2 lg:w-[45%]">
               <label htmlFor="oldPassword" className="lable-style">
                 Current Password

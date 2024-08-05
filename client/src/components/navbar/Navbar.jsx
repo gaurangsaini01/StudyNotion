@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../assets/Logo/Logo-Full-Light.png";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { NavbarLinks } from "../../data/navbar-links";
 import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineShoppingCart } from "react-icons/ai";
@@ -12,6 +12,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { IoCloseSharp } from "react-icons/io5";
 
 function Navbar({ open, setOpen }) {
+  const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
   const { user } = useSelector((state) => state.profile);
   const { totalItems } = useSelector((state) => state.cart);
@@ -47,7 +48,6 @@ function Navbar({ open, setOpen }) {
                   <div className="relative hover:cursor-pointer flex items-center group">
                     <p>{item.title}</p>
                     <RiArrowDropDownLine size={25} />
-
                     <div
                       className="invisible  absolute left-[50%]
                       translate-x-[-50%] translate-y-[10%]
@@ -73,7 +73,7 @@ function Navbar({ open, setOpen }) {
                               .trim()}/${sublink?._id}`}
                             key={index}
                           >
-                            <p className="my-2 hover:bg-richblack-300 px-4 hover:text-richblack-700 py-2 rounded-md font-semibold capitalize ">
+                            <p className="my-2 hover:bg-richblack-200 px-4 hover:text-richblack-700 py-2 rounded-md font-semibold capitalize ">
                               {sublink.name}
                             </p>
                           </Link>
@@ -121,9 +121,36 @@ function Navbar({ open, setOpen }) {
           )}
           {token !== null && <ProfileDropdown />}
         </div>
-        <div className="text-xl cursor-pointer text-richblack-5 md:hidden block">
+
+        <div className="text-xl flex gap-4 items-center cursor-pointer text-richblack-5 md:hidden ">
+          {!open && user ? (
+            <div
+              onClick={() => navigate("/dashboard/my-profile")}
+              className="overflow-hidden w-6 h-6 border rounded-full"
+            >
+              <img
+                src={user?.image}
+                className="w-full h-full object-cover"
+                alt=""
+              />
+            </div>
+          ) : null}
           {!open ? (
-            <RxHamburgerMenu onClick={() => setOpen(true)} />
+            <div className="flex items-center gap-4">
+              {user && user.accountType !== "instructor" && (
+                <Link to={"/dashboard/cart"} className="relative text-white">
+                  <AiOutlineShoppingCart size={20} className="relative z-0" />
+                  {totalItems > 0 ? (
+                    <span className="absolute z-10 top-[-10px] right-[-10px] text-white rounded-full text-sm px-[6px] bg-puregreys-400">
+                      {totalItems}
+                    </span>
+                  ) : (
+                    <span></span>
+                  )}
+                </Link>
+              )}
+              <RxHamburgerMenu onClick={() => setOpen(true)} />
+            </div>
           ) : (
             <IoCloseSharp onClick={() => setOpen(false)} />
           )}

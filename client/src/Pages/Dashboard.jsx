@@ -13,10 +13,10 @@ function Dashboard() {
 
   return (
     <div className="flex w-full relative h-full">
-      <div className="flex-shrink-0 fixed">
+      <div className="flex-shrink-0 fixed md:block hidden">
         <Sidebar />
       </div>
-      <div className="h-full w-full ml-[222px]">
+      <div className="h-full w-full md:ml-[222px]">
         <Outlet />
       </div>
     </div>

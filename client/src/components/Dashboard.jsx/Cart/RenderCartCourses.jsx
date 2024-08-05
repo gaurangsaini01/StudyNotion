@@ -9,15 +9,15 @@ export default function RenderCartCourses() {
   const { cart } = useSelector((state) => state.cart)
   const dispatch = useDispatch()
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col md:w-auto w-full">
       {cart.map((course, index) => (
         <div
           key={course._id}
-          className={`flex w-full flex-wrap items-center justify-between gap-6 ${
+          className={`flex w-full  items-center justify-between gap-6 ${
             index !== cart.length - 1 && "border-b border-b-richblack-400 pb-6"
           } ${index !== 0 && "mt-6"} `}
         >
-          <div className="flex flex-1 items-center flex-col gap-4 xl:flex-row">
+          <div className="flex flex-1 items-center flex-col  gap-4 xl:flex-row">
             <div className="h-[148px] w-[220px] overflow-hidden">
             <img
               src={course?.thumbnail}

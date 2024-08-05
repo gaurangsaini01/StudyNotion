@@ -65,7 +65,7 @@ function MyCourses() {
 
   return (
     <>
-      <div className="text-richblack-5 p-6 w-11/12">
+      <div className="text-richblack-5 md:p-6  py-8 md:mx-0 mx-auto w-11/12">
         <div className="flex justify-between">
           <h1 className="text-3xl">My Courses</h1>
           <button
@@ -161,7 +161,7 @@ function MyCourses() {
             </div>
           )}
         </div>
-      </div> 
+      </div>
       {showConfirmationModal && (
         <ConfirmationModal
           modalData={showConfirmationModal}

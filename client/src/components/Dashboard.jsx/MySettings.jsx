@@ -11,7 +11,7 @@ function MySettings() {
   const navigate = useNavigate();
 
   return (
-    <div className=" p-7 flex flex-col gap-5 w-[70%] mx-auto">
+    <div className=" md:p-7 py-7 md:px-6 md:m-0 m-2 overflow-hidden md:overflow-visible flex flex-col gap-5 md:w-[70%] md:mx-auto">
       <div
         onClick={() => navigate("/dashboard/my-profile")}
         className="flex gap-2 items-center text-richblack-300 cursor-pointer"
@@ -22,7 +22,7 @@ function MySettings() {
       <h1 className="text-3xl text-center font-bold tracking-wider text-richblack-5">
         Edit Profile
       </h1>
-      <div className="min-w-[70%] mx-auto flex flex-col gap-3 ">
+      <div className="md:min-w-[70%] max-w-[95%] mx-auto flex flex-col gap-3 ">
         <ChangeProfilePicture />
         <ProfileUpdate />
         <DeleteAccount />

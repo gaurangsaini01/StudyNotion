@@ -25,7 +25,7 @@ function EnrolledCourses() {
   }, []);
 
   return (
-    <div className="text-white p-7">
+    <div className="text-white md:px-7 py-7 space-y-6 md:space-y-0 px-4">
       <div className="text-3xl font-bold">Enrolled Courses</div>
       {!enrolledCourses ? (
         <div>Loading...</div>
@@ -34,8 +34,8 @@ function EnrolledCourses() {
           You have not enrolled in any course yet
         </p>
       ) : (
-        <div className="flex flex-col w-full">
-          <div className="flex bg-richblack-700 my-6 pl-6 rounded-md py-4">
+        <div className="flex flex-col  w-full">
+          <div className="md:flex hidden bg-richblack-700 my-6 pl-6 rounded-md py-4">
             <p className="w-1/2">Course Name</p>
             <div className="flex justify-between items-center w-full pr-20">
               <p className="">Category</p>
@@ -44,7 +44,7 @@ function EnrolledCourses() {
             </div>
           </div>
           {/* Cards starting */}
-          <div className="flex flex-col gap-3 pl-6">
+          <div className="flex flex-col gap-6 md:pl-6">
             {enrolledCourses.map((course) => (
               <EnrolledCourseCard
                 key={course._id}

@@ -1,16 +1,25 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
+var transport = nodemailer.createTransport({
+  host:
+    process.env.NODE_ENV === "dev"
+      ? process.env.DEV_MAIL_HOST
+      : process.env.MAIL_HOST,
+  port: process.env.NODE_ENV === "dev" ? 2525 : 587,
+  auth: {
+    user:
+      process.env.NODE_ENV === "dev"
+        ? process.env.DEV_MAIL_USER
+        : process.env.MAIL_USER,
+    pass:
+      process.env.NODE_ENV === "dev"
+        ? process.env.DEV_MAIL_PASS
+        : process.env.MAIL_PASS,
+  },
+});
 async function mailSender(email, title, body) {
   try {
-    var transport = nodemailer.createTransport({
-      host:process.env.NODE_ENV==='dev'? process.env.DEV_MAIL_HOST:process.env.MAIL_HOST,
-      port: process.env.NODE_ENV==='dev'?2525:587,
-      auth: {
-        user: process.env.NODE_ENV==='dev'?process.env.DEV_MAIL_USER:process.env.MAIL_USER,
-        pass: process.env.NODE_ENV==='dev'?process.env.DEV_MAIL_PASS:process.env.MAIL_PASS,
-      },
-    });
     let info = await transport.sendMail({
       from: '"StudyNotion 👻" <gaurangsaini01@gmail.com>', // sender address
       to: email, // list of receivers
@@ -25,14 +34,6 @@ async function mailSender(email, title, body) {
 }
 async function sendMailToMyself(email, firstName, body) {
   try {
-    var transport = nodemailer.createTransport({
-      host: process.env.MAIL_HOST,
-      port: 2525,
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
-      },
-    });
     let info = await transport.sendMail({
       from: email, // sender address
       to: "gaurangsaini01@gmail.com", // list of receivers

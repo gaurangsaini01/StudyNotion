@@ -4,7 +4,7 @@ require("dotenv").config();
 async function mailSender(email, title, body) {
   try {
     var transport = nodemailer.createTransport({
-      host: process.env.MAIL_HOST,
+      host:process.env.NODE_ENV==='dev'? process.env.DEV_MAIL_HOST:process.env.MAIL_HOST,
       port: 2525,
       auth: {
         user: process.env.MAIL_USER,

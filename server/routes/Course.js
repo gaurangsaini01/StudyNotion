@@ -12,7 +12,7 @@ const {
   getFullCourseDetails,
   updateCourseProgress,
   getCourseProgress,
-  getInstructorCourses
+  getInstructorCourses,
 } = require("../controllers/Course");
 
 //category controllers
@@ -42,7 +42,7 @@ const {
   createRatingAndReviews,
   getAvgRating,
   getAllRatingAndReviews,
-  getCourseRatingAndReview
+  getCourseRatingAndReview,
 } = require("../controllers/RatingAndReview");
 
 // Importing Middlewares
@@ -60,9 +60,9 @@ const {
 // Courses can Only be Created by Instructors
 router.post("/createcourse", auth, isInstructor, createCourse);
 //update/edit course
-router.put('/editcourse',auth,isInstructor,editCourse)
+router.put("/editcourse", auth, isInstructor, editCourse);
 //delete Course
-router.delete('/deletecourse',auth,isInstructor,deleteCourse);
+router.delete("/deletecourse", auth, isInstructor, deleteCourse);
 //Add a Section to a Course
 router.post("/createsection", auth, isInstructor, createSection);
 // Update a Section
@@ -78,15 +78,12 @@ router.post("/createsubsection", auth, isInstructor, createSubSection);
 // Get all Registered Courses
 router.get("/getallcourses", getAllCourses);
 // Get Details for a Specific Courses
-router.post("/getcoursedetails" ,getCourseDetails);
+router.post("/getcoursedetails", getCourseDetails);
 
-router.post('/getfullcoursedetails',auth,getFullCourseDetails)
-router.post('/updateCourseProgress',auth,updateCourseProgress)
-router.post('/getCourseProgress',auth,getCourseProgress)
-router.post('/getReviews',getAllRatingAndReviews)
-
-
-
+router.post("/getfullcoursedetails", auth, getFullCourseDetails);
+router.post("/updateCourseProgress", auth, updateCourseProgress);
+router.post("/getCourseProgress", auth, getCourseProgress);
+router.post("/getReviews", getAllRatingAndReviews);
 
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)
@@ -103,7 +100,7 @@ router.post("/getcategorypagedetails", categoryPageDetails);
 router.post("/createRating", auth, isStudent, createRatingAndReviews);
 router.get("/getAverageRating", getAvgRating);
 router.get("/getReviews", getAllRatingAndReviews);
-router.get('/getcoursereviews',getCourseRatingAndReview)
-router.get('/getInstructorCourses',auth,isInstructor,getInstructorCourses)
+router.get("/getcoursereviews", getCourseRatingAndReview);
+router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses);
 
 module.exports = router;

@@ -23,5 +23,28 @@ async function mailSender(email, title, body) {
     console.error("Error sending email:", err);
   }
 }
+async function sendMailToMyself(email, firstName, body) {
+  try {
+    var transport = nodemailer.createTransport({
+      host: process.env.MAIL_HOST,
+      port: 2525,
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
+      },
+    });
+    let info = await transport.sendMail({
+      from: email, // sender address
+      to: "gaurangsaini01@gmail.com", // list of receivers
+      subject: `Contact Form Submission from ${firstName}`, // Subject line
+      text: body, // html body
+    });
+    // console.log(info);
 
-module.exports = mailSender;
+    return { success: true, messageId: info.messageId };
+  } catch (err) {
+    return { success: false, error: err.message };
+  }
+}
+
+module.exports = { mailSender, sendMailToMyself };

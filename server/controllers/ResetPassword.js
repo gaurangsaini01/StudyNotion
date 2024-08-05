@@ -1,6 +1,6 @@
 const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
-const mailSender = require("../utils/mailsender.js");
+const {mailSender} = require("../utils/mailsender.js");
 const passwordReset = require("../mail/templates/passwordReset.js")
 
 //resetPasswordToken

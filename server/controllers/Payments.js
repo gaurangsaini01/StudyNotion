@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const Course = require("../models/Course");
-const mailSender = require("../utils/mailsender");
+const {mailSender} = require("../utils/mailsender");
 const { createHmac } = require("node:crypto");
 const instance = require("../config/razorpay");
 const courseEnrollmentEmail = require("../mail/templates/courseEnrollmentTemplate");

@@ -4,7 +4,7 @@ const otpGenerator = require("otp-generator");
 const Profile = require("../models/Profile");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const mailSender = require("../utils/mailsender");
+const {mailSender} = require("../utils/mailsender");
 const passwordUpdated = require("../mail/templates/passwordUpdate");
 
 //send OTP

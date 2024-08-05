@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-// import { DevTool } from "@hookform/devtools";
+import toast from "react-hot-toast"
 import { apiConnector } from "../../services/apiconnector";
 import { CONTACT_US_API } from "../../services/apis";
 import CountryCode from "../../data/countrycode.json";
@@ -12,14 +12,17 @@ const ContactUsForm = () => {
   const { errors, isSubmitSuccessful } = formState;
 
   const submitContactForm = async (data) => {
-    console.log("Logging Data", data);
+    // console.log("Logging Data", data);
     try {
       setLoading(true);
       const response = await apiConnector("POST", CONTACT_US_API, data);
-      console.log("Logging response", response);
-      setLoading(false);
+      // console.log("Logging response", response);
+      if(response?.data?.success){
+        toast.success(`Mail Sent :)`)
+      }
     } catch (error) {
-      console.log("Error:", error.message);
+      toast.error('Please Try Again')
+    } finally {
       setLoading(false);
     }
   };
@@ -38,15 +41,23 @@ const ContactUsForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(submitContactForm)} className="w-full text-richblack-100" noValidate>
+      <form
+        onSubmit={handleSubmit(submitContactForm)}
+        className="w-full text-richblack-100"
+        noValidate
+      >
         <div className="flex flex-col gap-8">
           <div className="flex gap-3">
             {/* firstName */}
             <div className="flex w-full flex-col">
-              <label className="text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem]" htmlFor="firstname">
+              <label
+                className="text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem]"
+                htmlFor="firstname"
+              >
                 First Name
               </label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 type="text"
                 name="firstname"
                 id="firstname"
@@ -63,7 +74,11 @@ const ContactUsForm = () => {
                   },
                 })}
               />
-              {errors.firstname && <span className="text-red-600 text-sm mt-1">{errors.firstname.message}</span>}
+              {errors.firstname && (
+                <span className="text-red-600 text-sm mt-1">
+                  {errors.firstname.message}
+                </span>
+              )}
             </div>
 
             {/* lastName */}
@@ -74,7 +89,8 @@ const ContactUsForm = () => {
               >
                 Last Name
               </label>
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 type="text"
                 name="lastname"
                 id="lastname"
@@ -93,7 +109,8 @@ const ContactUsForm = () => {
             >
               Email Address
             </label>
-            <input autoComplete="off"
+            <input
+              autoComplete="off"
               type="email"
               name="email"
               id="email"
@@ -101,7 +118,11 @@ const ContactUsForm = () => {
               placeholder="Enter email Address"
               {...register("email", { required: true })}
             />
-            {errors.email && <span className="text-red-600 text-sm mt-1">Please enter your email address</span>}
+            {errors.email && (
+              <span className="text-red-600 text-sm mt-1">
+                Please enter your email address
+              </span>
+            )}
           </div>
 
           {/* phoneNo */}
@@ -129,7 +150,8 @@ const ContactUsForm = () => {
                 })}
               </select>
 
-              <input autoComplete="off"
+              <input
+                autoComplete="off"
                 type="tel"
                 name="phonenumber"
                 id="phonenumber"
@@ -145,7 +167,11 @@ const ContactUsForm = () => {
                 })}
               />
             </div>
-            {errors.phoneNo && <span className="text-red-600 text-sm mt-1">{errors.phoneNo.message}</span>}
+            {errors.phoneNo && (
+              <span className="text-red-600 text-sm mt-1">
+                {errors.phoneNo.message}
+              </span>
+            )}
           </div>
 
           {/* message */}
@@ -156,7 +182,8 @@ const ContactUsForm = () => {
             >
               Message
             </label>
-            <textarea autoComplete="off"
+            <textarea
+              autoComplete="off"
               name="message"
               id="message"
               cols="30"
@@ -165,14 +192,19 @@ const ContactUsForm = () => {
               placeholder="Enter Your message here"
               {...register("message", { required: true })}
             />
-            {errors.message && <span className="text-red-600 text-sm mt-1">PLease enter your message.</span>}
+            {errors.message && (
+              <span className="text-red-600 text-sm mt-1">
+                PLease enter your message.
+              </span>
+            )}
           </div>
 
           <button
+          disabled={loading}
             type="submit"
             className="rounded-md bg-yellow-50 text-center px-6 py-2 text-[16px] font-semibold text-black"
           >
-            Send Message
+            {loading?"Sending...":"Send Message"}
           </button>
         </div>
       </form>

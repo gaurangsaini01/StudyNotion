@@ -161,7 +161,7 @@ async function getAllRatingAndReviews(req, res) {
     return res.status(500).json({
       success: false,
       message: "Failed to retrieve the rating and review for the course",
-      error: error.message,
+      error: err.message,
     });
   }
 }

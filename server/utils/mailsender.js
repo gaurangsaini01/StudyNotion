@@ -38,7 +38,7 @@ async function sendMailToMyself(email, firstName, body) {
       from: email, // sender address
       to: "gaurangsaini01@gmail.com", // list of receivers
       subject: `Contact Form Submission from ${firstName}`, // Subject line
-      text: body, // html body
+      text:`${body} Recieved From ${email}`, // html body
     });
     // console.log(info);
 

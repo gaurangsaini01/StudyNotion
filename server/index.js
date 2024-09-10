@@ -5,7 +5,9 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const cloudinaryConnect = require('./config/cloudinary');
 const fileUpload = require('express-fileupload');
+const job = require('./cron.js')
 require('dotenv').config();
+job.start();
 
 const port = process.env.PORT || 3000;
 

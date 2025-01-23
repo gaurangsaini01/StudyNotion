@@ -14,6 +14,7 @@ function Category() {
         description: ""
     });
     const [list, setList] = useState([]);
+
     async function handleSubmit(e) {
         e.preventDefault();
         const res = await createCategory(category, token);
@@ -25,8 +26,8 @@ function Category() {
             name: "",
             description: ""
         })
-        setList(prev=>(
-            [...prev,newCategory]
+        setList(prev => (
+            [...prev, newCategory]
         ))
     }
     function handleChange(e) {
@@ -42,7 +43,7 @@ function Category() {
                 const result = await apiConnector("GET", categories.CATEGORIES_API);
                 setList(result.data.data);
             } catch (err) {
-                console.log("Couldn't fetch the list");
+                ("Couldn't fetch the list");
             }
         }
         caller();

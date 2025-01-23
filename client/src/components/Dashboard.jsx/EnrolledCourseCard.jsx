@@ -4,7 +4,7 @@ import { getCourseProgress } from "../../services/operations/courseDetailsAPI";
 import { useSelector } from "react-redux";
 
 function EnrolledCourseCard({ course, navigate }) {
-  console.log(course);
+  (course);
   const { token } = useSelector((state) => state.auth);
   const [progress, setProgress] = useState(0);
   
@@ -15,12 +15,12 @@ function EnrolledCourseCard({ course, navigate }) {
         { courseId: course._id },
         token
       );
-      console.log("completedLectures", completedLectures);
+      ("completedLectures", completedLectures);
 
       let totalLectures = course?.courseContent?.reduce((acc, section) => {
         return acc + (section?.subSection.length || 0);
       }, 0);
-      console.log("totalLectures", totalLectures);
+      ("totalLectures", totalLectures);
       setProgress((completedLectures / totalLectures) * 100);
     }
     getProgress();

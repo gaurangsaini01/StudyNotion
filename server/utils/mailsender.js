@@ -26,7 +26,7 @@ async function mailSender(email, title, body) {
       subject: title, // Subject line
       html: body, // html body
     });
-    // console.log(info);
+    // (info);
     return info;
   } catch (err) {
     console.error("Error sending email:", err);
@@ -40,7 +40,7 @@ async function sendMailToMyself(email, firstName, body) {
       subject: `Contact Form Submission from ${firstName}`, // Subject line
       text:`${body} Recieved From ${email}`, // html body
     });
-    // console.log(info);
+    // (info);
 
     return { success: true, messageId: info.messageId };
   } catch (err) {

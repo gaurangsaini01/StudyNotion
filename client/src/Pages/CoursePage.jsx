@@ -36,7 +36,7 @@ function CoursePage() {
         const result = await fetchCourseDetails(courseId);
         setCourseData(result?.data);
       } catch (error) {
-        console.log("Could not fetch coursse details");
+        ("Could not fetch coursse details");
       }
       setLoading(false);
     };

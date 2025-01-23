@@ -53,7 +53,7 @@ function CourseInformation() {
     const getCategories = async () => {
       setLoading(true);
       const categories = await fetchCourseCategories();
-      console.log("Categories are :-", categories);
+      ("Categories are :-", categories);
       if (categories.length > 0) {
         setCourseCategories(categories);
       }
@@ -61,7 +61,7 @@ function CourseInformation() {
     };
 
     if (editCourse) {
-      console.log("course is :-", course);
+      ("course is :-", course);
       setValue("courseTitle", course?.courseName);
       setValue("courseShortDesc", course?.courseDescription);
       setValue("coursePrice", course?.price);
@@ -77,7 +77,7 @@ function CourseInformation() {
 
   const isFormUpdated = () => {
     const currentValues = getValues();
-    console.log("Current Values", currentValues);
+    ("Current Values", currentValues);
     if (
       currentValues.courseTitle !== course?.courseName ||
       currentValues.courseShortDesc !==
@@ -146,7 +146,7 @@ function CourseInformation() {
         setLoading(true);
         const result = await editCourseDetails(formData, token);
         setLoading(false);
-        console.log("result is", result);
+        ("result is", result);
         if (result) {
           dispatch(setStep(1));
           dispatch(setCourse(result));
@@ -156,7 +156,7 @@ function CourseInformation() {
       }
       return;
     }
-    console.log(data);
+    (data);
     //create a new course
     const formData = new FormData();
     formData.append("courseName", data.courseTitle);
@@ -177,8 +177,8 @@ function CourseInformation() {
       dispatch(setCourse(result));
     }
     setLoading(false);
-    console.log("PRINTING FORMDATA", formData);
-    console.log("PRINTING result", result);
+    ("PRINTING FORMDATA", formData);
+    ("PRINTING result", result);
   };
 
   return (

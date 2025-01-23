@@ -61,7 +61,7 @@ function App() {
       try {
         const decodedToken = jwtDecode(token); // Decode token
         const currentTime = Date.now() / 1000; // Convert current time to seconds
-        // console.log(decodedToken)
+        // (decodedToken)
 
         if (decodedToken.exp < currentTime) {
           // Token expired, logout user

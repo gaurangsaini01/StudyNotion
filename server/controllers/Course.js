@@ -68,7 +68,7 @@ async function createCourse(req, res) {
       status,
       instructions,
     });
-    console.log("New Course Created:", newCourse);
+    ("New Course Created:", newCourse);
     // Update the user's course list
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
@@ -214,7 +214,7 @@ async function editCourse(req, res) {
 async function getCourseDetails(req, res) {
   try {
     const { courseId } = req.body;
-    console.log(courseId);
+    (courseId);
     if (!courseId) {
       return res.status(404).json({
         success: false,
@@ -246,7 +246,7 @@ async function getCourseDetails(req, res) {
       data: courseDetails,
     });
   } catch (err) {
-    console.log(err);
+    (err);
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
@@ -280,7 +280,7 @@ async function getFullCourseDetails(req, res) {
       userId: userId,
     });
 
-    console.log("courseProgressCount : ", courseProgressCount);
+    ("courseProgressCount : ", courseProgressCount);
 
     if (!courseDetails) {
       return res.status(400).json({
@@ -362,9 +362,9 @@ async function getCourseProgress(req, res) {
         message: "No course Progress for such user and Course Found",
       });
     }
-    console.log("courseProgress", courseProgress);
+    ("courseProgress", courseProgress);
     let completedVideos = courseProgress.completedVideos.length;
-    console.log("completedVideos", completedVideos);
+    ("completedVideos", completedVideos);
     return res.status(200).json({
       success: true,
       message: "Completed Lectures Retrieved",

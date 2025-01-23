@@ -18,11 +18,11 @@ async function auth(req, res, next) {
         message: "Token Missing",
       });
     }
-    console.log("TOken is ",token)
+    ("TOken is ",token)
     //verify token if present
     try {
       const decode = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decode);
+      (decode);
       //user me payload daldiya
       req.user = decode;
     } catch (err) {

@@ -39,7 +39,7 @@ export default function ViewCourseSidebar({ setReviewModal }) {
     }
     work();
   }, [courseSectionData, courseEntireData, location.pathname]);
-  console.log(activeStatus);
+  (activeStatus);
   return (
     <>
       <div className="flex h-[calc(100vh-3.5rem)] w-[320px] fixed max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800">

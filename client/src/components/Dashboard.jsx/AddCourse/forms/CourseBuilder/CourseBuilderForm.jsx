@@ -33,13 +33,13 @@ export default function CourseBuilderForm() {
 
   // handle form submission
   const onSubmit = async (data) => {
-    // console.log(data)
+    // (data)
     setLoading(true);
 
     let result;
 
     if (editSectionName) {
-      console.log(editSectionName);
+      (editSectionName);
       result = await updateSection(
         {
           sectionName: data.sectionName,
@@ -48,7 +48,7 @@ export default function CourseBuilderForm() {
         },
         token
       );
-      // console.log("edit", result)
+      // ("edit", result)
     } else {
       result = await createSection(
         {
@@ -59,7 +59,7 @@ export default function CourseBuilderForm() {
       );
     }
     if (result) {
-      console.log("section result", result);
+      ("section result", result);
       dispatch(setCourse(result));
       setEditSectionName(null);
       setValue("sectionName", "");

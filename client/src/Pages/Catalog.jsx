@@ -26,7 +26,7 @@ function Catalog() {
   async function getData(categoryId) {
     setLoading(true);
     const result = await getCatalogPageData(categoryId);
-    console.log(result);
+    (result);
     if (result) {
       setSelectedCategoryCourses(result?.selectedCategoryCourses?.courses);
       setDifferentCategories(result?.differentCategoryCourses);
@@ -41,9 +41,9 @@ function Catalog() {
   useEffect(() => {
     getData(categoryId);
   }, [categoryId]);
-  console.log("selectedCategoryCourses", selectedCategoryCourses);
-  console.log("differentCategories", differentCategories);
-  console.log("categoryDetails", categoryDetails);
+  ("selectedCategoryCourses", selectedCategoryCourses);
+  ("differentCategories", differentCategories);
+  ("categoryDetails", categoryDetails);
   return (
     <>
       {!loading ? (
@@ -118,7 +118,7 @@ function Catalog() {
                 className="mySwiper"
               >
                 {differentCategories?.map((category) => {
-                  console.log(category);
+                  (category);
                   return category?.courses?.map((course) => {
                     return (
                       <SwiperSlide key={course._id}>

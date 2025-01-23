@@ -27,9 +27,9 @@ async function sendOTP(req, res) {
       specialChars: false,
     });
     const result = await OTP.findOne({ otp });
-    console.log("Result is Generate OTP Func");
-    console.log("OTP", otp);
-    console.log("Result", result);
+    ("Result is Generate OTP Func");
+    ("OTP", otp);
+    ("Result", result);
     while (result) {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
@@ -43,7 +43,7 @@ async function sendOTP(req, res) {
       email,
       otp,
     });
-    console.log("otp body:", otpBody);
+    ("otp body:", otpBody);
 
     res.status(200).json({
       success: true,
@@ -51,7 +51,7 @@ async function sendOTP(req, res) {
       otp,
     });
   } catch (err) {
-    console.log(err);
+    (err);
     return res.status(500).json({
       success: false,
       message: err.message,
@@ -108,7 +108,7 @@ async function signup(req, res) {
     const response = await OTP.findOne({ email })
       .sort({ createdAt: -1 })
       .limit(1);
-    console.log(response);
+    (response);
     if (!response) {
       // OTP not found for the email
       return res.status(400).json({
@@ -156,7 +156,7 @@ async function signup(req, res) {
       user,
     });
   } catch (err) {
-    console.log(err);
+    (err);
     return res.status(500).json({
       success: false,
       message: "User Cannot Be Registered , try Again",
@@ -245,7 +245,7 @@ async function changePassword(req, res) {
       { password: encryptedPassword },
       { new: true }
     ).populate("additionalDetails");
-    console.log(updatedUserDetails);
+    (updatedUserDetails);
     // Send notification email
     try {
       const emailResponse = await mailSender(
@@ -256,7 +256,7 @@ async function changePassword(req, res) {
           `${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
         )
       );
-      console.log("Email sent successfully:", emailResponse.response);
+      ("Email sent successfully:", emailResponse.response);
     } catch (error) {
       // If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
       console.error("Error occurred while sending email:", error);

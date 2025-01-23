@@ -25,6 +25,10 @@ function AbsoluteCourseCard({
       toast.error("Instructor Cannot Buy");
       return;
     }
+    if(user && user?.accountType === "admin"){
+      toast.error("Admin Cannot Buy");
+      return;
+    }
     if (token) {
       dispatch(addToCart(course));
       return;
@@ -33,7 +37,7 @@ function AbsoluteCourseCard({
     setConfirmationModal({
       text1: "you are not logged in",
       text2: "Please login to add to cart",
-      btn1text: "Login",
+      btn1Text: "Login",
       btn2Text: "cancel",
       btn1Handler: () => navigate("/login"),
       btn2Handler: () => setConfirmationModal(null),

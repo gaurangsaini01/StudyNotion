@@ -56,7 +56,7 @@ function VideoDetails() {
   };
 
   const goToNextVideo = () => {
-    // console.log(courseSectionData)
+    // (courseSectionData)
 
     const sectionIndex = courseSectionData.findIndex(
       (section) => section._id === sectionId
@@ -68,7 +68,7 @@ function VideoDetails() {
       sectionIndex
     ].subSection.findIndex((subSection) => subSection._id === subSectionId);
 
-    // console.log("no of subsections", noOfSubsections)
+    // ("no of subsections", noOfSubsections)
 
     if (subSectionIndex !== noOfSubsections - 1) {
       const nextSubSectionId =
@@ -131,7 +131,7 @@ function VideoDetails() {
         const sectionIndex = courseSectionData?.findIndex(
           (section) => section._id === sectionId
         );
-        console.log(courseSectionData[sectionIndex]?.subSection);
+        (courseSectionData[sectionIndex]?.subSection);
         const subSectionIndex = courseSectionData?.[
           sectionIndex
         ]?.subSection?.findIndex(
@@ -147,7 +147,7 @@ function VideoDetails() {
     }
     getFirstVideo();
   }, [courseEntireData, courseSectionData, location.pathname]);
-  console.log(videoData);
+  (videoData);
   return (
     <div className="flex flex-col gap-5 h-screen text-white">
       {!videoData ? (

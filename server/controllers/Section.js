@@ -6,7 +6,7 @@ async function createSection(req, res) {
   try {
     //fetch data
     const { sectionName, courseId } = req.body;
-    console.log(sectionName,courseId)
+    (sectionName,courseId)
     //validate data
     if (!sectionName || !courseId) {
       return res.status(400).json({
@@ -62,7 +62,7 @@ async function updateSection(req, res) {
         path: "subSection",
       },
     });
-    console.log(course);
+    (course);
 
     return res.status(200).json({
       success: true,
@@ -89,7 +89,7 @@ async function deleteSection(req, res) {
     const deletedSection = await Section.findByIdAndDelete(sectionId, {
       new: true,
     });
-    console.log(deletedSection);
+    (deletedSection);
     await SubSection.deleteMany({ _id: { $in: deletedSection.subSection } });
     const updatedCourse = await Course.findByIdAndUpdate(
       courseId,

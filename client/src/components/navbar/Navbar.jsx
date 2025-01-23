@@ -23,9 +23,9 @@ function Navbar({ open, setOpen }) {
       try {
         const result = await apiConnector("GET", categories.CATEGORIES_API);
         setSublinks(result.data.data);
-        // console.log(sublinks)
+        // (sublinks)
       } catch (err) {
-        console.log("Couldn't fetch the list");
+        ("Couldn't fetch the list");
       }
     }
     caller();

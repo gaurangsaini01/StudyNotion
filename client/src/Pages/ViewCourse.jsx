@@ -20,7 +20,7 @@ function ViewCourse() {
     const getCourseFullDetails = async () => {
       try {
         const result = await getFullDetailsOfCourse(courseId, token);
-        console.log(result);
+        (result);
         dispatch(setEntireCourseData(result?.courseDetails));
         dispatch(setCourseSectionData(result?.courseDetails?.courseContent));
         dispatch(setCompletedLectures(result?.completedVideos));
@@ -33,7 +33,7 @@ function ViewCourse() {
         }
         calculateTotalLec(result?.courseDetails?.courseContent);
       } catch (error) {
-        console.log("Could not fetch course details");
+        ("Could not fetch course details");
       }
     };
     getCourseFullDetails();

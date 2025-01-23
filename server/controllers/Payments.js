@@ -45,10 +45,10 @@ async function capturePayment(req, res) {
       message: "Please Provide courseID",
     });
   }
-  courses.map((course, index) => console.log(index, course));
+  courses.map((course, index) => (index, course));
   let totalAmount = 0;
   for (const courseId of courses) {
-    console.log("courseid", courseId);
+    ("courseid", courseId);
 
     let course;
     try {
@@ -73,7 +73,7 @@ async function capturePayment(req, res) {
       }
 
       totalAmount += course?.price;
-      // console.log(typeof totalAmount);
+      // (typeof totalAmount);
     } catch (err) {
       return res.status(500).json({
         success: false,
@@ -89,13 +89,13 @@ async function capturePayment(req, res) {
   //order create
   try {
     const paymentResponse = await instance.orders.create(options);
-    console.log(paymentResponse);
+    (paymentResponse);
     return res.status(200).json({
       success: true,
       message: paymentResponse,
     });
   } catch (error) {
-    console.log(error.message);
+    (error.message);
     return res.status(500).json({
       success: false,
       message: "Problem while creating Order",
@@ -184,7 +184,7 @@ const enrollStudent = async (userId, courses, res) => {
         `Successfully Enrolled in ${course.courseName}`,
         courseEnrollmentEmail(course.courseName, student.firstName)
       );
-      console.log("email,sent successfully", emailRes);
+      ("email,sent successfully", emailRes);
     } catch (error) {
       return res.status(500).json({
         success: false,
@@ -246,7 +246,7 @@ const enrollStudent = async (userId, courses, res) => {
 //   };
 //   try {
 //     const paymentResponse = await instance.orders.create(options);
-//     console.log(paymentResponse);
+//     (paymentResponse);
 //     return res.status(200).json({
 //       success: true,
 //       course: course.courseName,
@@ -277,7 +277,7 @@ const enrollStudent = async (userId, courses, res) => {
 //   const digest = shasum.digest("hex");
 
 //   if (signature === digest) {
-//     console.log("payment authorized");
+//     ("payment authorized");
 
 //     //now as signature is verified so give course to user
 //     const { courseId, userId } = req.body.payload.payment.entity.notes;
@@ -295,21 +295,21 @@ const enrollStudent = async (userId, courses, res) => {
 //           message: "Course Not Found",
 //         });
 //       }
-//       console.log(enrolledCourse);
+//       (enrolledCourse);
 //       //insert CourseId in Course inside User Model
 //       const enrolledStudent = await User.findByIdAndUpdate(
 //         { _id: userId },
 //         { $push: { courses: courseId } },
 //         { new: true }
 //       );
-//       console.log(addedCourse);
+//       (addedCourse);
 //       //All complete so send mail
 //       const email = await mailSender(
 //         enrolledStudent.email,
 //         "Congratulations you are enrolled",
 //         courseEnrollmentEmail(enrolledCourse.courseName,enrolledStudent.firstName)
 //       );
-//       console.log(email);
+//       (email);
 //       //return res
 //       return res.status(200).json({
 //         success: true,

@@ -22,7 +22,7 @@ export default function Upload({
     viewData ? viewData : editData ? editData : ""
   )
   const inputRef = useRef(null)
-  console.log(editData,"edit");
+  (editData,"edit");
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0]
     if (file) {
@@ -39,7 +39,7 @@ export default function Upload({
   })
 
   const previewFile = (file) => {
-    // console.log(file)
+    // (file)
     const reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onloadend = () => {

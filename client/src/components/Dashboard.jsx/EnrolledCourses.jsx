@@ -15,10 +15,10 @@ function EnrolledCourses() {
       const response = await getUserEnrolledCourses(token);
       setEnrolledCourses(response);
     } catch (error) {
-      console.log("Unable to Fetch Enrolled Courses");
+      ("Unable to Fetch Enrolled Courses");
     }
   };
-  console.log(enrolledCourses);
+  (enrolledCourses);
 
   useEffect(() => {
     getEnrolledCourses();

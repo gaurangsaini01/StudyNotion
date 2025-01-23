@@ -29,19 +29,19 @@ export default function SubSectionModal({
     control
   } = useForm();
 
-  // console.log("view", view)
-  // console.log("edit", edit)
-  // console.log("add", add)
+  // ("view", view)
+  // ("edit", edit)
+  // ("add", add)
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const { token } = useSelector((state) => state.auth);
   const { course } = useSelector((state) => state.course);
 
-  console.log("course",course);
+  ("course",course);
 
   useEffect(() => {
-    console.log(modalData);
+    (modalData);
     if (view || edit) {
       setValue("lectureTitle", modalData.title);
       setValue("lectureDesc", modalData.description);
@@ -52,7 +52,7 @@ export default function SubSectionModal({
   // Check whether form is updated or not
   const isFormUpdated = () => {
     const currentValues = getValues();
-    console.log("changes before editing form values:", currentValues);
+    ("changes before editing form values:", currentValues);
     if (
       currentValues.lectureTitle !== modalData.title ||
       currentValues.lectureDesc !== modalData.description ||
@@ -66,7 +66,7 @@ export default function SubSectionModal({
   // handle the editing of subsection
   const handleEditSubsection = async () => {
     const currentValues = getValues();
-    console.log("changes after editing form values:", currentValues);
+    ("changes after editing form values:", currentValues);
     const formData = new FormData();
   
     formData.append("sectionId", modalData.sectionId);
@@ -84,7 +84,7 @@ export default function SubSectionModal({
   
     setLoading(true);
     formData.forEach((value, key) => {
-      console.log(key, value);
+      (key, value);
     });
   
     const result = await updateSubSection(formData, token);
@@ -102,7 +102,7 @@ export default function SubSectionModal({
   
 
   const onSubmit = async (data) => {
-    // console.log(data)
+    // (data)
     if (view) return;
 
     if (edit) {
@@ -113,7 +113,7 @@ export default function SubSectionModal({
       }
       return;
     }
-     console.log("data",data);
+     ("data",data);
     const formData = new FormData();
     formData.append("sectionId", modalData);
     formData.append("title", data.lectureTitle);
@@ -133,7 +133,7 @@ export default function SubSectionModal({
     setLoading(false);
   };
 
-  console.log("modal data",modalData)
+  ("modal data",modalData)
  
 
   return (

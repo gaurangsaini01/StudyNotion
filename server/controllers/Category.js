@@ -73,7 +73,7 @@ async function categoryPageDetails(req, res) {
 
     // Handle the case when there are no courses
     //  if (selectedCategoryCourses.courses.length === 0) {
-    //   console.log("No courses found for the selected category.")
+    //   ("No courses found for the selected category.")
     //   return res.status(200).json({
     //     success: true,
     //     message: "No courses found for the selected category.",
@@ -114,10 +114,10 @@ async function deleteCategory(req, res) {
   try {
     const categoryId = req.body.categoryId;
     const category = await Category.findById(categoryId).populate("courses");
-    console.log("Category is:-", category);
+    ("Category is:-", category);
     const courses = category.courses;
     for (const course of courses) {
-      console.log("course is", course);
+      ("course is", course);
 
       const studentsEnrolled = course.studentsEnrolled;
       for (const studentId of studentsEnrolled) {

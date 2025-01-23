@@ -23,7 +23,7 @@ function PublishForm() {
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
   const { course } = useSelector((state) => state.course);
-  console.log(course);
+  (course);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

@@ -10,13 +10,13 @@ export async function getCatalogPageData(categoryId) {
     const response = await apiConnector("POST", CATEGORY_PAGE_DETAILS_API, {
       categoryId,
     });
-    console.log(response);
+    (response);
     if (!response?.data?.success) {
       throw new Error("Could Not get Category page Details");
     }
     result = response?.data?.data;
   } catch (err) {
-    console.log("Error in Getting Data for category", err.message);
+    ("Error in Getting Data for category", err.message);
   }
   toast.dismiss(toastId);
   return result;

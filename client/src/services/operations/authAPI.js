@@ -55,7 +55,7 @@ export function signUp(
     const toastId = toast.loading("Loading...");
     dispatch(setLoading(true));
     try {
-      console.log("hi");
+      ("hi");
       const response = await apiConnector("POST", SIGNUP_API, {
         accountType,
         firstName,
@@ -65,7 +65,7 @@ export function signUp(
         confirmPassword,
         otp,
       });
-      console.log("SIGNUP API RESPONSE............", response);
+      ("SIGNUP API RESPONSE............", response);
 
       if (!response.data.success) {
         throw new Error(response.data.message);
@@ -73,7 +73,7 @@ export function signUp(
       toast.success("Signup Successful");
       navigate("/login");
     } catch (error) {
-      console.log("SIGNUP API ERROR............", error);
+      ("SIGNUP API ERROR............", error);
       toast.error(error.response.data.message);
       navigate("/signup");
     }
@@ -127,7 +127,7 @@ export function getPasswordResetToken(email,setEmailSent) {
       const response = await apiConnector("POST", RESETPASSTOKEN_API, {
         email,
       });
-      console.log(response);
+      (response);
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
@@ -150,7 +150,7 @@ export function resetPassword(password, confirmPassword, resetPasswordToken,navi
         resetPasswordToken,
       });
 
-      console.log("RESET Password RESPONSE ... ", response);
+      ("RESET Password RESPONSE ... ", response);
 
       if (!response.data.success) {
         throw new Error(response.data.message);
@@ -159,7 +159,7 @@ export function resetPassword(password, confirmPassword, resetPasswordToken,navi
       toast.success("Password reset successfully");
       navigate("/login")
     } catch (error) {
-      console.log("RESET PASSWORD TOKEN Error", error);
+      ("RESET PASSWORD TOKEN Error", error);
       toast.error("Link Expired Try Again");
     }
     dispatch(setLoading(false));

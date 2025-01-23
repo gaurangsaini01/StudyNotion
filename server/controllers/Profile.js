@@ -8,7 +8,7 @@ require("dotenv").config();
 const instructorDashboard = async (req, res) => {
   try {
     const courseDetails = await Course.find({ instructor: req.user.id })
-    console.log(courseDetails)
+    (courseDetails)
 
     const courseData = courseDetails.map((course) => {
       const totalStudentsEnrolled = course.studentsEnrolled.length
@@ -150,7 +150,7 @@ async function getAllUserDetails(req, res) {
     const userDetails = await User.findById(id)
       .populate("additionalDetails")
       .exec();
-    // console.log(userDetails);
+    // (userDetails);
     res.status(200).json({
       success: true,
       message: "User Data fetched successfully",
@@ -173,7 +173,7 @@ async function updateDisplayPicture(req, res) {
       file,
       process.env.FOLDER_NAME
     );
-    console.log(response);
+    (response);
     const updatedProfile = await User.findByIdAndUpdate(
       userId,
       { image: response.secure_url },
@@ -185,7 +185,7 @@ async function updateDisplayPicture(req, res) {
       data:updatedProfile,
     });
   } catch (err) {
-    console.log(err);
+    (err);
     return res.status(500).json({
       success: false,
       message: err.message,

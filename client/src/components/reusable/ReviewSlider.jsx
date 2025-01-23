@@ -23,7 +23,7 @@ function ReviewSlider() {
     }
     reviewDedo();
   }, []);
-  console.log(reviews);
+  (reviews);
   return (
     <div className="text-white ">
       <div className="my-[50px] h-[184px] mx-auto max-w-[350px] md:max-w-maxContentTab lg:max-w-maxContent">

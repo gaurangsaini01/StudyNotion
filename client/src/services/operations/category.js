@@ -28,7 +28,7 @@ async function deleteCategory(categoryId, token) {
         Authorization: `Bearer ${token}`,
       }
     );
-    console.log(response);
+    (response);
     if (!response.data.success) {
       throw new Error(response.data.message);
     }

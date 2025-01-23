@@ -12,11 +12,11 @@ const ContactUsForm = () => {
   const { errors, isSubmitSuccessful } = formState;
 
   const submitContactForm = async (data) => {
-    // console.log("Logging Data", data);
+    // ("Logging Data", data);
     try {
       setLoading(true);
       const response = await apiConnector("POST", CONTACT_US_API, data);
-      // console.log("Logging response", response);
+      // ("Logging response", response);
       if(response?.data?.success){
         toast.success(`Mail Sent :)`)
       }

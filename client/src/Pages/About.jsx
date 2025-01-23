@@ -112,13 +112,6 @@ const About = () => {
       <LearningGrid />
       <ContactFormSection />
 
-      {/* <section>
-        <div>
-          Reviews from other learners
-          <ReviewSlider />
-        </div>
-      </section> */}
-
       <Footer />
     </div>
   );

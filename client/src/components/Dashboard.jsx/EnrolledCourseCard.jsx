@@ -7,6 +7,7 @@ function EnrolledCourseCard({ course, navigate }) {
   console.log(course);
   const { token } = useSelector((state) => state.auth);
   const [progress, setProgress] = useState(0);
+  
 
   useEffect(() => {
     async function getProgress() {
@@ -44,7 +45,7 @@ function EnrolledCourseCard({ course, navigate }) {
         <div className="flex gap-1 flex-col">
           <p>{course.courseName}</p>
           <p className="text-sm text-richblack-300">
-            {course.courseDescription}
+            {course?.courseDescription?.length > 30 ? `${course?.courseDescription?.substring(0,65)}...` : course.courseDescription}
           </p>
         </div>
       </div>

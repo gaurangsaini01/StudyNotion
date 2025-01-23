@@ -2,6 +2,7 @@ const User = require("../models/User.js");
 const bcrypt = require("bcrypt");
 const { mailSender } = require("../utils/mailsender.js");
 const passwordReset = require("../mail/templates/passwordReset.js");
+require("dotenv").config();
 
 //resetPasswordToken
 async function resetPasswordToken(req, res) {
@@ -28,17 +29,20 @@ async function resetPasswordToken(req, res) {
       { new: true }
     );
     //create URL
+    console.log("Mail kyu ni jari 1");
     const url = `${
       process.env.NODE_ENV === "prod"
-        ? process.env.FRONTEND_URL_PROD
-        : process.env.FRONTEND_URL_DEV
+      ? process.env.FRONTEND_URL_PROD
+      : process.env.FRONTEND_URL_DEV
     }/update-password/${resetPasswordToken}`;
     //send mail
-    await mailSender(
+    console.log("Mail kyu ni jari 2",url);
+    const info = await mailSender(
       email,
       "Password Reset Email From StudyNotion",
       passwordReset(updatedDetails?.firstName, url)
     );
+    console.log("Mail kyu ni jari 3",info)
     //response send
     return res.status(200).json({
       success: true,

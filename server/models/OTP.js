@@ -20,6 +20,7 @@ const otpSchema = new mongoose.Schema({
 
 otpSchema.pre("save", async function (next) {
   try {
+    console.log("I am in pre save hook")
     const mailResponse = await mailSender(
       this.email,
       "Verification E-mail from StudyNotion",

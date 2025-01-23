@@ -40,11 +40,11 @@ export const sidebarLinks = [
     type: "student",
     icon: "VscBookmark",
   },
-  // {
-  //   id: 7,
-  //   name: "Purchase History",
-  //   path: "/dashboard/purchase-history",
-  //   type: "student",
-  //   icon: "VscHistory",
-  // },
+  {
+    id: 7,
+    name: "Categories",
+    path: "/dashboard/create-category",
+    type: "admin",
+    icon: "VscHistory",
+  },
 ];

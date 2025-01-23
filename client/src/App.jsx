@@ -32,6 +32,7 @@ import PrivateRoute from "./components/Auth/PrivateRoute";
 import VideoDetails from "./components/ViewCourse/VideoDetails";
 import Instructor from "./components/Dashboard.jsx/instructorDashboard/InstructorDashboard";
 import OpenRoute from "./components/Auth/OpenRoute";
+import Category from "./components/Dashboard.jsx/Admin Dashboard/Category";
 
 function App() {
   const { user } = useSelector((state) => state.profile);
@@ -171,6 +172,9 @@ function App() {
                     />
                   </>
                 )}
+                {
+                  user?.accountType === "admin" && <Route path="/dashboard/create-category" element={<Category />} />
+                }
                 {/* <Route path="/dashboard/wishlist" element={<Wishlist />} /> */}
                 <Route path="/dashboard/my-profile" element={<MyProfile />} />
                 <Route path="/dashboard/my-settings" element={<MySettings />} />

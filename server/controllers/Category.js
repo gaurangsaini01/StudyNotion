@@ -11,12 +11,19 @@ async function createCategory(req, res) {
       });
     }
     //create entry in DB
-    const categoryDetails = await Category.create({ name, description });
-    console.log(categoryDetails);
+    const category = await Category.findOne({ name: name });
+    if (category) {
+      return res.status(400).json({
+        success: false,
+        message: "Category already exists.",
+      });
+    }
+    const createdCategory = await Category.create({ name, description });
     //return response
     return res.status(200).json({
       success: true,
       message: "Category Created Successfully",
+      data: createdCategory,
     });
   } catch (err) {
     return res.status(500).json({
@@ -99,5 +106,17 @@ async function categoryPageDetails(req, res) {
     });
   }
 }
+async function deleteCategory(req, res) {
+  try {
+    const categoryId = req.categoryId;
+    await Category.findOneAndDelete({categoryId});
+    
+  } catch (err) {}
+}
 
-module.exports = { getAllCategories, createCategory, categoryPageDetails };
+module.exports = {
+  getAllCategories,
+  createCategory,
+  categoryPageDetails,
+  deleteCategory,
+};

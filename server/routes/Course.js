@@ -21,6 +21,7 @@ const {
   createCategory,
   getAllCategories,
   categoryPageDetails,
+  deleteCategory
 } = require("../controllers/Category");
 
 // Sections Controllers Import
@@ -90,7 +91,7 @@ router.post("/getReviews", getAllRatingAndReviews);
 // ********************************************************************************************************
 // Category can Only be Created by Admin
 router.post("/createcategory", auth, isAdmin, createCategory);
-
+router.delete('/deleteCategory',auth,isAdmin,deleteCategory)
 router.get("/getallcategories", getAllCategories);
 router.post("/getcategorypagedetails", categoryPageDetails);
 

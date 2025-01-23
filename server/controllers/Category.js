@@ -1,4 +1,8 @@
 const Category = require("../models/Category");
+const Course = require("../models/Course");
+const Section = require("../models/Section");
+const SubSection = require("../models/SubSection");
+const User = require("../models/User");
 // const Course = require("../models/Course")
 
 async function createCategory(req, res) {
@@ -108,10 +112,51 @@ async function categoryPageDetails(req, res) {
 }
 async function deleteCategory(req, res) {
   try {
-    const categoryId = req.categoryId;
-    await Category.findOneAndDelete({categoryId});
-    
-  } catch (err) {}
+    const categoryId = req.body.categoryId;
+    const category = await Category.findById(categoryId).populate("courses");
+    console.log("Category is:-", category);
+    const courses = category.courses;
+    for (const course of courses) {
+      console.log("course is", course);
+
+      const studentsEnrolled = course.studentsEnrolled;
+      for (const studentId of studentsEnrolled) {
+        await User.findByIdAndUpdate(studentId, {
+          $pull: { courses: course._id },
+        });
+      }
+
+      // Delete sections and sub-sections
+      const courseSections = course.courseContent;
+      for (const sectionId of courseSections) {
+        // Delete sub-sections of the section
+        const section = await Section.findById(sectionId);
+        if (section) {
+          const subSections = section.subSection;
+          for (const subSectionId of subSections) {
+            await SubSection.findByIdAndDelete(subSectionId);
+          }
+        }
+        // Delete the section
+        await Section.findByIdAndDelete(sectionId);
+      }
+      await Course.findByIdAndDelete(course.id);
+      await User.findByIdAndUpdate(course.instructor, {
+        $pull: { courses: course.id },
+      });
+    }
+    await Category.findByIdAndDelete(categoryId);
+
+    return res.status(200).json({
+      success: true,
+      message: "Category Deleted Successfully",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: true,
+      message: "Error deleting category",
+    });
+  }
 }
 
 module.exports = {

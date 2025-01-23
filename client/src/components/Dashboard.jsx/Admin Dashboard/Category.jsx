@@ -63,7 +63,7 @@ function Category() {
                 </div>
                 <IconBtn customClasses={['mt-4', 'lg:w-[40%] w-full border-3']} type="submit" disabled={false} onclick={handleSubmit} >Add Category</IconBtn>
             </form>
-            <ListOfCategories list={list} />
+            <ListOfCategories list={list} setList={setList} />
         </div>
     )
 }

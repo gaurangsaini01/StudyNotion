@@ -22,7 +22,6 @@ function Navbar({ open, setOpen }) {
     async function caller() {
       try {
         const result = await apiConnector("GET", categories.CATEGORIES_API);
-        console.log(result);
         setSublinks(result.data.data);
         // console.log(sublinks)
       } catch (err) {
@@ -93,7 +92,7 @@ function Navbar({ open, setOpen }) {
           </ul>
         </nav>
         <div className="hidden md:flex gap-4 items-center">
-          {user && user.accountType !== "instructor" && (
+          {user && user.accountType !== "instructor" && user.accountType !== "admin" && (
             <Link to={"/dashboard/cart"} className="relative text-white">
               <AiOutlineShoppingCart size={25} className="relative z-0" />
               {totalItems > 0 ? (

@@ -114,10 +114,10 @@ async function deleteCategory(req, res) {
   try {
     const categoryId = req.body.categoryId;
     const category = await Category.findById(categoryId).populate("courses");
-    ("Category is:-", category);
+    "Category is:-", category;
     const courses = category.courses;
     for (const course of courses) {
-      ("course is", course);
+      "course is", course;
 
       const studentsEnrolled = course.studentsEnrolled;
       for (const studentId of studentsEnrolled) {
@@ -159,9 +159,40 @@ async function deleteCategory(req, res) {
   }
 }
 
+async function editCategory(req, res) {
+  try {
+    const { categoryId, name, description } = req.body;
+    if (!categoryId) {
+      return res.status(400).json({
+        success: false,
+        message: "No id provided",
+      });
+    }
+    const updatedCategory = await Category.findByIdAndUpdate(
+      categoryId,
+      {
+        name:name,
+        description:description,
+      },
+      { new: true }
+    );
+    res.status(200).json({
+      success: true,
+      message: "Updated category successfully",
+      data: updatedCategory,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Some internal error in editing category",
+    });
+  }
+}
+
 module.exports = {
   getAllCategories,
   createCategory,
   categoryPageDetails,
   deleteCategory,
+  editCategory,
 };

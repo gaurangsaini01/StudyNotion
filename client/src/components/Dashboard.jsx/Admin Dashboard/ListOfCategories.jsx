@@ -3,7 +3,7 @@ import { deleteCategory } from '../../../services/operations/category'
 import { useSelector } from 'react-redux'
 import ConfirmationModal from '../../reusable/Confirmationmodal';
 
-function ListOfCategories({ list, setList }) {
+function ListOfCategories({ list, setList, edit, setEdit, setCategory, setTodoId }) {
     const { token } = useSelector(state => state.auth);
     const [open, setOpen] = useState(false);
     const [confirmationModal, setConfirmationModal] = useState(null);
@@ -26,18 +26,38 @@ function ListOfCategories({ list, setList }) {
         });
 
     }
+
+    function editHandler(categoryId) {
+        setEdit((prev) => !prev);
+        if (!edit) {
+            const currentCategory = list.find((cat) => cat._id == categoryId)
+            console.log("current cat is", currentCategory)
+            setCategory({
+                name: currentCategory?.name,
+                description: currentCategory?.description
+            })
+            setTodoId(categoryId);
+        }
+        else {
+            setCategory({
+                name: "",
+                description: ""
+            })
+        }
+    }
+
     return (
         <>
             <div className='text-white w-full md:w-[60%]'>
                 <h1 className='font-semibold text-2xl text-yellow-200'>CATEGORIES ARE:</h1>
                 <ul className='pl-4 mt-2'>
                     {list.map((category) => (
-                        <li className='list-disc' key={category._id}>
+                        <li className='list-disc' key={category?._id}>
                             <div className='flex items-center justify-between'>
-                                <div>{category.name}</div>
+                                <div>{category?.name}</div>
                                 <div className='flex gap-4'>
-                                    <button>Edit</button>
-                                    <button onClick={() => handleDelete(category._id)}>Delete</button>
+                                    <button onClick={() => editHandler(category?._id)}>Edit</button>
+                                    <button onClick={() => handleDelete(category?._id)}>Delete</button>
                                 </div>
                             </div>
                         </li>

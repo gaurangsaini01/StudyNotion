@@ -3,7 +3,8 @@ const BASE_URL = import.meta.env.VITE_APP_MODE==='dev'? import.meta.env.VITE_APP
 export const categories = {
   CATEGORIES_API: BASE_URL + "/course/getallcategories",
   CREATE_CATEGORY_API: BASE_URL + "/course/createcategory",
-  DELETE_CATEGORY_API:BASE_URL + '/course/deleteCategory'
+  DELETE_CATEGORY_API:BASE_URL + '/course/deleteCategory',
+  EDIT_CATEGORY_API:BASE_URL + '/course/editCategory'
 };
 
 // Rating and review

@@ -43,7 +43,6 @@ async function sendOTP(req, res) {
       email,
       otp,
     });
-    ("otp body:", otpBody);
 
     res.status(200).json({
       success: true,

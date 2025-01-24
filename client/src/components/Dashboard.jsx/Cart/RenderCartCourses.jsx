@@ -13,17 +13,16 @@ export default function RenderCartCourses() {
       {cart.map((course, index) => (
         <div
           key={course._id}
-          className={`flex w-full  items-center justify-between gap-6 ${
-            index !== cart.length - 1 && "border-b border-b-richblack-400 pb-6"
-          } ${index !== 0 && "mt-6"} `}
+          className={`flex w-full  items-center justify-between gap-6 ${index !== cart.length - 1 && "border-b border-b-richblack-400 pb-6"
+            } ${index !== 0 && "mt-6"} `}
         >
           <div className="flex flex-1 items-center flex-col  gap-4 xl:flex-row">
             <div className="h-[148px] w-[220px] overflow-hidden">
-            <img
-              src={course?.thumbnail}
-              alt={course?.courseName}
-              className="h-full w-full rounded-lg object-contain"
-            />
+              <img
+                src={course?.thumbnail}
+                alt={course?.courseName}
+                className="h-full w-full rounded-lg object-contain"
+              />
             </div>
             <div className="flex flex-col space-y-1">
               <p className="text-lg font-medium text-richblack-5">

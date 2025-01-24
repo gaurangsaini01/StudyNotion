@@ -37,7 +37,6 @@ async function sendPaymentSuccessEmail(response, amount, token) {
       }
     );
   } catch (err) {
-    ("Payment Error");
   }
 }
 async function verifyPayment(bodyData, token, navigate, dispatch) {
@@ -54,7 +53,6 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
     navigate("/dashboard/enrolled-courses");
     dispatch(resetCart());
   } catch (err) {
-    ("Payment Verify Error");
     toast.error("Couldn't Verify");
   }
   toast.dismiss(toastId);
@@ -122,7 +120,7 @@ export async function buyCourse(
         verifyPayment({ ...response, courses }, token, navigate, dispatch);
       },
     };
-    (typeof(options.amount));
+    
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
     paymentObject.on("payment.failed", function (response) {
@@ -130,7 +128,7 @@ export async function buyCourse(
       (response.error);
     });
   } catch (err) {
-    ("error in payment", err);
+  
     toast.error("Already Purchased");
   }
   toast.dismiss(toastId);

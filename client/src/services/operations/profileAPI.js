@@ -35,11 +35,8 @@ export async function getInstructorData(token){
     const response = await apiConnector("GET", GET_INSTRUCTOR_DATA_API, null, {
       Authorization: `Bearer ${token}`,
     })
-    ("GET_INSTRUCTOR_DATA_API API RESPONSE............", response)
-    (response)
     result = response?.data?.courses
   } catch (error) {
-    ("GET_INSTRUCTOR_DATA_API API ERROR............", error)
     toast.error("Could Not Get Instructor Data")
   }
   toast.dismiss(toastId)

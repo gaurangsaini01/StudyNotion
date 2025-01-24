@@ -26,7 +26,6 @@ function Catalog() {
   async function getData(categoryId) {
     setLoading(true);
     const result = await getCatalogPageData(categoryId);
-    (result);
     if (result) {
       setSelectedCategoryCourses(result?.selectedCategoryCourses?.courses);
       setDifferentCategories(result?.differentCategoryCourses);

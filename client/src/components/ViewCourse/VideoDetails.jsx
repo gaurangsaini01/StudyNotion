@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "video-react/dist/video-react.css";
 import { Player, BigPlayButton } from "video-react";
-import IconBtn from "../reusable/IconBtn";
 import { markLectureAsComplete } from "../../services/operations/courseDetailsAPI";
 import { updateCompletedLectures } from "../../redux/slices/viewCourseSlice";
 
@@ -147,7 +146,6 @@ function VideoDetails() {
     }
     getFirstVideo();
   }, [courseEntireData, courseSectionData, location.pathname]);
-  (videoData);
   return (
     <div className="flex flex-col gap-5 h-screen text-white">
       {!videoData ? (
@@ -195,18 +193,7 @@ function VideoDetails() {
               >
                 Rewatch
               </button>
-              {/* <IconBtn
-                disabled={loading}
-                onclick={() => {
-                  if (playerRef?.current) {
-                    // set the current time of the video to 0
-                    playerRef?.current?.seek(0);
-                    setVideoEnded(false);
-                  }
-                }}
-                text="Rewatch"
-                customClasses="text-xl max-w-max px-4 mx-auto mt-2"
-              /> */}
+             
               <div className="mt-10 flex min-w-[250px] justify-center gap-x-4 text-xl">
                 {!isFirstVideo() && (
                   <button

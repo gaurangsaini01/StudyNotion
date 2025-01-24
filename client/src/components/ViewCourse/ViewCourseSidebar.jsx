@@ -39,7 +39,6 @@ export default function ViewCourseSidebar({ setReviewModal }) {
     }
     work();
   }, [courseSectionData, courseEntireData, location.pathname]);
-  (activeStatus);
   return (
     <>
       <div className="flex h-[calc(100vh-3.5rem)] w-[320px] fixed max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800">
@@ -92,9 +91,8 @@ export default function ViewCourseSidebar({ setReviewModal }) {
                     {course?.subSection.length} Lessons
                   </span>
                   <span
-                    className={`${
-                      activeStatus === course?._id ? "rotate-0" : "rotate-180"
-                    } transition-all duration-500`}
+                    className={`${activeStatus === course?._id ? "rotate-0" : "rotate-180"
+                      } transition-all duration-500`}
                   >
                     <BsChevronDown />
                   </span>
@@ -106,11 +104,10 @@ export default function ViewCourseSidebar({ setReviewModal }) {
                 <div className="transition-[height] duration-500 ease-in-out">
                   {course?.subSection.map((topic, i) => (
                     <div
-                      className={`flex gap-3  px-5 py-2 ${
-                        videoBarActive === topic?._id
-                          ? "bg-yellow-200 font-semibold text-richblack-800"
-                          : "hover:bg-richblack-900"
-                      } `}
+                      className={`flex gap-3  px-5 py-2 ${videoBarActive === topic?._id
+                        ? "bg-yellow-200 font-semibold text-richblack-800"
+                        : "hover:bg-richblack-900"
+                        } `}
                       key={i}
                       onClick={() => {
                         navigate(
@@ -122,7 +119,7 @@ export default function ViewCourseSidebar({ setReviewModal }) {
                       <input
                         type="checkbox"
                         checked={completedLectures.includes(topic?._id)}
-                        onChange={() => {}}
+                        onChange={() => { }}
                       />
                       {topic.title}
                     </div>

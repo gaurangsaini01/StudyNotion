@@ -70,7 +70,7 @@ export default function Instructor() {
                 <div>
                   <p className="text-lg text-richblack-200">Total Courses</p>
                   <p className="text-3xl font-semibold text-richblack-50">
-                    {courses.length}
+                    {courses?.length}
                   </p>
                 </div>
                 <div>

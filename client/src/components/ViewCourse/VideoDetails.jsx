@@ -130,7 +130,7 @@ function VideoDetails() {
         const sectionIndex = courseSectionData?.findIndex(
           (section) => section._id === sectionId
         );
-        (courseSectionData[sectionIndex]?.subSection);
+        // (courseSectionData[sectionIndex]?.subSection);
         const subSectionIndex = courseSectionData?.[
           sectionIndex
         ]?.subSection?.findIndex(

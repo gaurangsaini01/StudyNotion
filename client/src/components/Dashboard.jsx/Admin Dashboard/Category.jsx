@@ -37,14 +37,11 @@ function Category() {
             const data = {
                 ...category, categoryId: todoId
             }
-            // console.log(data);
             const res = await editCategory(data, token);
-            // console.log(res)
             if (!res.data.success) {
                 toast.error('Cannot Edit category');
             }
             const editedCategory = res.data.data;
-            // console.log(editedCategory)
             setCategory({
                 name: "",
                 description: ""

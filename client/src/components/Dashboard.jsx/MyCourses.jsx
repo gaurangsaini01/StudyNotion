@@ -31,14 +31,14 @@ function MyCourses() {
 
   const getCourseDetails = async (courseId) => {
     try {
-      (courseId);
+     
       const response = await getFullDetailsOfCourse(courseId, token);
-      (response)
+      
       dispatch(setEditCourse(true));
       dispatch(setCourse(response?.courseDetails));
       navigate("/dashboard/add-course");
     } catch (err) {
-      ("error");
+    
     }
   };
   const getEnrolledCourses = async () => {
@@ -46,7 +46,7 @@ function MyCourses() {
       const response = await getUserEnrolledCourses(token);
       setEnrolledCourses(response);
     } catch (error) {
-      ("Unable to Fetch Enrolled Courses");
+      
     }
   };
   const handleDeleteCourse = async (courseId) => {
@@ -56,7 +56,7 @@ function MyCourses() {
         prevCourses.filter((course) => course._id !== courseId)
       );
     } catch (error) {
-      ("Error Deleting Course");
+      
     }
   };
 

@@ -25,7 +25,6 @@ function Navbar({ open, setOpen }) {
         setSublinks(result.data.data);
         // (sublinks)
       } catch (err) {
-        ("Couldn't fetch the list");
       }
     }
     caller();

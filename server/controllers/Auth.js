@@ -27,9 +27,7 @@ async function sendOTP(req, res) {
       specialChars: false,
     });
     const result = await OTP.findOne({ otp });
-    ("Result is Generate OTP Func");
-    ("OTP", otp);
-    ("Result", result);
+   
     while (result) {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
@@ -50,7 +48,6 @@ async function sendOTP(req, res) {
       otp,
     });
   } catch (err) {
-    (err);
     return res.status(500).json({
       success: false,
       message: err.message,
@@ -107,7 +104,7 @@ async function signup(req, res) {
     const response = await OTP.findOne({ email })
       .sort({ createdAt: -1 })
       .limit(1);
-    (response);
+    
     if (!response) {
       // OTP not found for the email
       return res.status(400).json({
@@ -155,7 +152,7 @@ async function signup(req, res) {
       user,
     });
   } catch (err) {
-    (err);
+  
     return res.status(500).json({
       success: false,
       message: "User Cannot Be Registered , try Again",

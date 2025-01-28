@@ -193,7 +193,7 @@ function VideoDetails() {
               >
                 Rewatch
               </button>
-             
+
               <div className="mt-10 flex min-w-[250px] justify-center gap-x-4 text-xl">
                 {!isFirstVideo() && (
                   <button

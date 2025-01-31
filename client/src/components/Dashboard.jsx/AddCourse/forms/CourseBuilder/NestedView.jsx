@@ -51,15 +51,11 @@ export default function NestedView({ handleChangeEditSectionName }) {
       const updatedCourseContent = course?.courseContent.map((section) =>
         section._id === sectionId ? result : section
       );
-      ("updatedCourseContent", updatedCourseContent);
-      ("old course", course);
       const updatedCourse = { ...course, courseContent: updatedCourseContent };
-      ("updated course", updatedCourse);
       dispatch(setCourse(updatedCourse));
     }
     setConfirmationModal(null);
   };
-  (editSubSection);
 
   return (
     <>

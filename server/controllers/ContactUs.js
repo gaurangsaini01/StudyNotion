@@ -3,7 +3,6 @@ const { sendMailToMyself } = require("../utils/mailsender");
 async function ContactUs(req, res) {
   try {
     const { message, phoneNo, lastname, firstname, email } = req.body;
-    ("AGye");
     if (!email || !firstname || !message) {
       return res.status(400).json({
         success: false,
@@ -12,7 +11,6 @@ async function ContactUs(req, res) {
     }
 
     const mailRes = await sendMailToMyself(email, firstname, message);
-    (mailRes);
     if (mailRes.success === true) {
       return res.status(200).json({
         success: true,

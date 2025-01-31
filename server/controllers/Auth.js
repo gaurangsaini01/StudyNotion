@@ -241,7 +241,7 @@ async function changePassword(req, res) {
       { password: encryptedPassword },
       { new: true }
     ).populate("additionalDetails");
-    (updatedUserDetails);
+    
     // Send notification email
     try {
       const emailResponse = await mailSender(
@@ -252,7 +252,7 @@ async function changePassword(req, res) {
           `${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
         )
       );
-      ("Email sent successfully:", emailResponse.response);
+      // ("Email sent successfully:", emailResponse.response);
     } catch (error) {
       // If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
       console.error("Error occurred while sending email:", error);

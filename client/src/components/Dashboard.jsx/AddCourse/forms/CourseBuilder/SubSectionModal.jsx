@@ -38,21 +38,18 @@ export default function SubSectionModal({
   const { token } = useSelector((state) => state.auth);
   const { course } = useSelector((state) => state.course);
 
-  ("course",course);
 
   useEffect(() => {
-    (modalData);
     if (view || edit) {
       setValue("lectureTitle", modalData.title);
       setValue("lectureDesc", modalData.description);
       setValue("lectureVideo", modalData.videoURL);
     }
-  }, [setValue,modalData]);
+  }, [setValue, modalData]);
 
   // Check whether form is updated or not
   const isFormUpdated = () => {
     const currentValues = getValues();
-    ("changes before editing form values:", currentValues);
     if (
       currentValues.lectureTitle !== modalData.title ||
       currentValues.lectureDesc !== modalData.description ||
@@ -62,13 +59,13 @@ export default function SubSectionModal({
     }
     return false;
   };
-  
+
   // handle the editing of subsection
   const handleEditSubsection = async () => {
     const currentValues = getValues();
-    ("changes after editing form values:", currentValues);
+
     const formData = new FormData();
-  
+
     formData.append("sectionId", modalData.sectionId);
     formData.append("subSectionId", modalData._id);
     if (currentValues.lectureTitle !== modalData.title) {
@@ -79,14 +76,14 @@ export default function SubSectionModal({
     }
     if (currentValues.lectureVideo !== modalData.videoURL) {
       formData.append("video", currentValues.lectureVideo);
-     
+
     }
-  
+
     setLoading(true);
     formData.forEach((value, key) => {
       (key, value);
     });
-  
+
     const result = await updateSubSection(formData, token);
     if (result) {
       // Update the structure of course
@@ -99,7 +96,7 @@ export default function SubSectionModal({
     setModalData(null);
     setLoading(false);
   };
-  
+
 
   const onSubmit = async (data) => {
     // (data)
@@ -113,7 +110,6 @@ export default function SubSectionModal({
       }
       return;
     }
-     ("data",data);
     const formData = new FormData();
     formData.append("sectionId", modalData);
     formData.append("title", data.lectureTitle);
@@ -133,8 +129,6 @@ export default function SubSectionModal({
     setLoading(false);
   };
 
-  ("modal data",modalData)
- 
 
   return (
     <div className="fixed inset-0 z-[1000] !mt-0 grid h-screen w-screen place-items-center overflow-auto bg-white bg-opacity-10 backdrop-blur-sm">

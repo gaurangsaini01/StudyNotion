@@ -18,11 +18,9 @@ function ProfileUpdate() {
   } = useForm();
 
   const submitProfileForm = async (data) => {
-    ("Form Data - ", data)
     try {
       dispatch(updateProfile(token, data));
     } catch (error) {
-      ("ERROR MESSAGE - ", error.message);
     }
   };
 

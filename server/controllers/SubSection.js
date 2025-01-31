@@ -9,7 +9,6 @@ async function createSubSection(req, res) {
     const { timeDuration, title, description, sectionId } = req.body;
     //video
     const video = req.files.video;
-    (video)
     //validate
     if ( !title || !description || !video || !sectionId) {
       return res.status(400).json({
@@ -22,7 +21,6 @@ async function createSubSection(req, res) {
       video,
       process.env.FOLDER_NAME
     );
-    ("uploadedVideo:- ",uploadedVideo)
     //create SubSection
     const newSubSection = await SubSection.create({
       title,

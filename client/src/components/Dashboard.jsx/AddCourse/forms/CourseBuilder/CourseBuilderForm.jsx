@@ -39,7 +39,6 @@ export default function CourseBuilderForm() {
     let result;
 
     if (editSectionName) {
-      (editSectionName);
       result = await updateSection(
         {
           sectionName: data.sectionName,
@@ -59,7 +58,6 @@ export default function CourseBuilderForm() {
       );
     }
     if (result) {
-      ("section result", result);
       dispatch(setCourse(result));
       setEditSectionName(null);
       setValue("sectionName", "");

@@ -173,7 +173,6 @@ async function updateDisplayPicture(req, res) {
       file,
       process.env.FOLDER_NAME
     );
-    (response);
     const updatedProfile = await User.findByIdAndUpdate(
       userId,
       { image: response.secure_url },
@@ -185,7 +184,6 @@ async function updateDisplayPicture(req, res) {
       data:updatedProfile,
     });
   } catch (err) {
-    (err);
     return res.status(500).json({
       success: false,
       message: err.message,

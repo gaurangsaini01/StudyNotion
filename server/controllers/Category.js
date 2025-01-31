@@ -114,11 +114,8 @@ async function deleteCategory(req, res) {
   try {
     const categoryId = req.body.categoryId;
     const category = await Category.findById(categoryId).populate("courses");
-    "Category is:-", category;
     const courses = category.courses;
     for (const course of courses) {
-      "course is", course;
-
       const studentsEnrolled = course.studentsEnrolled;
       for (const studentId of studentsEnrolled) {
         await User.findByIdAndUpdate(studentId, {

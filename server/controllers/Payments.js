@@ -48,7 +48,6 @@ async function capturePayment(req, res) {
   courses.map((course, index) => (index, course));
   let totalAmount = 0;
   for (const courseId of courses) {
-    ("courseid", courseId);
 
     let course;
     try {
@@ -89,13 +88,12 @@ async function capturePayment(req, res) {
   //order create
   try {
     const paymentResponse = await instance.orders.create(options);
-    (paymentResponse);
+   
     return res.status(200).json({
       success: true,
       message: paymentResponse,
     });
   } catch (error) {
-    (error.message);
     return res.status(500).json({
       success: false,
       message: "Problem while creating Order",
@@ -184,7 +182,6 @@ const enrollStudent = async (userId, courses, res) => {
         `Successfully Enrolled in ${course.courseName}`,
         courseEnrollmentEmail(course.courseName, student.firstName)
       );
-      ("email,sent successfully", emailRes);
     } catch (error) {
       return res.status(500).json({
         success: false,

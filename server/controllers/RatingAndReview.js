@@ -43,7 +43,6 @@ async function createRatingAndReviews(req, res) {
       },
       { new: true }
     );
-    (updatedCourse);
     //return success response
     return res.status(200).json({
       success: true,

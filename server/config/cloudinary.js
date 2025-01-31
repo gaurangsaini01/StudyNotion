@@ -7,9 +7,9 @@ async function connectWithCloudinary() {
       api_key: process.env.API_KEY,
       api_secret: process.env.API_SECRET,
     });
-    ("Connection Successfull with cloudinary");
+    console.log("Connection Successfull with cloudinary");
   } catch (error) {
-    (err);
+    console.log(err);
   }
 }
 

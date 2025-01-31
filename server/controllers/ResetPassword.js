@@ -29,20 +29,17 @@ async function resetPasswordToken(req, res) {
       { new: true }
     );
     //create URL
-    ("Mail kyu ni jari 1");
     const url = `${
       process.env.NODE_ENV === "prod"
       ? process.env.FRONTEND_URL_PROD
       : process.env.FRONTEND_URL_DEV
     }/update-password/${resetPasswordToken}`;
     //send mail
-    ("Mail kyu ni jari 2",url);
     const info = await mailSender(
       email,
       "Password Reset Email From StudyNotion",
       passwordReset(updatedDetails?.firstName, url)
     );
-    ("Mail kyu ni jari 3",info)
     //response send
     return res.status(200).json({
       success: true,

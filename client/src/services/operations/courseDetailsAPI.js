@@ -98,7 +98,6 @@ export const addCourseDetails = async (data, token) => {
     toast.success("Course Details Added Successfully");
     result = response?.data?.newCourse;
   } catch (error) {
-   
     toast.error(error.message);
   }
   toast.dismiss(toastId);
@@ -163,7 +162,7 @@ export const createSubSection = async (data, token) => {
     toast.success("Lecture Added");
     result = response?.data?.data;
   } catch (error) {
-    toast.error(error.message);
+    toast.error(error?.response?.data?.message || 'Some Error in Uploading');
   }
   toast.dismiss(toastId);
   return result;
@@ -204,7 +203,7 @@ export const updateSubSection = async (data, token) => {
     toast.success("Lecture Updated");
     result = response?.data?.data;
   } catch (error) {
-    toast.error(error.message);
+    toast.error(error?.response?.data?.message || 'Some Error in updating');
   }
   toast.dismiss(toastId);
   return result;

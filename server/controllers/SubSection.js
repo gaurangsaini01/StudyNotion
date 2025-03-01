@@ -17,6 +17,14 @@ async function createSubSection(req, res) {
       });
     }
     //upload to cloudinary video for getting URL
+    // Check video size (assuming size is in bytes)
+    if (video.size > 10 * 1024 * 1024) { // 10MB
+      return res.status(400).json({
+      success: false,
+      message: "Video size should not exceed 10MB",
+      });
+    }
+
     const uploadedVideo = await uploadImageToCloudinary(
       video,
       process.env.FOLDER_NAME
@@ -73,16 +81,23 @@ async function updateSubSection(req, res) {
 
     // Check if video is a URL or file
     if (req.files && req.files.video) {
+      // Check video size (assuming size is in bytes)
+      if (req.files.video.size > 10 * 1024 * 1024) { // 10MB
+      return res.status(400).json({
+        success: false,
+        message: "Video size should not exceed 10MB",
+      });
+      }
       const uploadedVideo = await uploadImageToCloudinary(
-        req.files.video,
-        process.env.FOLDER_NAME,
+      req.files.video,
+      process.env.FOLDER_NAME,
       );
       subSection.videoURL = uploadedVideo.secure_url;
     } else if (video && !video.startsWith('http')) {
       // Handle case when video is not a valid URL
       return res.status(400).json({
-        success: false,
-        message: "Invalid video URL",
+      success: false,
+      message: "Invalid video URL",
       });
     } else if (video) {
       subSection.videoURL = video;

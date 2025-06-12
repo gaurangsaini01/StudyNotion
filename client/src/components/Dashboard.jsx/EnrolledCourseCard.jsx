@@ -55,7 +55,7 @@ function EnrolledCourseCard({ course, navigate }) {
         </div>
         <div className="min-w-[250px] flex flex-col gap-2">
           <div className="text-sm text-richblack-200">
-            Progress : {progress}%
+            Progress : {progress.toFixed(2)}%
           </div>
           <ProgressBar
             height="10px"

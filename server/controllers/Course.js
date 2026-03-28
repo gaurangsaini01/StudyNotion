@@ -461,6 +461,18 @@ async function deleteCourse(req, res) {
   }
 }
 
+async function getRecommendedCourses (){
+  try {
+    
+  } catch (error) {
+    return res.status(500).json({
+      success:false,
+      message:'Failed to Retrieve Course Recommendations.',
+      error:error.message
+    })
+  }
+}
+
 module.exports = {
   createCourse,
   getAllCourses,

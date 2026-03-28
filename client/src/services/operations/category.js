@@ -21,12 +21,10 @@ async function createCategory(data, token) {
 
 async function editCategory(data, token) {
   try {
-    console.log("In edit category operation", data);
     const response = await apiConnector("PUT", EDIT_CATEGORY_API, data, {
       Authorization: `Bearer ${token}`,
     });
 
-    console.log("In edit category operation", response);
     if (!response.data.success) {
       throw new Error(response.data.message);
     }

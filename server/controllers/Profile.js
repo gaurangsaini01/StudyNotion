@@ -8,7 +8,6 @@ require("dotenv").config();
 const instructorDashboard = async (req, res) => {
   try {
     const courseDetails = await Course.find({ instructor: req.user.id })
-    console.log(courseDetails);
 
     const courseData = courseDetails.map((course) => {
       const totalStudentsEnrolled = course.studentsEnrolled.length

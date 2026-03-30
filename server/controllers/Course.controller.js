@@ -6,6 +6,7 @@ const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
 const CourseProgress = require("../models/CourseProgress");
 const fs = require("fs");
+const axios = require("axios")
 require("dotenv").config();
 
 async function createCourse(req, res) {
@@ -461,9 +462,11 @@ async function deleteCourse(req, res) {
   }
 }
 
-async function getRecommendedCourses (){
+async function getRecommendedCourses (req,res){
   try {
-    
+    const userId = req.user.id
+   const res = await axios.get('http://127.0.0.1:8000/getCourseRecommendations')
+   console.log(res)
   } catch (error) {
     return res.status(500).json({
       success:false,
@@ -483,4 +486,5 @@ module.exports = {
   updateCourseProgress,
   getCourseProgress,
   getInstructorCourses,
+  getRecommendedCourses
 };

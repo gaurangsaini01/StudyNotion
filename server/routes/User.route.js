@@ -8,12 +8,12 @@ const {
   signup,
   sendOTP,
   changePassword,
-} = require("../controllers/Auth");
+} = require("../controllers/Auth.controller");
 
 const {
   resetPasswordToken,
   resetPassword,
-} = require("../controllers/ResetPassword");
+} = require("../controllers/ResetPassword.controller");
 
 const { auth } = require("../middlewares/auth");
 

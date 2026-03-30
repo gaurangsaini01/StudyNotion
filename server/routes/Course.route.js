@@ -13,7 +13,8 @@ const {
   updateCourseProgress,
   getCourseProgress,
   getInstructorCourses,
-} = require("../controllers/Course");
+  getRecommendedCourses
+} = require("../controllers/Course.controller");
 
 //category controllers
 
@@ -23,21 +24,21 @@ const {
   categoryPageDetails,
   deleteCategory,
   editCategory
-} = require("../controllers/Category");
+} = require("../controllers/Category.controller");
 
 // Sections Controllers Import
 const {
   createSection,
   updateSection,
   deleteSection,
-} = require("../controllers/Section");
+} = require("../controllers/Section.controller");
 
 // Sub-Sections Controllers Import
 const {
   createSubSection,
   updateSubSection,
   deleteSubSection,
-} = require("../controllers/SubSection");
+} = require("../controllers/SubSection.controller");
 
 // Rating Controllers Import
 const {
@@ -45,7 +46,7 @@ const {
   getAvgRating,
   getAllRatingAndReviews,
   getCourseRatingAndReview,
-} = require("../controllers/RatingAndReview");
+} = require("../controllers/RatingAndReview.controller");
 
 // Importing Middlewares
 const {
@@ -86,6 +87,7 @@ router.post("/getfullcoursedetails", auth, getFullCourseDetails);
 router.post("/updateCourseProgress", auth, updateCourseProgress);
 router.post("/getCourseProgress", auth, getCourseProgress);
 router.post("/getReviews", getAllRatingAndReviews);
+router.get('/getRecommendedCourses',isStudent,getRecommendedCourses)
 
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)

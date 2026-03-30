@@ -37,6 +37,7 @@ export const profileEndpoints = {
 };
 
 export const courseEndpoints = {
+  GET_ALL_RECOMMENDED_COURSES: BASE_URL + '/course/getRecommendedCourses',
   GET_ALL_COURSE_API: BASE_URL + "/course/getallcourses",
   COURSE_DETAILS_API: BASE_URL + "/course/getcoursedetails",
   EDIT_COURSE_API: BASE_URL + "/course/editcourse",

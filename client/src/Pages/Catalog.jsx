@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getCatalogPageData } from "../services/operations/catalogAPI";
+import { getAllRecomenddedCourses, getCatalogPageData } from "../services/operations/catalogAPI";
 import { useNavigate, useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import "swiper/css/free-mode"
 import { Autoplay } from "swiper/modules"
 import 'swiper/css/autoplay'
+import toast from "react-hot-toast";
 
 
 
@@ -37,8 +38,16 @@ function Catalog() {
       return;
     }
   }
+  async function getRecommendedCourses(){
+    try {
+      const res = await getAllRecomenddedCourses()
+    } catch (error) {
+      toast.error('Error In Fetching Recomended Courses')
+    }
+  }
   useEffect(() => {
     getData(categoryId);
+    getRecommendedCourses()
   }, [categoryId]);
   ("selectedCategoryCourses", selectedCategoryCourses);
   ("differentCategories", differentCategories);

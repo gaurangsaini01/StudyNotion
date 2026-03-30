@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 
-const ContactUs = require("../controllers/ContactUs")
+const ContactUs = require("../controllers/ContactUs.controller")
 
 router.post('/contact',ContactUs)
 

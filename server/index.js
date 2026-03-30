@@ -12,11 +12,11 @@ job.start();
 const port = process.env.PORT || 3000;
 
 //importing routes
-const userRoutes = require('./routes/User');
-const profileRoutes = require("./routes/Profile")
-const courseRoutes = require("./routes/Course")
-const contactRoutes = require("./routes/Contact")
-const paymentRoutes = require("./routes/Payments")
+const userRoutes = require('./routes/User.route');
+const profileRoutes = require("./routes/Profile.route")
+const courseRoutes = require("./routes/Course.route")
+const contactRoutes = require("./routes/Contact.route")
+const paymentRoutes = require("./routes/Payments.route")
 
 //adding middlewares
 app.use(express.json());

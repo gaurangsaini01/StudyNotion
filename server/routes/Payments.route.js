@@ -1,5 +1,5 @@
 const express = require("express");
-const { capturePayment, verifySignature,sendPaymentSuccessEmail } = require("../controllers/Payments");
+const { capturePayment, verifySignature,sendPaymentSuccessEmail } = require("../controllers/Payments.controller");
 const router = express.Router();
 const { auth, isStudent } = require("../middlewares/auth");
 

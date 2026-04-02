@@ -7,6 +7,7 @@ const {
   createCourse,
   getAllCourses,
   getCourseDetails,
+  getCoursesByIds,
   editCourse,
   deleteCourse,
   getFullCourseDetails,
@@ -82,12 +83,13 @@ router.post("/createsubsection", auth, isInstructor, createSubSection);
 router.get("/getallcourses", getAllCourses);
 // Get Details for a Specific Courses
 router.post("/getcoursedetails", getCourseDetails);
+router.post("/getcoursesbyids", getCoursesByIds);
 
 router.post("/getfullcoursedetails", auth, getFullCourseDetails);
 router.post("/updateCourseProgress", auth, updateCourseProgress);
 router.post("/getCourseProgress", auth, getCourseProgress);
 router.post("/getReviews", getAllRatingAndReviews);
-router.get('/getRecommendedCourses',isStudent,getRecommendedCourses)
+router.get('/getRecommendedCourses',auth,isStudent,getRecommendedCourses)
 
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)

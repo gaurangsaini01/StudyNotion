@@ -35,7 +35,6 @@ async function resetPasswordToken(req, res) {
       : process.env.FRONTEND_URL_DEV
     }/update-password/${resetPasswordToken}`;
     //send mail
-    console.log(url)
     const info = await mailSender(
       email,
       "Password Reset Email From StudyNotion",

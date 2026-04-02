@@ -40,6 +40,7 @@ export const courseEndpoints = {
   GET_ALL_RECOMMENDED_COURSES: BASE_URL + '/course/getRecommendedCourses',
   GET_ALL_COURSE_API: BASE_URL + "/course/getallcourses",
   COURSE_DETAILS_API: BASE_URL + "/course/getcoursedetails",
+  GET_COURSES_BY_IDS_API: BASE_URL + "/course/getcoursesbyids",
   EDIT_COURSE_API: BASE_URL + "/course/editcourse",
   COURSE_CATEGORIES_API: BASE_URL + "/course/getallcategories",
   CREATE_COURSE_API: BASE_URL + "/course/createcourse",

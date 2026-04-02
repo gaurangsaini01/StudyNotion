@@ -12,7 +12,7 @@ const {
   updateDisplayPicture,
   getEnrolledCourses,
   instructorDashboard
-} = require("../controllers/Profile");
+} = require("../controllers/Profile.controller");
 
 // Delete User Account
 router.delete("/deleteaccount", auth, deleteAccount);

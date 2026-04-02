@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { MdOutlineCurrencyRupee } from "react-icons/md";
+import { FiInfo } from "react-icons/fi";
 import GetAvgRating from "../../utils/averageRating";
 
 import { useNavigate } from "react-router-dom";
 import { StarRating } from "../StarComponent/Star";
 
-function CourseCard({ course }) {
+function CourseCard({ course, recommendationReason }) {
   const navigate = useNavigate();
   const [avgRating, setAvgRating] = useState(0);
 
@@ -18,8 +19,23 @@ function CourseCard({ course }) {
   return (
     <div
       onClick={() => navigate(`/courses/${course._id}`)}
-      className=" bg-richblack-800 p-4 rounded-xl flex  flex-col w-[350px] hover:scale-95 transition-all duration-300 cursor-pointer ease-in-out shadow-2xl shadow-blue-500/20"
+      className="relative bg-richblack-800 p-4 rounded-xl flex flex-col w-[350px] hover:scale-95 transition-all duration-300 cursor-pointer ease-in-out shadow-2xl shadow-blue-500/20"
     >
+      {recommendationReason && (
+        <div
+          className="group absolute right-3 top-3 z-20"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <div className="relative flex items-center justify-center">
+            <div className="rounded-full bg-richblack-700/90 p-2 text-yellow-50">
+              <FiInfo size={16} />
+            </div>
+            <div className="pointer-events-none absolute right-0 top-11 hidden w-64 rounded-lg border border-richblack-600 bg-richblack-900 p-3 text-xs text-richblack-50 shadow-lg group-hover:block">
+              {recommendationReason}
+            </div>
+          </div>
+        </div>
+      )}
       <div className="w-full rounded-md h-[200px] overflow-hidden">
         <img
           className="w-full h-full object-contain"

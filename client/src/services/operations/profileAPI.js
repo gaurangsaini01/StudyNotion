@@ -1,7 +1,11 @@
 import toast from "react-hot-toast";
 import { profileEndpoints } from "../apis";
 import { apiConnector } from "../apiconnector";
-const {GET_USER_ENROLLED_COURSES_API,GET_INSTRUCTOR_DATA_API} = profileEndpoints;
+const {
+  GET_USER_ENROLLED_COURSES_API,
+  GET_INSTRUCTOR_DATA_API,
+  GET_QUIZ_QUESTIONS_API,
+} = profileEndpoints;
 
 export async function getUserEnrolledCourses(token) {
   const toastId = toast.loading("Loading...");
@@ -41,4 +45,23 @@ export async function getInstructorData(token){
   }
   toast.dismiss(toastId)
   return result
+}
+
+export async function getQuizQuestions(data, token) {
+  let result = null;
+  try {
+    const response = await apiConnector("POST", GET_QUIZ_QUESTIONS_API, data, {
+      Authorization: `Bearer ${token}`,
+    });
+
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.message);
+    }
+
+    result = response?.data;
+  } catch (error) {
+    toast.error("Could Not Fetch Quiz Questions");
+  }
+
+  return result;
 }

@@ -31,7 +31,6 @@ function ListOfCategories({ list, setList, edit, setEdit, setCategory, setTodoId
         setEdit((prev) => !prev);
         if (!edit) {
             const currentCategory = list.find((cat) => cat._id == categoryId)
-            console.log("current cat is", currentCategory)
             setCategory({
                 name: currentCategory?.name,
                 description: currentCategory?.description

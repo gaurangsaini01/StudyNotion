@@ -1,5 +1,5 @@
 const User = require("../models/User.js");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { mailSender } = require("../utils/mailsender.js");
 const passwordReset = require("../mail/templates/passwordReset.js");
 require("dotenv").config();

@@ -6,6 +6,8 @@ const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
 const CourseProgress = require("../models/CourseProgress");
 const fs = require("fs");
+const axios = require("axios");
+
 require("dotenv").config();
 
 async function createCourse(req, res) {
@@ -48,7 +50,7 @@ async function createCourse(req, res) {
     // Upload the image to Cloudinary
     const thumbnailImage = await uploadImageToCloudinary(
       thumbnail,
-      process.env.FOLDER_NAME
+      process.env.FOLDER_NAME,
     );
     fs.unlink(thumbnail.tempFilePath, (err) => {
       if (err) {
@@ -72,14 +74,14 @@ async function createCourse(req, res) {
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
       { $push: { courses: newCourse._id.toString() } },
-      { new: true }
+      { new: true },
     );
 
     // Update the category's course list
     const updatedCategory = await Category.findByIdAndUpdate(
       category,
       { $push: { courses: newCourse._id } },
-      { new: true }
+      { new: true },
     );
 
     // Send response
@@ -156,7 +158,7 @@ async function editCourse(req, res) {
     if (thumbnail) {
       const thumbnailImage = await uploadImageToCloudinary(
         thumbnail,
-        process.env.FOLDER_NAME
+        process.env.FOLDER_NAME,
       );
       updatedField.thumbnail = thumbnailImage.secure_url;
     }
@@ -184,7 +186,7 @@ async function editCourse(req, res) {
     const updatedCourse = await Course.findByIdAndUpdate(
       courseId,
       updatedField,
-      { new: true }
+      { new: true },
     )
       .populate({
         path: "courseContent",
@@ -244,10 +246,44 @@ async function getCourseDetails(req, res) {
       data: courseDetails,
     });
   } catch (err) {
-    
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
+    });
+  }
+}
+
+async function getCoursesByIds(req, res) {
+  try {
+    const { courseIds } = req.body;
+
+    if (!Array.isArray(courseIds) || courseIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Valid courseIds array is required",
+      });
+    }
+
+    const courses = await Course.find({
+      _id: { $in: courseIds },
+      status: "published",
+    })
+      .populate("ratingAndReviews")
+      .populate("category")
+      .populate({
+        path: "instructor",
+        populate: { path: "additionalDetails" },
+      });
+
+    return res.status(200).json({
+      success: true,
+      message: "Courses fetched successfully",
+      data: courses,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Unable to fetch courses",
     });
   }
 }
@@ -277,8 +313,6 @@ async function getFullCourseDetails(req, res) {
       courseId: courseId,
       userId: userId,
     });
-
-    
 
     if (!courseDetails) {
       return res.status(400).json({
@@ -360,9 +394,9 @@ async function getCourseProgress(req, res) {
         message: "No course Progress for such user and Course Found",
       });
     }
-   
+
     let completedVideos = courseProgress.completedVideos.length;
-  
+
     return res.status(200).json({
       success: true,
       message: "Completed Lectures Retrieved",
@@ -396,6 +430,32 @@ async function getInstructorCourses(req, res) {
     res.status(500).json({
       success: false,
       message: "Failed to retrieve instructor courses",
+      error: error.message,
+    });
+  }
+}
+
+async function getQuizzesQuestion(req, res) {
+  try {
+    const { courseName, courseDescription } = req.body;
+
+    if (!courseName || !courseDescription) {
+      return res.status(400).json({
+        success: false,
+        message: "courseName and courseDescription are required",
+      });
+    }
+    const response = await axios.post(`${process.env.FAST_API_URL}/getCourseQuiz`,{courseDescription,courseName})
+
+    return res.status(200).json({
+      success: true,
+      message: "Quiz request received successfully",
+      data: response?.data,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get quiz questions",
       error: error.message,
     });
   }
@@ -461,14 +521,65 @@ async function deleteCourse(req, res) {
   }
 }
 
+async function getRecommendedCourses(req, res) {
+  try {
+    const userId = req.user.id;
+    const currentUser = await User.findById({ _id: userId }).populate({
+      path: "courses",
+      populate: {
+        path: "category",
+      },
+    });
+    const enrolledCourses = currentUser?.courses?.map((course) => {
+      return {
+        courseId: course._id,
+        category: course?.category?.name,
+        courseName: course?.courseName,
+        courseDescription: course?.courseDescription,
+        whatYouWillLearn: course?.whatYouWillLearn,
+      };
+    });
+    const allCourses = (await Course.find().populate("category")) // important if category is ObjectId
+      .filter((c) => c.status === "published")
+      .map((course) => {
+        return {
+          courseId: course._id,
+          category: course?.category?.name,
+          courseName: course?.courseName,
+          courseDescription: course?.courseDescription,
+          whatYouWillLearn: course?.whatYouWillLearn,
+        };
+      });
+
+    const response = await axios.post(
+      `${process.env.FAST_API_URL}/getCourseRecommendations`,
+      { allCourses, enrolledCourses },
+    );
+    return res.status(200).json({
+      success: true,
+      messages: "Recommendationed Courses Fetched Successfully !",
+      data: response?.data?.recommendations,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to Retrieve Course Recommendations.",
+      error: error.message,
+    });
+  }
+}
+
 module.exports = {
   createCourse,
   getAllCourses,
   editCourse,
   deleteCourse,
   getCourseDetails,
+  getCoursesByIds,
   getFullCourseDetails,
   updateCourseProgress,
   getCourseProgress,
   getInstructorCourses,
+  getQuizzesQuestion,
+  getRecommendedCourses,
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { getCatalogPageData } from "../services/operations/catalogAPI";
 import { useNavigate, useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,11 +7,10 @@ import CourseCard from "../components/Catalog/CourseCard";
 import useWindowWidth from "../hooks/useWindowWidth";
 import { PiSmileySadLight } from "react-icons/pi";
 import Footer from "../components/Footer";
-import "swiper/css/free-mode"
-import { Autoplay } from "swiper/modules"
-import 'swiper/css/autoplay'
-
-
+import "swiper/css/free-mode";
+import { Autoplay } from "swiper/modules";
+import "swiper/css/autoplay";
+import { useSelector } from "react-redux";
 
 function Catalog() {
   //custom Hook
@@ -21,8 +20,12 @@ function Catalog() {
   const [selectedCategoryCourses, setSelectedCategoryCourses] = useState(null);
   const [differentCategories, setDifferentCategories] = useState(null);
   const params = useParams();
+  const recommendedCourses = useSelector(
+    (state) => state.recommendation.courses
+  );
   const categoryId = params.categoryid;
   const [loading, setLoading] = useState();
+
   async function getData(categoryId) {
     setLoading(true);
     const result = await getCatalogPageData(categoryId);
@@ -37,9 +40,11 @@ function Catalog() {
       return;
     }
   }
+
   useEffect(() => {
     getData(categoryId);
   }, [categoryId]);
+
   ("selectedCategoryCourses", selectedCategoryCourses);
   ("differentCategories", differentCategories);
   ("categoryDetails", categoryDetails);
@@ -78,7 +83,7 @@ function Catalog() {
               <Swiper
                 slidesPerView={width > 1300 ? 3 : width > 900 ? 2 : 1}
                 loop={true}
-                modules={[ Autoplay]}
+                modules={[Autoplay]}
                 autoplay={{
                   delay: 1500,
                   disableOnInteraction: false,
@@ -100,7 +105,8 @@ function Catalog() {
               </div>
             )}
           </div>
-          <div className="w-10/12 mx-auto">
+
+          <div className="w-10/12 mx-auto py-10">
             <div className="text-3xl font-semibold capitalize py-12">
               Other Popular Courses from Different Categories
             </div>
@@ -108,16 +114,16 @@ function Catalog() {
               <Swiper
                 slidesPerView={width > 1300 ? 3 : width > 900 ? 2 : 1}
                 loop={true}
-                modules={[ Autoplay]}
+                modules={[Autoplay]}
                 autoplay={{
                   delay: 1500,
                   disableOnInteraction: false,
-                  pauseOnMouseEnter:true
+                  pauseOnMouseEnter: true,
                 }}
                 className="mySwiper"
               >
                 {differentCategories?.map((category) => {
-                  (category);
+                  category;
                   return category?.courses?.map((course) => {
                     return (
                       <SwiperSlide key={course._id}>
@@ -134,6 +140,37 @@ function Catalog() {
               </div>
             )}
           </div>
+          {recommendedCourses?.length > 0 && (
+            <div className="mx-auto w-10/12 flex flex-col gap-12 py-2">
+              <div className="text-3xl font-semibold capitalize">
+                <span className="text-yellow-200">AI</span>-Based
+                Recommendations for you (Based on your past purchases)
+              </div>
+
+              <Swiper
+                slidesPerView={width > 1300 ? 3 : width > 900 ? 2 : 1}
+                loop={recommendedCourses.length > 3}
+                modules={[Autoplay]}
+                autoplay={{
+                  delay: 1800,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter: true,
+                }}
+                className="mySwiper"
+              >
+                {recommendedCourses?.map((course) => {
+                  return (
+                    <SwiperSlide key={course?._id}>
+                      <CourseCard
+                        course={course}
+                        recommendationReason={course?.recommendationReason}
+                      />
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </div>
+          )}
         </div>
       ) : (
         <div className="h-screen flex items-center gap-4 justify-center  ">

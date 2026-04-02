@@ -2,7 +2,7 @@ const OTP = require("../models/OTP");
 const User = require("../models/User");
 const otpGenerator = require("otp-generator");
 const Profile = require("../models/Profile");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {mailSender} = require("../utils/mailsender");
 const passwordUpdated = require("../mail/templates/passwordUpdate");
@@ -45,7 +45,6 @@ async function sendOTP(req, res) {
     res.status(200).json({
       success: true,
       message: "OTP Sent Successfully",
-      otp,
     });
   } catch (err) {
     return res.status(500).json({

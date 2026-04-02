@@ -2,8 +2,13 @@ import { toast } from "react-hot-toast";
 import { setLoading, setToken } from "../../redux/slices/authSlice";
 import { resetCart } from "../../redux/slices/cartSlice";
 import { setUser } from "../../redux/slices/profileSlice";
+import {
+  resetRecommendedCourses,
+  setRecommendedCourses,
+} from "../../redux/slices/recommendationSlice";
 import { apiConnector } from "../apiconnector";
 import { endpoints } from "../apis";
+import { fetchRecommendedCourseCards } from "./catalogAPI";
 
 const {
   SENDOTP_API,
@@ -97,12 +102,27 @@ export function login(email, password, navigate) {
       toast.success("Login Successful");
       dispatch(setToken(response.data.token));
       dispatch(setUser(response.data.user));
+      dispatch(setLoading(false));
+      toast.dismiss(toastId);
       navigate("/dashboard/my-profile");
+
+      if (response?.data?.user?.accountType === "student") {
+        fetchRecommendedCourseCards(response.data.token)
+          .then((recommendedCourses) => {
+            dispatch(setRecommendedCourses(recommendedCourses));
+          })
+          .catch(() => {
+            dispatch(setRecommendedCourses([]));
+          });
+      } else {
+        dispatch(resetRecommendedCourses());
+      }
     } catch (error) {
       toast.error(error.response?.data.message);
+      dispatch(setLoading(false));
+      toast.dismiss(toastId);
+      return;
     }
-    dispatch(setLoading(false));
-    toast.dismiss(toastId);
   };
 }
 
@@ -111,6 +131,7 @@ export function logout(navigate) {
     dispatch(setToken(null));
     dispatch(setUser(null));
     dispatch(resetCart());
+    dispatch(resetRecommendedCourses());
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     toast.success("Logged Out");

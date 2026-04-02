@@ -33,12 +33,15 @@ export const settingsEndpoints = {
 
 export const profileEndpoints = {
   GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profile/getenrolledcourses",
-  GET_INSTRUCTOR_DATA_API:BASE_URL+'/profile/instructorDashboard'
+  GET_INSTRUCTOR_DATA_API:BASE_URL+'/profile/instructorDashboard',
+  GET_QUIZ_QUESTIONS_API: BASE_URL + "/course/getQuizzesQuestion"
 };
 
 export const courseEndpoints = {
+  GET_ALL_RECOMMENDED_COURSES: BASE_URL + '/course/getRecommendedCourses',
   GET_ALL_COURSE_API: BASE_URL + "/course/getallcourses",
   COURSE_DETAILS_API: BASE_URL + "/course/getcoursedetails",
+  GET_COURSES_BY_IDS_API: BASE_URL + "/course/getcoursesbyids",
   EDIT_COURSE_API: BASE_URL + "/course/editcourse",
   COURSE_CATEGORIES_API: BASE_URL + "/course/getallcategories",
   CREATE_COURSE_API: BASE_URL + "/course/createcourse",

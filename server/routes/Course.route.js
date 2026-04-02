@@ -7,13 +7,16 @@ const {
   createCourse,
   getAllCourses,
   getCourseDetails,
+  getCoursesByIds,
   editCourse,
   deleteCourse,
   getFullCourseDetails,
   updateCourseProgress,
   getCourseProgress,
   getInstructorCourses,
-} = require("../controllers/Course");
+  getQuizzesQuestion,
+  getRecommendedCourses
+} = require("../controllers/Course.controller");
 
 //category controllers
 
@@ -23,21 +26,21 @@ const {
   categoryPageDetails,
   deleteCategory,
   editCategory
-} = require("../controllers/Category");
+} = require("../controllers/Category.controller");
 
 // Sections Controllers Import
 const {
   createSection,
   updateSection,
   deleteSection,
-} = require("../controllers/Section");
+} = require("../controllers/Section.controller");
 
 // Sub-Sections Controllers Import
 const {
   createSubSection,
   updateSubSection,
   deleteSubSection,
-} = require("../controllers/SubSection");
+} = require("../controllers/SubSection.controller");
 
 // Rating Controllers Import
 const {
@@ -45,7 +48,7 @@ const {
   getAvgRating,
   getAllRatingAndReviews,
   getCourseRatingAndReview,
-} = require("../controllers/RatingAndReview");
+} = require("../controllers/RatingAndReview.controller");
 
 // Importing Middlewares
 const {
@@ -81,11 +84,14 @@ router.post("/createsubsection", auth, isInstructor, createSubSection);
 router.get("/getallcourses", getAllCourses);
 // Get Details for a Specific Courses
 router.post("/getcoursedetails", getCourseDetails);
+router.post("/getcoursesbyids", getCoursesByIds);
 
 router.post("/getfullcoursedetails", auth, getFullCourseDetails);
 router.post("/updateCourseProgress", auth, updateCourseProgress);
 router.post("/getCourseProgress", auth, getCourseProgress);
+router.post("/getQuizzesQuestion", auth, isStudent, getQuizzesQuestion);
 router.post("/getReviews", getAllRatingAndReviews);
+router.get('/getRecommendedCourses',auth,isStudent,getRecommendedCourses)
 
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)

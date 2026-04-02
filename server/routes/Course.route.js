@@ -14,6 +14,7 @@ const {
   updateCourseProgress,
   getCourseProgress,
   getInstructorCourses,
+  getQuizzesQuestion,
   getRecommendedCourses
 } = require("../controllers/Course.controller");
 
@@ -88,6 +89,7 @@ router.post("/getcoursesbyids", getCoursesByIds);
 router.post("/getfullcoursedetails", auth, getFullCourseDetails);
 router.post("/updateCourseProgress", auth, updateCourseProgress);
 router.post("/getCourseProgress", auth, getCourseProgress);
+router.post("/getQuizzesQuestion", auth, isStudent, getQuizzesQuestion);
 router.post("/getReviews", getAllRatingAndReviews);
 router.get('/getRecommendedCourses',auth,isStudent,getRecommendedCourses)
 

@@ -435,6 +435,32 @@ async function getInstructorCourses(req, res) {
   }
 }
 
+async function getQuizzesQuestion(req, res) {
+  try {
+    const { courseName, courseDescription } = req.body;
+
+    if (!courseName || !courseDescription) {
+      return res.status(400).json({
+        success: false,
+        message: "courseName and courseDescription are required",
+      });
+    }
+    const response = await axios.post(`${process.env.FAST_API_URL}/getCourseQuiz`,{courseDescription,courseName})
+
+    return res.status(200).json({
+      success: true,
+      message: "Quiz request received successfully",
+      data: response?.data,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get quiz questions",
+      error: error.message,
+    });
+  }
+}
+
 async function deleteCourse(req, res) {
   try {
     const { courseId } = req.body;
@@ -526,7 +552,7 @@ async function getRecommendedCourses(req, res) {
       });
 
     const response = await axios.post(
-      "http://localhost:8000/getCourseRecommendations",
+      `${process.env.FAST_API_URL}/getCourseRecommendations`,
       { allCourses, enrolledCourses },
     );
     return res.status(200).json({
@@ -554,5 +580,6 @@ module.exports = {
   updateCourseProgress,
   getCourseProgress,
   getInstructorCourses,
+  getQuizzesQuestion,
   getRecommendedCourses,
 };

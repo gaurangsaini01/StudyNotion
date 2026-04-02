@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { getCourseProgress } from "../../services/operations/courseDetailsAPI";
 import { useSelector } from "react-redux";
+import IconBtn from "../reusable/IconBtn";
 
-function EnrolledCourseCard({ course, navigate }) {
+function EnrolledCourseCard({ course, navigate, setQuizModal }) {
   const { token } = useSelector((state) => state.auth);
   const [progress, setProgress] = useState(0);
   
@@ -18,7 +19,7 @@ function EnrolledCourseCard({ course, navigate }) {
       let totalLectures = course?.courseContent?.reduce((acc, section) => {
         return acc + (section?.subSection.length || 0);
       }, 0);
-      setProgress((completedLectures / totalLectures) * 100);
+      setProgress(totalLectures ? (completedLectures / totalLectures) * 100 : 0);
     }
     getProgress();
   }, []);
@@ -64,6 +65,17 @@ function EnrolledCourseCard({ course, navigate }) {
             isLabelVisible={false}
             completed={progress}
           />
+          {progress >= 60 && (
+            <div className="pt-2">
+              <IconBtn
+                text="Attend Quiz"
+                onclick={(event) => {
+                  event.stopPropagation();
+                  setQuizModal(course);
+                }}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

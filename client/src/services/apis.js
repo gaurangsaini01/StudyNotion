@@ -33,7 +33,8 @@ export const settingsEndpoints = {
 
 export const profileEndpoints = {
   GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profile/getenrolledcourses",
-  GET_INSTRUCTOR_DATA_API:BASE_URL+'/profile/instructorDashboard'
+  GET_INSTRUCTOR_DATA_API:BASE_URL+'/profile/instructorDashboard',
+  GET_QUIZ_QUESTIONS_API: BASE_URL + "/course/getQuizzesQuestion"
 };
 
 export const courseEndpoints = {

@@ -445,8 +445,15 @@ async function getQuizzesQuestion(req, res) {
         message: "courseName and courseDescription are required",
       });
     }
-    const response = await axios.post(`${process.env.FAST_API_URL}/getCourseQuiz`,{courseDescription,courseName})
-
+    const response = await axios.post(
+      `${process.env.FAST_API_URL}/getCourseQuiz`,
+      { courseDescription, courseName },
+      {
+        headers: {
+          "x-secret-key": process.env.X_SECRET_KEY,
+        },
+      },
+    );
     return res.status(200).json({
       success: true,
       message: "Quiz request received successfully",
@@ -554,6 +561,11 @@ async function getRecommendedCourses(req, res) {
     const response = await axios.post(
       `${process.env.FAST_API_URL}/getCourseRecommendations`,
       { allCourses, enrolledCourses },
+      {
+        headers: {
+          "x-secret-key": process.env.X_SECRET_KEY,
+        },
+      },
     );
     return res.status(200).json({
       success: true,

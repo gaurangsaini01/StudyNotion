@@ -1,4 +1,3 @@
-import React from "react";
 import CTAButton from "../reusable/CTAButton";
 
 import Logo1 from "../../assets/TimeLineLogo/Logo1.svg";
@@ -42,7 +41,7 @@ function TimeLine() {
         </div>
         <div className="md:w-1/2 w-full flex flex-col gap-8 items-start">
           <div className="text-[#2C333F]">
-            The modern StudyNotion is the dictates its own terms. Today, to be a
+            The modern CourseNova AI learner writes their own path. Today, to be a
             competitive specialist requires more than professional skills.
           </div>
           <CTAButton active={true} linkto={"/login"}>

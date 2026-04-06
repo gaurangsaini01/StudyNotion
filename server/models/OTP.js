@@ -22,7 +22,7 @@ otpSchema.pre("save", async function (next) {
   try {
     const mailResponse = await mailSender(
       this.email,
-      "Verification E-mail from StudyNotion",
+      "Verification E-mail from CourseNova AI",
       otpTemplate(this.otp)
     );
     next();

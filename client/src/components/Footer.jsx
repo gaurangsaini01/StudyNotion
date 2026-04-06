@@ -1,9 +1,5 @@
-import React from "react";
 import { FooterLink2 } from "../data/footer-links";
 import { Link } from "react-router-dom";
-
-// Images
-import Logo from "../assets/Logo/Logo-Full-Light.png";
 
 // Icons
 import { FaFacebook, FaGoogle, FaTwitter, FaYoutube } from "react-icons/fa";
@@ -30,7 +26,17 @@ const Footer = () => {
           {/* Section 1 */}
           <div className="lg:w-[50%] flex flex-wrap flex-row justify-between lg:border-r lg:border-richblack-700 pl-3 lg:pr-5 gap-3">
             <div className="w-[30%] flex flex-col gap-3 lg:w-[30%] mb-7 lg:pl-0">
-              <img src={Logo} alt="" className="object-contain" />
+              <Link to="/" className="flex items-center gap-3 text-richblack-5">
+                <div className="grid h-10 w-10 place-items-center rounded-full bg-yellow-50 font-bold text-black drop-shadow-[0_1.5px_rgba(255,255,255,0.25)]">
+                  C
+                </div>
+                <div className="flex flex-col leading-none">
+                  <span className="text-lg font-semibold">CourseNova AI</span>
+                  <span className="mt-1 text-[10px] uppercase tracking-[0.18em] text-richblack-25">
+                    Learn Smarter
+                  </span>
+                </div>
+              </Link>
               <h1 className="text-richblack-50 font-semibold text-[16px]">
                 Company
               </h1>
@@ -173,7 +179,7 @@ const Footer = () => {
           </div>
 
           <div className="text-center">
-            Made with ❤️ Gaurang Saini © 2024 Studynotion
+            Made with ❤️ Gaurang Saini © 2024 CourseNova AI
           </div>
         </div>
       </div>

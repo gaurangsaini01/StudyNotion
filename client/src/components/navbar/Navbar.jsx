@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import logo from "../../assets/Logo/Logo-Full-Light.png";
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { NavbarLinks } from "../../data/navbar-links";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import ProfileDropdown from "./ProfileDropdown";
 import { apiConnector } from "../../services/apiconnector";
@@ -25,6 +25,7 @@ function Navbar({ open, setOpen }) {
         setSublinks(result.data.data);
         // (sublinks)
       } catch (err) {
+        console.error(err);
       }
     }
     caller();
@@ -34,8 +35,20 @@ function Navbar({ open, setOpen }) {
     <div className="bg-richblack-800 fixed w-full z-60 flex items-center h-14 border-b-[1px] border-b-richblack-700">
       <div className="flex w-11/12  max-w-maxContent items-center justify-between mx-auto">
         <div>
-          <Link to={"/"}>
-            <img src={logo} width={160} height={60} loading="lazy" alt="logo" />
+          <Link
+            to={"/"}
+            className="flex items-center gap-3 text-richblack-5"
+            aria-label="CourseNova AI"
+          >
+            <div className="grid h-9 w-9 place-items-center rounded-full bg-yellow-50 font-bold text-black drop-shadow-[0_1.5px_rgba(255,255,255,0.25)]">
+              C
+            </div>
+            <div className="flex flex-col leading-none">
+              <span className="text-xl font-semibold">CourseNova AI</span>
+              <span className="text-[10px] uppercase tracking-[0.18em] text-richblack-25">
+                Learn Smarter
+              </span>
+            </div>
           </Link>
         </div>
         <nav>
@@ -157,5 +170,10 @@ function Navbar({ open, setOpen }) {
     </div>
   );
 }
+
+Navbar.propTypes = {
+  open: PropTypes.bool,
+  setOpen: PropTypes.func.isRequired,
+};
 
 export default Navbar;

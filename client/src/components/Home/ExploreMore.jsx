@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { HomePageExplore } from "../../data/homepage-explore";
 import CourseCard from "./CourseCard"
 import HighlightText from "../reusable/HighlightText";
@@ -30,10 +30,10 @@ const ExploreMore = () => {
       {/* Explore more section */}
       <div>
         <div className="text-4xl font-semibold text-center my-10">
-          Unlock the
-          <HighlightText text={"Power of Code"} />
+          Explore the
+          <HighlightText text={" CourseNova AI Experience"} />
           <p className="text-center text-richblack-300 text-lg font-semibold mt-1">
-            Learn to Build Anything You Can Imagine
+            Structured learning, AI support, and practical outcomes in one place
           </p>
         </div>
       </div>

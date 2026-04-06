@@ -1,4 +1,4 @@
-import React from 'react'
+import PropTypes from "prop-types";
 import { Link } from 'react-router-dom'
 
 function CTAButton({children,active,linkto}) {
@@ -10,5 +10,11 @@ function CTAButton({children,active,linkto}) {
     </Link>
   )
 }
+
+CTAButton.propTypes = {
+  children: PropTypes.node,
+  active: PropTypes.bool,
+  linkto: PropTypes.string,
+};
 
 export default CTAButton

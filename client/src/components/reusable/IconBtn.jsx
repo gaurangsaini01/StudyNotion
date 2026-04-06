@@ -1,12 +1,10 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const IconBtn = ({
   text,
   onclick,
   children,
   disabled,
-  outline = false,
-  customClasses=[],
   type,
 }) => {
   return (
@@ -26,6 +24,14 @@ const IconBtn = ({
       )}
     </button>
   );
+};
+
+IconBtn.propTypes = {
+  text: PropTypes.string,
+  onclick: PropTypes.func,
+  children: PropTypes.node,
+  disabled: PropTypes.bool,
+  type: PropTypes.string,
 };
 
 export default IconBtn;

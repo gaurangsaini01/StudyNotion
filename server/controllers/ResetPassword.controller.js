@@ -37,7 +37,7 @@ async function resetPasswordToken(req, res) {
     //send mail
     const info = await mailSender(
       email,
-      "Password Reset Email From StudyNotion",
+      "Password Reset Email From CourseNova AI",
       passwordReset(updatedDetails?.firstName, url)
     );
     //response send

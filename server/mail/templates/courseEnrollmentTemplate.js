@@ -68,7 +68,7 @@ const courseEnrollmentEmail = (courseName, name) => {
     <body>
         <div class="container">
             <a href="https://edtechplatform.netlify.app/"><img class="logo" src="https://images.pexels.com/photos/159866/books-book-pages-read-literature-159866.jpeg?cs=srgb&dl=pexels-pixabay-159866.jpg&fm=jpg"
-                    alt="StudyNotion Logo"></a>
+                    alt="CourseNova AI Logo"></a>
             <div class="message">Course Registration Confirmation</div>
             <div class="body">
                 <p>Dear ${name},</p>
@@ -79,7 +79,7 @@ const courseEnrollmentEmail = (courseName, name) => {
                 <a class="cta" href="https://edtechplatform.netlify.app/dashboard/my-profile">Go to Dashboard</a>
             </div>
             <div class="support">If you have any questions or need assistance, please feel free to reach out to us at <a
-                    href="mailto:info@studynotion.com">info@studynotion.com</a>. We are here to help!</div>
+                    href="mailto:info@coursenovaai.com">info@coursenovaai.com</a>. We are here to help!</div>
         </div>
     </body>
     

@@ -5,8 +5,6 @@ const { COURSE_PAYMENT_API, COURSE_VERIFY_API, PAYMENT_SUCCESS_EMAIL_API } =
   studentEndPoints;
 import { setPaymentLoading } from "../../redux/slices/courseSlice";
 import { resetCart } from "../../redux/slices/cartSlice";
-import LogoSmallDark from "../../assets/Logo/Logo-Small-Dark.png"
-
 function loadScript(src) {
   return new Promise((resolve) => {
     const script = document.createElement("script");
@@ -24,7 +22,7 @@ function loadScript(src) {
 
 async function sendPaymentSuccessEmail(response, amount, token) {
   try {
-    const result = await apiConnector(
+    await apiConnector(
       "POST",
       PAYMENT_SUCCESS_EMAIL_API,
       {
@@ -37,6 +35,7 @@ async function sendPaymentSuccessEmail(response, amount, token) {
       }
     );
   } catch (err) {
+    console.error(err);
   }
 }
 async function verifyPayment(bodyData, token, navigate, dispatch) {
@@ -102,9 +101,8 @@ export async function buyCourse(
       currency: orderRes?.data?.message?.currency,
       amount: orderRes?.data?.message?.amount,
       order_id: orderRes?.data?.message?.id,
-      name: "StudyNotion",
+      name: "CourseNova AI",
       description: "Thank You For purchasing course",
-      image:LogoSmallDark,
       prefill: {
         name: userDetails.firstName,
         email: userDetails.email,

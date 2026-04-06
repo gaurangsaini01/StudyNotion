@@ -21,7 +21,7 @@ var transport = nodemailer.createTransport({
 async function mailSender(email, title, body) {
   try {
     let info = await transport.sendMail({
-      from: '"StudyNotion 👻" <gaurangsaini01@gmail.com>', // sender address
+      from: '"CourseNova AI" <gaurangsaini01@gmail.com>', // sender address
       to: email, // list of receivers
       subject: title, // Subject line
       html: body, // html body

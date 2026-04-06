@@ -55,7 +55,7 @@ const passwordUpdated = (email, name) => {
       <body>
           <div class="container">
               <a href="https://edtechplatform.netlify.app/"><img class="logo"
-                      src="https://images.pexels.com/photos/159866/books-book-pages-read-literature-159866.jpeg?cs=srgb&dl=pexels-pixabay-159866.jpg&fm=jpg" alt="StudyNotion Logo"></a>
+                      src="https://images.pexels.com/photos/159866/books-book-pages-read-literature-159866.jpeg?cs=srgb&dl=pexels-pixabay-159866.jpg&fm=jpg" alt="CourseNova AI Logo"></a>
               <div class="message">Password Update Confirmation</div>
               <div class="body">
                   <p>Hey ${name},</p>
@@ -65,7 +65,7 @@ const passwordUpdated = (email, name) => {
               </div>
               <div class="support">If you have any questions or need further assistance, please feel free to reach out to us
                   at
-                  <a href="mailto:info@studynotion.com">info@studynotion.com</a>. We are here to help!
+                  <a href="mailto:info@coursenovaai.com">info@coursenovaai.com</a>. We are here to help!
               </div>
           </div>
       </body>

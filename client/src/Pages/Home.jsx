@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import HighlightText from "../components/reusable/HighlightText";
@@ -28,21 +27,21 @@ const Home = () => {
           </div>
         </Link>
         <div className="md:text-4xl text-3xl text-left md:text-center font-semibold mt-6">
-          Empower Your Future With
-          <HighlightText text={"Coding Skills"} />
+          Learn Smarter With
+          <HighlightText text={"AI-Powered Courses"} />
         </div>
         <div className="mt-4 w-full md:w-[80%] text-left md:text-center text-base md:text-lg font-medium text-richblack-300">
-          With our online coding courses, you can learn at your own pace, from
-          anywhere in the world, and get access to a wealth of resources,
-          including hands-on projects, quizzes, and personalized feedback from
-          instructors.{" "}
+          CourseNova AI combines structured courses with AI-generated quizzes,
+          personalized course recommendations, progress-based learning flows,
+          and instructor-led content so learners can move from watching lessons
+          to actually understanding them.
         </div>
         <div className="flex flex-row mt-8 gap-7">
           <CTAButton active={true} linkto={"/signup"}>
-            Learn More
+            Start Learning
           </CTAButton>
           <CTAButton active={false} linkto={"/login"}>
-            Book a Demo
+            Explore Courses
           </CTAButton>
         </div>
         <div className="w-[90%] relative mb-8 mt-12 md:my-16 ">
@@ -56,21 +55,20 @@ const Home = () => {
             position={"lg:flex-row"}
             heading={
               <div className="md:text-4xl text-3xl leading-snug font-bold">
-                Unlock Your{" "}
-                <HighlightText text={"Coding Potential "}></HighlightText>
-                With Our Online Courses
+                Turn Course Progress Into
+                <HighlightText text={" AI-Guided Practice "}></HighlightText>
               </div>
             }
             subheading={
-              "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."
+              "As learners progress through a course, CourseNova AI can generate quizzes from course context to help them assess retention and build confidence with practical feedback."
             }
             ctabtn1={{
-              text: "Try it yourself",
+              text: "Explore AI Quizzes",
               linkto: "/signup",
               active: true,
             }}
-            ctabtn2={{ text: "Learn More", linkto: "/login", active: false }}
-            codeblock={`1. <!DOCTYPE html> \n2. <html> \n3. <head> \n4. <title>Study Notion</title> \n5. </head> \n6. <body> \n7. <h1 className="text-green-500">Learn New Coding Skills</h1> \n8. <p>From StudyNotion anytime , anywhere.</p> \n9. <nav><ahref="one/">One</a> <p> hello </p> \n10.  </body> \n11. </html>`}
+            ctabtn2={{ text: "See Platform", linkto: "/login", active: false }}
+            codeblock={`1. course: "MERN Bootcamp"\n2. progress: 68%\n3. feature: "AI Quiz Unlocked"\n4. input: courseName + courseDescription\n5. AI service: generate MCQs\n6. learner: attempts quiz\n7. platform: evaluates instantly\n8. result: score + retry flow`}
             codeColor={`text-white`}
             gradientimg={gradientyellow}
           />
@@ -80,20 +78,20 @@ const Home = () => {
             position={"lg:flex-row-reverse"}
             heading={
               <div className="md:text-5xl text-3xl leading-snug font-bold">
-                Start{" "}
-                <HighlightText text={"Coding In Seconds "}></HighlightText>
+                Discover Your Next Course With
+                <HighlightText text={" Personalized AI Recommendations "}></HighlightText>
               </div>
             }
             subheading={
-              "Go ahead, give it a try. Our hands-on learning environment means you'll be writing real code from your very first lesson."
+              "Instead of forcing learners to browse endlessly, CourseNova AI can surface relevant course suggestions with recommendation reasons based on profile context and platform data."
             }
             ctabtn1={{
-              text: "Continue Lesson",
+              text: "View Recommendations",
               linkto: "/login",
               active: true,
             }}
-            ctabtn2={{ text: "Learn More", linkto: "/login", active: false }}
-            codeblock={`1. <!DOCTYPE html> \n2. <html> \n3. <head> \n4. <title>Study Notion</title> \n5. </head> \n6. <body> \n7. <h1 className="text-green-500">Learn Top Trending skills</h1> \n8. <p>From StudyNotion anytime , anywhere.</p> \n9. <nav><ahref="one/">One</a> <p> hello </p> \n10.  </body> \n11. </html>`}
+            ctabtn2={{ text: "Browse Catalog", linkto: "/login", active: false }}
+            codeblock={`1. user logs in\n2. recommendation API runs\n3. response returns courseIds + reasons\n4. client hydrates full course cards\n5. catalog shows personalized picks\n6. learner gets relevant discovery,\n7. not just static listings`}
             codeColor={`text-white`}
             gradientimg={gradientblue}
           />
@@ -131,7 +129,7 @@ const Home = () => {
         </div>
         <div>
           <h2 className="text-center text-4xl font-semibold">
-            Review from Other Learners
+            What Learners Are Saying
           </h2>
           <ReviewSlider />
         </div>

@@ -16,6 +16,9 @@ const subsectionSchema = new mongoose.Schema({
   //to delete the video on updating
   videoPublicId:{
     type:String
+  },
+  pdfUrl:{
+    type:String
   }
 });
 module.exports = mongoose.model("SubSection", subsectionSchema);

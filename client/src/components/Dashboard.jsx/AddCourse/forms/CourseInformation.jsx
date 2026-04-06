@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
-import { DevTool } from "@hookform/devtools";
+import  { useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +10,6 @@ import {
 import { HiOutlineCurrencyRupee } from "react-icons/hi";
 import { setStep, setCourse } from "../../../../redux/slices/courseSlice";
 import IconBtn from "../../../reusable/IconBtn";
-// import RequirementField from "./RequirementField";
 
 function CourseInformation() {
   const {
@@ -20,6 +18,8 @@ function CourseInformation() {
     register,
     setValue,
     getValues,
+    watch,
+    reset,
     // control,
   } = useForm();
 
@@ -28,6 +28,7 @@ function CourseInformation() {
   const { course, editCourse } = useSelector((state) => state.course);
   const [loading, setLoading] = useState(false);
   const [courseCategories, setCourseCategories] = useState([]);
+  const selectedCourseCategory = watch("courseCategory");
 
   //IMAGE RELATED
   const fileInputRef = useRef(null);
@@ -49,35 +50,45 @@ function CourseInformation() {
     }
   };
 
+  const handleReplaceImage = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   useEffect(() => {
     const getCategories = async () => {
       setLoading(true);
       const categories = await fetchCourseCategories();
-      ("Categories are :-", categories);
       if (categories.length > 0) {
         setCourseCategories(categories);
       }
       setLoading(false);
     };
 
-    if (editCourse) {
-      ("course is :-", course);
-      setValue("courseTitle", course?.courseName);
-      setValue("courseShortDesc", course?.courseDescription);
-      setValue("coursePrice", course?.price);
-      setValue("courseTags", course?.tag);
-      setValue("courseBenefits", course?.whatYouWillLearn);
-      setValue("courseCategory", course?.category?._id);
-      setValue("courseRequirements", course?.instructions);
-      setValue("courseImage", course?.thumbnail);
-    }
-
     getCategories();
   }, []);
 
+  useEffect(() => {
+    if (!editCourse || !course) {
+      return;
+    }
+    reset({
+      courseTitle: course?.courseName || "",
+      courseShortDesc: course?.courseDescription || "",
+      coursePrice: course?.price || "",
+      courseTags: course?.tag || [],
+      courseBenefits: course?.whatYouWillLearn || "",
+      courseCategory:course?.category?._id ||"",
+      courseRequirements: course?.instructions || [],
+      courseImage: course?.thumbnail || "",
+    });
+  }, [course, editCourse, reset]);
+
   const isFormUpdated = () => {
     const currentValues = getValues();
-    ("Current Values", currentValues);
+    const selectedCategoryId = currentValues.courseCategory;
+    const existingCategoryId = course?.category?._id?.toString();
     if (
       currentValues.courseTitle !== course?.courseName ||
       currentValues.courseShortDesc !==
@@ -86,8 +97,7 @@ function CourseInformation() {
       currentValues.courseTitle !== course?.courseName ||
       currentValues.courseBenefits !==
         course?.whatYouWillLearn ||
-      currentValues.courseCategory._id !==
-        course?.category._id ||
+      selectedCategoryId !== existingCategoryId ||
       (currentValues.courseImage &&
         currentValues.courseImage !== course?.thumbnail)
     )
@@ -125,20 +135,10 @@ function CourseInformation() {
         }
 
         if (
-          currentValues.courseCategory !== course?.category._id
+          currentValues.courseCategory !== course?.category?._id?.toString()
         ) {
           formData.append("category", data.courseCategory);
         }
-
-        // if (
-        //   currentValues.courseRequirements.toString() !==
-        //   course.instructions.toString()
-        // ) {
-        //   formData.append(
-        //     "instructions",
-        //     JSON.stringify(data.courseRequirements)
-        //   );
-        // }
         if (currentValues.courseImage !== course?.thumbnail) {
           formData.append("thumbnail", data.courseImage);
         }
@@ -146,7 +146,6 @@ function CourseInformation() {
         setLoading(true);
         const result = await editCourseDetails(formData, token);
         setLoading(false);
-        ("result is", result);
         if (result) {
           dispatch(setStep(1));
           dispatch(setCourse(result));
@@ -156,7 +155,6 @@ function CourseInformation() {
       }
       return;
     }
-    (data);
     //create a new course
     const formData = new FormData();
     formData.append("courseName", data.courseTitle);
@@ -177,141 +175,148 @@ function CourseInformation() {
       dispatch(setCourse(result));
     }
     setLoading(false);
-    ("PRINTING FORMDATA", formData);
-    ("PRINTING result", result);
   };
-
   return (
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="rounded-md border-richblack-700 bg-richblack-800 md:p-6 py-4 px-2  space-y-8"
+        className="flex max-h-[calc(100vh-300px)] min-h-[420px] flex-col overflow-hidden rounded-md border border-richblack-700 bg-richblack-800"
       >
-        <div className="flex flex-col gap-2">
-          <label htmlFor="courseTitle" className="lable-style">
-            Course Title<sup>*</sup>
-          </label>
-          <input
-            id="courseTitle"
-            placeholder="Enter Course Title"
-            {...register("courseTitle", { required: true })}
-            className="w-full form-style"
-          />
-          {errors.courseTitle && <span className="text-red-600 text-sm mt-1">Course Title is Required**</span>}
-        </div>
+        <div className="thin-dark-scrollbar flex-1 space-y-8 overflow-y-auto px-2 py-4 md:p-6">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="courseTitle" className="lable-style">
+              Course Title<sup className="text-red-500">*</sup>
+            </label>
+            <input
+              id="courseTitle"
+              placeholder="Enter Course Title"
+              {...register("courseTitle", { required: true })}
+              className="w-full form-style"
+            />
+            {errors.courseTitle && <span className="text-red-600 text-sm mt-1">Course Title is Required**</span>}
+          </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="courseShortDesc" className="lable-style">
-            Course Short Description<sup>*</sup>
-          </label>
-          <textarea
-            id="courseShortDesc"
-            placeholder="Enter Description"
-            {...register("courseShortDesc", { required: true })}
-            className="min-h-[140px] w-full form-style"
-          />
-          {errors.courseShortDesc && (
-            <span className="text-red-600 text-sm mt-1">Course Description is required**</span>
-          )}
-        </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="courseShortDesc" className="lable-style">
+              Course Short Description<sup className="text-red-500">*</sup>
+            </label>
+            <textarea
+              id="courseShortDesc"
+              placeholder="Enter Description"
+              {...register("courseShortDesc", { required: true })}
+              className="min-h-[140px] w-full form-style"
+            />
+            {errors.courseShortDesc && (
+              <span className="text-red-600 text-sm mt-1">Course Description is required**</span>
+            )}
+          </div>
 
-        <div className="relative flex flex-col gap-2">
-          <label htmlFor="coursePrice lable-style">
-            Course Price<sup>*</sup>
-          </label>
-          <input
-            id="coursePrice"
-            placeholder="Enter Course Price"
-            {...register("coursePrice", {
-              required: true,
-              valueAsNumber: true,
-            })}
-            className="w-full form-style pl-10"
-          />
+          <div className="relative flex flex-col gap-2">
+            <label htmlFor="coursePrice lable-style">
+              Course Price<sup className="text-red-500">*</sup>
+            </label>
+            <input
+              id="coursePrice"
+              placeholder="Enter Course Price"
+              {...register("coursePrice", {
+                required: true,
+                valueAsNumber: true,
+              })}
+              className="w-full form-style pl-10"
+            />
           <HiOutlineCurrencyRupee
             size={20}
-            className="absolute top-[57%] left-2 text-richblack-50"
+            className="absolute left-3 top-[46px] text-richblack-50"
           />
-          {errors.coursePrice && <span className="text-red-600 text-sm mt-1">Course Price is Required**</span>}
-        </div>
+            {errors.coursePrice && <span className="text-red-600 text-sm mt-1">Course Price is Required**</span>}
+          </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="courseCategory" className="lable-style">
-            Course Category<sup>*</sup>
-          </label>
-          <select
-            id="courseCategory"
-            className="form-style"
-            // defaultValue={currentValues.cour}
-            {...register("courseCategory", { required: true })}
-          >
-            <option value="" disabled>
-              Choose a Category
-            </option>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="courseCategory" className="lable-style">
+              Course Category<sup className="text-red-500">*</sup>
+            </label>
+            <select
+              id="courseCategory"
+              className="form-style"
+              value={selectedCourseCategory || ""}
+              {...register("courseCategory", { required: true })}
+            >
+              <option value="" disabled>
+                Choose a Category
+              </option>
 
-            {!loading &&
-              courseCategories.map((category, index) => (
-                <option key={index} value={category?._id}>
-                  {category?.name}
-                </option>
-              ))}
-          </select>
-          {errors.courseCategory && <span className="text-red-600 text-sm mt-1">Course Category is Required</span>}
-        </div>
+              {!loading &&
+                courseCategories.map((category, index) => (
+                  <option key={index} value={category?._id?.toString()}>
+                    {category?.name}
+                  </option>
+                ))}
+            </select>
+            {errors.courseCategory && <span className="text-red-600 text-sm mt-1">Course Category is Required</span>}
+          </div>
 
-        {/* For uploading and showing preview of Thumbnail */}
-
-        <div className="w-full p-4 h-fit form-style rounded-md ">
+        <div className="w-full rounded-md p-4 h-fit form-style">
           <div className="w-full flex flex-col gap-6">
+            <input
+              onChange={handleFileChange}
+              ref={fileInputRef}
+              type="file"
+              name="courseImage"
+              className="hidden"
+              accept="image/*"
+            />
             {(previewSource || course?.thumbnail) && (
-              <img
-                src={previewSource || course?.thumbnail}
-                className="w-full h-full object-cover"
-                alt="Preview"
-              />
+              <>
+                <img
+                  src={previewSource || course?.thumbnail}
+                  className="w-full h-full object-cover"
+                  alt="Preview"
+                />
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleReplaceImage}
+                    className="rounded-md bg-richblack-700 px-4 py-2 text-sm font-medium text-yellow-50 transition-all duration-200 hover:scale-95"
+                  >
+                    Replace Image
+                  </button>
+                </div>
+              </>
             )}
             {(!previewSource || course?.thumbnail) && (
               <div className="w-full text-richblack-300">
                 Click
-                <input
-                  onChange={handleFileChange}
-                  ref={fileInputRef}
-                  type="file"
-                  name="courseImage"
-                  className="hidden"
-                  accept="image/*"
-                />
                 <span
                   className="text-yellow-50 cursor-pointer "
                   onClick={() => fileInputRef.current.click()}
                 >
-                  {" "}
-                  Browse
-                </span>{" "}
-                to choose an image for thumbnail
-              </div>
+                    {" "}
+                    Browse
+                  </span>{" "}
+                  to choose an image for thumbnail
+                </div>
+              )}
+            </div>
+            {errors.courseImage && <span className="text-red-600 text-sm mt-1">Thumbnail Is required**</span>}
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <label className="lable-style">
+              Benefits of the course<sup className="text-red-500">*</sup>
+            </label>
+            <textarea
+              id="coursebenefits"
+              placeholder="Enter Benefits of the course"
+              {...register("courseBenefits", { required: true })}
+              className="min-h-[130px] w-full form-style"
+            />
+            {errors.courseBenefits && (
+              <span className="text-red-600 text-sm mt-1">Benefits of the course are required**</span>
             )}
           </div>
-          {errors.courseImage && <span className="text-red-600 text-sm mt-1">Thumbnail Is required**</span>}
         </div>
 
-        {/*     Benefits of the Course */}
-        <div className="flex flex-col gap-2">
-          <label className="lable-style">
-            Benefits of the course<sup>*</sup>
-          </label>
-          <textarea
-            id="coursebenefits"
-            placeholder="Enter Benefits of the course"
-            {...register("courseBenefits", { required: true })}
-            className="min-h-[130px] w-full form-style"
-          />
-          {errors.courseBenefits && (
-            <span className="text-red-600 text-sm mt-1">Benefits of the course are required**</span>
-          )}
-        </div>
-
-        <div className="flex gap-4 flex-wrap">
+        <div className="sticky bottom-0 flex flex-wrap gap-4 border-t border-richblack-700 bg-richblack-800 px-2 py-4 md:px-6">
           {editCourse && (
             <button
               onClick={() => dispatch(setStep(1))}

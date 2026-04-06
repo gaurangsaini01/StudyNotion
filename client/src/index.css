@@ -8,3 +8,26 @@ html,body{
 /* *{
     border: 1px solid white;
 } */
+
+.thin-dark-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #424854 #161d29;
+}
+
+.thin-dark-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.thin-dark-scrollbar::-webkit-scrollbar-track {
+    background: #161d29;
+    border-radius: 9999px;
+}
+
+.thin-dark-scrollbar::-webkit-scrollbar-thumb {
+    background: #424854;
+    border-radius: 9999px;
+}
+
+.thin-dark-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #6e727f;
+}

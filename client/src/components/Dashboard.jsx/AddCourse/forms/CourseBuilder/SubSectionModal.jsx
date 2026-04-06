@@ -131,8 +131,8 @@ export default function SubSectionModal({
 
 
   return (
-    <div className="fixed inset-0 z-[1000] !mt-0 grid h-screen w-screen place-items-center overflow-auto bg-white bg-opacity-10 backdrop-blur-sm">
-      <div className="my-5 w-11/12 max-w-[700px] rounded-lg border border-richblack-400 bg-richblack-800">
+    <div className="fixed inset-0 z-[1000] !mt-0 grid h-screen w-screen place-items-center overflow-hidden bg-white bg-opacity-10 p-4 backdrop-blur-sm">
+      <div className="flex max-h-[90vh] w-full max-w-[700px] flex-col rounded-lg border border-richblack-400 bg-richblack-800">
         {/* Modal Header */}
         <div className="flex items-center justify-between rounded-t-lg bg-richblack-700 p-5">
           <p className="text-xl font-semibold text-richblack-5">
@@ -145,58 +145,60 @@ export default function SubSectionModal({
         {/* Modal Form */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="space-y-8 px-8 py-10"
+          className="flex flex-1 flex-col overflow-hidden"
         >
-          {/* Lecture Video Upload */}
-          <Upload
-            name="lectureVideo"
-            label="Lecture Video"
-            register={register}
-            setValue={setValue}
-            errors={errors}
-            video={true}
-            viewData={view ? modalData.videoURL : null}
-            editData={edit ? modalData.videoURL : null}
-          />
-          {/* Lecture Title */}
-          <div className="flex flex-col space-y-2">
-            <label className="text-sm text-richblack-5" htmlFor="lectureTitle">
-              Lecture Title {!view && <sup className="text-pink-200">*</sup>}
-            </label>
-            <input
-              disabled={view || loading}
-              id="lectureTitle"
-              placeholder="Enter Lecture Title"
-              {...register("lectureTitle", { required: true })}
-              className="form-style w-full"
+          <div className="thin-dark-scrollbar flex-1 space-y-8 overflow-y-auto px-8 py-10">
+            {/* Lecture Video Upload */}
+            <Upload
+              name="lectureVideo"
+              label="Lecture Video"
+              register={register}
+              setValue={setValue}
+              errors={errors}
+              video={true}
+              viewData={view ? modalData.videoURL : null}
+              editData={edit ? modalData.videoURL : null}
             />
-            {errors.lectureTitle && (
-              <span className="ml-2 text-xs tracking-wide text-pink-200">
-                Lecture title is required
-              </span>
-            )}
-          </div>
-          {/* Lecture Description */}
-          <div className="flex flex-col space-y-2">
-            <label className="text-sm text-richblack-5" htmlFor="lectureDesc">
-              Lecture Description{" "}
-              {!view && <sup className="text-pink-200">*</sup>}
-            </label>
-            <textarea
-              disabled={view || loading}
-              id="lectureDesc"
-              placeholder="Enter Lecture Description"
-              {...register("lectureDesc", { required: true })}
-              className="form-style resize-x-none min-h-[130px] w-full"
-            />
-            {errors.lectureDesc && (
-              <span className="ml-2 text-xs tracking-wide text-pink-200">
-                Lecture Description is required
-              </span>
-            )}
+            {/* Lecture Title */}
+            <div className="flex flex-col space-y-2">
+              <label className="text-sm text-richblack-5" htmlFor="lectureTitle">
+                Lecture Title {!view && <sup className="text-pink-200">*</sup>}
+              </label>
+              <input
+                disabled={view || loading}
+                id="lectureTitle"
+                placeholder="Enter Lecture Title"
+                {...register("lectureTitle", { required: true })}
+                className="form-style w-full"
+              />
+              {errors.lectureTitle && (
+                <span className="ml-2 text-xs tracking-wide text-pink-200">
+                  Lecture title is required
+                </span>
+              )}
+            </div>
+            {/* Lecture Description */}
+            <div className="flex flex-col space-y-2">
+              <label className="text-sm text-richblack-5" htmlFor="lectureDesc">
+                Lecture Description{" "}
+                {!view && <sup className="text-pink-200">*</sup>}
+              </label>
+              <textarea
+                disabled={view || loading}
+                id="lectureDesc"
+                placeholder="Enter Lecture Description"
+                {...register("lectureDesc", { required: true })}
+                className="form-style resize-x-none min-h-[130px] w-full"
+              />
+              {errors.lectureDesc && (
+                <span className="ml-2 text-xs tracking-wide text-pink-200">
+                  Lecture Description is required
+                </span>
+              )}
+            </div>
           </div>
           {!view && (
-            <div className="flex justify-end">
+            <div className="sticky bottom-0 flex justify-end border-t border-richblack-700 bg-richblack-800 px-8 py-4">
               <IconBtn
                 disabled={loading}
                 text={loading ? "Loading.." : edit ? "Save Changes" : "Save"}

@@ -56,6 +56,14 @@ function CourseInformation() {
     }
   };
 
+  const handleRemoveImage = () => {
+    setPreviewSource(null);
+    setValue("courseImage", null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   useEffect(() => {
     const getCategories = async () => {
       setLoading(true);
@@ -273,13 +281,22 @@ function CourseInformation() {
                   alt="Preview"
                 />
                 <div className="flex justify-end">
-                  <button
-                    type="button"
-                    onClick={handleReplaceImage}
-                    className="rounded-md bg-richblack-700 px-4 py-2 text-sm font-medium text-yellow-50 transition-all duration-200 hover:scale-95"
-                  >
-                    Replace Image
-                  </button>
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <button
+                      type="button"
+                      onClick={handleReplaceImage}
+                      className="rounded-md bg-richblack-700 px-4 py-2 text-sm font-medium text-yellow-50 transition-all duration-200 hover:scale-95"
+                    >
+                      Replace Image
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="rounded-md bg-richblack-700 px-4 py-2 text-sm font-medium text-richblack-100 transition-all duration-200 hover:scale-95"
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
               </>
             )}

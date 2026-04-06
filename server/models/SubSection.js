@@ -17,7 +17,10 @@ const subsectionSchema = new mongoose.Schema({
   videoPublicId:{
     type:String
   },
-  pdfUrl:{
+  notesPdfUrl:{
+    type:String
+  },
+  notesPdfName:{
     type:String
   }
 });

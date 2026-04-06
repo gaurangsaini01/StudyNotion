@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "video-react/dist/video-react.css";
@@ -90,8 +90,6 @@ function VideoDetails() {
       (section) => section._id === sectionId
     );
 
-    const noOfSubsections = courseSectionData[sectionIndex].subSection.length;
-
     const subSectionIndex = courseSectionData[
       sectionIndex
     ].subSection.findIndex((subSection) => subSection._id === subSectionId);
@@ -145,78 +143,100 @@ function VideoDetails() {
       }
     }
     getFirstVideo();
-  }, [courseEntireData, courseSectionData, location.pathname]);
+  }, [
+    courseEntireData,
+    courseId,
+    courseSectionData,
+    location.pathname,
+    navigate,
+    sectionId,
+    subSectionId,
+  ]);
   return (
-    <div className="flex flex-col gap-5 h-screen text-white">
+    <>
+    <div className="min-h-[calc(100vh-3.5rem)] bg-richblack-900 px-4 py-6 text-white md:px-8 lg:px-10">
       {!videoData ? (
-        <img
-          src={previewSource}
-          alt="Preview"
-          className="h-full w-full rounded-md object-cover"
-        />
+        <div className="mr-auto w-full max-w-[980px]">
+          <img
+            src={previewSource}
+            alt="Preview"
+            className="w-full rounded-xl object-cover"
+          />
+        </div>
       ) : (
-        <Player
-          ref={playerRef}
-          aspectRatio="16:9"
-          playsInline
-          autoPlay={true}
-          onEnded={() => setVideoEnded(true)}
-          src={videoData?.videoURL}
-        >
-          <BigPlayButton position="center" />
-          {/* Render When Video Ends */}
-          {videoEnded && (
-            <div
-              style={{
-                backgroundImage:
-                  "linear-gradient(to top, rgb(0, 0, 0), rgba(0,0,0,0.7), rgba(0,0,0,0.5), rgba(0,0,0,0.1)",
-              }}
-              className="w-full absolute inset-0 z-10 flex items-center justify-center gap-5 flex-col font-inter"
+        <div className="mr-auto flex w-full max-w-[980px] flex-col gap-6">
+          <div className="overflow-hidden rounded-2xl border border-richblack-700 bg-black shadow-2xl">
+            <Player
+              ref={playerRef}
+              aspectRatio="16:9"
+              playsInline
+              autoPlay={true}
+              onEnded={() => setVideoEnded(true)}
+              src={videoData?.videoURL}
             >
-              {!completedLectures.includes(subSectionId) && (
-                <button
-                  onClick={handleLectureCompletion}
-                  className="text-sm text-black bg-yellow-50 py-2 rounded-md font-semibold max-w-max px-4 mx-auto"
+              <BigPlayButton position="center" />
+              {/* Render When Video Ends */}
+              {videoEnded && (
+                <div
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(to top, rgb(0, 0, 0), rgba(0,0,0,0.7), rgba(0,0,0,0.5), rgba(0,0,0,0.1)",
+                  }}
+                  className="absolute inset-0 z-10 flex w-full flex-col items-center justify-center gap-5 font-inter"
                 >
-                  {!loading ? "Mark As Completed" : "Loading..."}
-                </button>
-              )}
-              <button
-                onClick={() => {
-                  if (playerRef?.current) {
-                    // set the current time of the video to 0
-                    playerRef?.current?.seek(0);
-                    setVideoEnded(false);
-                  }
-                }}
-                className="text-sm text-black bg-yellow-50 py-2 rounded-md font-semibold max-w-max px-4 mx-auto"
-              >
-                Rewatch
-              </button>
+                  {!completedLectures.includes(subSectionId) && (
+                    <button
+                      onClick={handleLectureCompletion}
+                      className="mx-auto max-w-max rounded-md bg-yellow-50 px-4 py-2 text-sm font-semibold text-black"
+                    >
+                      {!loading ? "Mark As Completed" : "Loading..."}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      if (playerRef?.current) {
+                        playerRef?.current?.seek(0);
+                        setVideoEnded(false);
+                      }
+                    }}
+                    className="mx-auto max-w-max rounded-md bg-yellow-50 px-4 py-2 text-sm font-semibold text-black"
+                  >
+                    Rewatch
+                  </button>
 
-              <div className="mt-10 flex min-w-[250px] justify-center gap-x-4 text-xl">
-                {!isFirstVideo() && (
-                  <button
-                    disabled={loading}
-                    onClick={goToPrevVideo}
-                    className="blackButton"
-                  >
-                    Prev
-                  </button>
-                )}
-                {!isLastVideo() && (
-                  <button
-                    disabled={loading}
-                    onClick={goToNextVideo}
-                    className="blackButton"
-                  >
-                    Next
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
-        </Player>
+                  <div className="mt-10 flex min-w-[250px] justify-center gap-x-4 text-xl">
+                    {!isFirstVideo() && (
+                      <button
+                        disabled={loading}
+                        onClick={goToPrevVideo}
+                        className="blackButton"
+                      >
+                        Prev
+                      </button>
+                    )}
+                    {!isLastVideo() && (
+                      <button
+                        disabled={loading}
+                        onClick={goToNextVideo}
+                        className="blackButton"
+                      >
+                        Next
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </Player>
+          </div>
+          <div className="rounded-2xl border border-richblack-700 bg-richblack-800/70 p-6 shadow-xl">
+            <h1 className="text-3xl font-semibold text-richblack-5">
+              {videoData?.title}
+            </h1>
+            {videoData?.description && (
+              <p className="pt-2 text-richblack-200">{videoData.description}</p>
+            )}
+          </div>
+        </div>
       )}
 
       {/* <h1 className="mt-4 text-3xl font-semibold text-richblack-50">
@@ -224,6 +244,7 @@ function VideoDetails() {
       </h1>
       <p className="pt-2 pb-6">{videoData?.description}</p> */}
     </div>
+    </>
   );
 }
 

@@ -1,6 +1,6 @@
 const SubSection = require("../models/SubSection.js");
 const Section = require("../models/Section.js");
-const {uploadImageToCloudinary} = require("../utils/imageUploader.js");
+const { uploadImageToCloudinary } = require("../utils/imageUploader.js");
 require("dotenv").config();
 
 async function createSubSection(req, res) {
@@ -8,7 +8,8 @@ async function createSubSection(req, res) {
     //fetch data from req body
     const { timeDuration, title, description, sectionId } = req.body;
     //video
-    const video = req.files.video;
+    const video = req.files?.video;
+    const notesPdf = req.files?.notesPdf;
     //validate
     if ( !title || !description || !video || !sectionId) {
       return res.status(400).json({
@@ -29,12 +30,26 @@ async function createSubSection(req, res) {
       video,
       process.env.FOLDER_NAME
     );
+
+    let uploadedNotesPdfUrl = "";
+    let uploadedNotesPdfName = "";
+    if (notesPdf) {
+      const uploadedNotesPdf = await uploadImageToCloudinary(
+        notesPdf,
+        process.env.FOLDER_NAME
+      );
+      uploadedNotesPdfUrl = uploadedNotesPdf.secure_url;
+      uploadedNotesPdfName = notesPdf.name;
+    }
+
     //create SubSection
     const newSubSection = await SubSection.create({
       title,
       timeDuration,
       description,
       videoURL: uploadedVideo.secure_url,
+      notesPdfUrl: uploadedNotesPdfUrl,
+      notesPdfName: uploadedNotesPdfName,
     });
     //updating Section with Subsection Id
     const updatedSection = await Section.findByIdAndUpdate(
@@ -60,9 +75,9 @@ async function createSubSection(req, res) {
 
 async function updateSubSection(req, res) {
   try {
-    const { title, description, subSectionId, sectionId } = req.body;
+    const { title, description, subSectionId, sectionId, removeNotesPdf } = req.body;
     let video = req.body.video;
-
+    const notesPdf = req.files?.notesPdf;
     // if (!title || !description || !subSectionId) {
     //   return res.status(400).json({
     //     success: false,
@@ -101,6 +116,18 @@ async function updateSubSection(req, res) {
       });
     } else if (video) {
       subSection.videoURL = video;
+    }
+
+    if (notesPdf) {
+      const uploadedNotesPdf = await uploadImageToCloudinary(
+        notesPdf,
+        process.env.FOLDER_NAME
+      );
+      subSection.notesPdfUrl = uploadedNotesPdf.secure_url;
+      subSection.notesPdfName = notesPdf.name;
+    } else if (removeNotesPdf === "true") {
+      subSection.notesPdfUrl = "";
+      subSection.notesPdfName = "";
     }
 
     if (title !== undefined) {

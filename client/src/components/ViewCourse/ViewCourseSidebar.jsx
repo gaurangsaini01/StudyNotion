@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { BsChevronDown } from "react-icons/bs";
+import { FiMoreVertical } from "react-icons/fi";
 import { IoIosArrowBack } from "react-icons/io";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import IconBtn from "../../components/reusable/IconBtn";
 
-export default function ViewCourseSidebar({ setReviewModal }) {
+export default function ViewCourseSidebar({ setReviewModal, onOpenNotes }) {
   const [activeStatus, setActiveStatus] = useState("");
   const [videoBarActive, setVideoBarActive] = useState("");
+  const [openMenuId, setOpenMenuId] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { sectionId, subSectionId } = useParams();
@@ -36,12 +39,20 @@ export default function ViewCourseSidebar({ setReviewModal }) {
 
       setActiveStatus(courseSectionData?.[currentSectionIndex]?._id);
       setVideoBarActive(activeSubSectionId);
+      setOpenMenuId(null);
     }
     work();
-  }, [courseSectionData, courseEntireData, location.pathname]);
+  }, [
+    courseSectionData,
+    courseEntireData,
+    location.pathname,
+    sectionId,
+    subSectionId,
+  ]);
+
   return (
     <>
-      <div className="flex h-[calc(100vh-3.5rem)] w-[320px] fixed max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800">
+      <div className="fixed left-0 top-14 z-40 hidden h-[calc(100vh-3.5rem)] w-[320px] max-w-[350px] flex-col border-r border-r-richblack-700 bg-richblack-800 md:flex">
         <div className="mx-5 flex flex-col items-start justify-between gap-2 gap-y-4 border-b border-richblack-600 py-5 text-lg font-bold text-richblack-25">
           <div className="flex w-full items-center justify-between ">
             <div
@@ -67,7 +78,7 @@ export default function ViewCourseSidebar({ setReviewModal }) {
           </div>
         </div>
 
-        <div className="h-[calc(100vh - 5rem)] overflow-y-auto">
+        <div className="h-[calc(100vh-11.5rem)] overflow-y-auto pb-6">
           {courseSectionData.map((course) => (
             <div
               className="mt-2 cursor-pointer text-sm text-richblack-5"
@@ -104,7 +115,7 @@ export default function ViewCourseSidebar({ setReviewModal }) {
                 <div className="transition-[height] duration-500 ease-in-out">
                   {course?.subSection.map((topic, i) => (
                     <div
-                      className={`flex gap-3  px-5 py-2 ${videoBarActive === topic?._id
+                      className={`relative flex items-center gap-3 px-5 py-2 ${videoBarActive === topic?._id
                         ? "bg-yellow-200 font-semibold text-richblack-800"
                         : "hover:bg-richblack-900"
                         } `}
@@ -114,6 +125,7 @@ export default function ViewCourseSidebar({ setReviewModal }) {
                           `/viewcourse/${courseEntireData?._id}/section/${course?._id}/subsection/${topic?._id}`
                         );
                         setVideoBarActive(topic?._id);
+                        setOpenMenuId(null);
                       }}
                     >
                       <input
@@ -121,7 +133,48 @@ export default function ViewCourseSidebar({ setReviewModal }) {
                         checked={completedLectures.includes(topic?._id)}
                         onChange={() => { }}
                       />
-                      {topic.title}
+                      <p className="flex-1 truncate">{topic.title}</p>
+                      {topic?.notesPdfUrl && (
+                        <div className="relative">
+                          <button
+                            type="button"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              setOpenMenuId((currentId) =>
+                                currentId === topic?._id ? null : topic?._id
+                              );
+                            }}
+                            className={`rounded-md p-1 ${
+                              videoBarActive === topic?._id
+                                ? "text-richblack-800"
+                                : "text-richblack-200"
+                            }`}
+                          >
+                            <FiMoreVertical />
+                          </button>
+                          {openMenuId === topic?._id && (
+                            <div
+                              className="absolute right-0 top-8 z-20 min-w-[140px] rounded-md border border-richblack-600 bg-richblack-800 p-1 shadow-lg"
+                              onClick={(event) => event.stopPropagation()}
+                            >
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  onOpenNotes({
+                                    title: topic?.title,
+                                    notesPdfName: topic?.notesPdfName,
+                                    notesPdfUrl: topic?.notesPdfUrl,
+                                  });
+                                  setOpenMenuId(null);
+                                }}
+                                className="w-full rounded-md px-3 py-2 text-left text-sm text-richblack-25 hover:bg-richblack-700"
+                              >
+                                View Notes
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -133,3 +186,8 @@ export default function ViewCourseSidebar({ setReviewModal }) {
     </>
   );
 }
+
+ViewCourseSidebar.propTypes = {
+  setReviewModal: PropTypes.func.isRequired,
+  onOpenNotes: PropTypes.func.isRequired,
+};

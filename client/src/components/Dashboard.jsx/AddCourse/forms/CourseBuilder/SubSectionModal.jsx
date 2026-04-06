@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
@@ -10,6 +11,7 @@ import {
 } from "../../../../../services/operations/courseDetailsAPI";
 import { setCourse } from "../../../../../redux/slices/courseSlice";
 import IconBtn from "../../../../reusable/IconBtn";
+import FileDropzone from "../../../AddCourse/FileDropzone";
 import Upload from "../../Upload";
 // import { DevTool } from "@hookform/devtools";
 
@@ -26,34 +28,45 @@ export default function SubSectionModal({
     setValue,
     formState: { errors },
     getValues,
-    control
+    watch,
   } = useForm();
 
-  // ("view", view)
-  // ("edit", edit)
-  // ("add", add)
-
+  const selectedNotesPdf = watch("notesPdf");
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [notesPdfRemoved, setNotesPdfRemoved] = useState(false);
   const { token } = useSelector((state) => state.auth);
   const { course } = useSelector((state) => state.course);
 
 
   useEffect(() => {
-    if (view || edit) {
+    if ((view || edit) && modalData) {
       setValue("lectureTitle", modalData.title);
       setValue("lectureDesc", modalData.description);
       setValue("lectureVideo", modalData.videoURL);
+      setValue("notesPdf", null);
+      setNotesPdfRemoved(false);
     }
-  }, [setValue, modalData]);
+  }, [setValue, modalData,edit,view]);
+
+  useEffect(() => {
+    const previousBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+    };
+  }, []);
 
   // Check whether form is updated or not
   const isFormUpdated = () => {
     const currentValues = getValues();
     if (
-      currentValues.lectureTitle !== modalData.title ||
-      currentValues.lectureDesc !== modalData.description ||
-      currentValues.lectureVideo !== modalData.videoURL
+      currentValues.lectureTitle !== modalData?.title ||
+      currentValues.lectureDesc !== modalData?.description ||
+      currentValues.lectureVideo !== modalData?.videoURL ||
+      !!selectedNotesPdf ||
+      notesPdfRemoved
     ) {
       return true;
     }
@@ -63,26 +76,27 @@ export default function SubSectionModal({
   // handle the editing of subsection
   const handleEditSubsection = async () => {
     const currentValues = getValues();
-
     const formData = new FormData();
 
-    formData.append("sectionId", modalData.sectionId);
-    formData.append("subSectionId", modalData._id);
-    if (currentValues.lectureTitle !== modalData.title) {
+    formData.append("sectionId", modalData?.sectionId);
+    formData.append("subSectionId", modalData?._id);
+    if (currentValues.lectureTitle !== modalData?.title) {
       formData.append("title", currentValues.lectureTitle);
     }
-    if (currentValues.lectureDesc !== modalData.description) {
+    if (currentValues.lectureDesc !== modalData?.description) {
       formData.append("description", currentValues.lectureDesc);
     }
-    if (currentValues.lectureVideo !== modalData.videoURL) {
+    if (currentValues.lectureVideo !== modalData?.videoURL) {
       formData.append("video", currentValues.lectureVideo);
 
     }
+    if (selectedNotesPdf) {
+      formData.append("notesPdf", selectedNotesPdf);
+    } else if (notesPdfRemoved) {
+      formData.append("removeNotesPdf", "true");
+    }
 
     setLoading(true);
-    formData.forEach((value, key) => {
-      (key, value);
-    });
 
     const result = await updateSubSection(formData, token);
     if (result) {
@@ -115,6 +129,9 @@ export default function SubSectionModal({
     formData.append("title", data.lectureTitle);
     formData.append("description", data.lectureDesc);
     formData.append("video", data.lectureVideo);
+    if (data.notesPdf) {
+      formData.append("notesPdf", data.notesPdf);
+    }
     setLoading(true);
     const result = await createSubSection(formData, token);
     if (result) {
@@ -147,7 +164,7 @@ export default function SubSectionModal({
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-1 flex-col overflow-hidden"
         >
-          <div className="thin-dark-scrollbar flex-1 space-y-8 overflow-y-auto px-8 py-10">
+          <div className="thin-dark-scrollbar flex-1 space-y-8 overflow-y-auto overscroll-contain px-8 py-10">
             {/* Lecture Video Upload */}
             <Upload
               name="lectureVideo"
@@ -156,8 +173,24 @@ export default function SubSectionModal({
               setValue={setValue}
               errors={errors}
               video={true}
-              viewData={view ? modalData.videoURL : null}
-              editData={edit ? modalData.videoURL : null}
+              viewData={view ? modalData?.videoURL : null}
+              editData={edit ? modalData?.videoURL : null}
+            />
+            <FileDropzone
+              name="notesPdf"
+              label="Lecture Notes (Optional)"
+              register={register}
+              setValue={setValue}
+              errors={errors}
+              accept={{ "application/pdf": [".pdf"] }}
+              helperText="Drag and drop a PDF file with lecture notes, or browse to upload one."
+              viewData={view ? modalData?.notesPdfUrl : null}
+              editData={edit && !notesPdfRemoved ? modalData?.notesPdfUrl : null}
+              viewLabel={view ? modalData?.notesPdfName : null}
+              editLabel={edit && !notesPdfRemoved ? modalData?.notesPdfName : null}
+              onFileRemove={() => setNotesPdfRemoved(true)}
+              onFileSelect={() => setNotesPdfRemoved(false)}
+              disabled={view || loading}
             />
             {/* Lecture Title */}
             <div className="flex flex-col space-y-2">
@@ -211,3 +244,22 @@ export default function SubSectionModal({
     </div>
   );
 }
+
+SubSectionModal.propTypes = {
+  modalData: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({
+      _id: PropTypes.string,
+      sectionId: PropTypes.string,
+      title: PropTypes.string,
+      description: PropTypes.string,
+      videoURL: PropTypes.string,
+      notesPdfUrl: PropTypes.string,
+      notesPdfName: PropTypes.string,
+    }),
+  ]),
+  setModalData: PropTypes.func.isRequired,
+  add: PropTypes.bool,
+  view: PropTypes.bool,
+  edit: PropTypes.bool,
+};

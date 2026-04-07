@@ -5,6 +5,7 @@ const {
   deleteFileFromCloudinary,
   uploadImageToCloudinary,
 } = require("../utils/imageUploader");
+const { deletePdfIngestionForSubSection } = require("../utils/pdfIngestion");
 const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
 const CourseProgress = require("../models/CourseProgress");
@@ -516,6 +517,10 @@ async function deleteCourse(req, res) {
             });
           }
           if (deletedSubSection?.notesPdfUrl) {
+            await deletePdfIngestionForSubSection({
+              course,
+              subSection: deletedSubSection,
+            });
             await deleteFileFromCloudinary({
               publicId: deletedSubSection.notesPdfPublicId,
               fileUrl: deletedSubSection.notesPdfUrl,

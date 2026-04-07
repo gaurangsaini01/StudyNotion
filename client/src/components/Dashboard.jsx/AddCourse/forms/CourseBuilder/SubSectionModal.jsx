@@ -38,7 +38,6 @@ export default function SubSectionModal({
   const { token } = useSelector((state) => state.auth);
   const { course } = useSelector((state) => state.course);
 
-
   useEffect(() => {
     if ((view || edit) && modalData) {
       setValue("lectureTitle", modalData.title);
@@ -47,7 +46,7 @@ export default function SubSectionModal({
       setValue("notesPdf", null);
       setNotesPdfRemoved(false);
     }
-  }, [setValue, modalData,edit,view]);
+  }, [setValue, modalData, edit, view]);
 
   useEffect(() => {
     const previousBodyOverflow = document.body.style.overflow;
@@ -88,21 +87,20 @@ export default function SubSectionModal({
     }
     if (currentValues.lectureVideo !== modalData?.videoURL) {
       formData.append("video", currentValues.lectureVideo);
-
     }
     if (selectedNotesPdf) {
       formData.append("notesPdf", selectedNotesPdf);
     } else if (notesPdfRemoved) {
       formData.append("removeNotesPdf", "true");
     }
-
+    formData.append("course", JSON.stringify(course));
     setLoading(true);
 
     const result = await updateSubSection(formData, token);
     if (result) {
       // Update the structure of course
       const updatedCourseContent = course?.courseContent.map((section) =>
-        section._id === modalData.sectionId ? result : section
+        section._id === modalData.sectionId ? result : section,
       );
       const updatedCourse = { ...course, courseContent: updatedCourseContent };
       dispatch(setCourse(updatedCourse));
@@ -110,7 +108,6 @@ export default function SubSectionModal({
     setModalData(null);
     setLoading(false);
   };
-
 
   const onSubmit = async (data) => {
     // (data)
@@ -125,6 +122,7 @@ export default function SubSectionModal({
       return;
     }
     const formData = new FormData();
+    formData.append("course", JSON.stringify(course));
     formData.append("sectionId", modalData);
     formData.append("title", data.lectureTitle);
     formData.append("description", data.lectureDesc);
@@ -137,7 +135,7 @@ export default function SubSectionModal({
     if (result) {
       // update the structure of course
       const updatedCourseContent = course.courseContent.map((section) =>
-        section._id === modalData ? result : section
+        section._id === modalData ? result : section,
       );
       const updatedCourse = { ...course, courseContent: updatedCourseContent };
       dispatch(setCourse(updatedCourse));
@@ -145,7 +143,6 @@ export default function SubSectionModal({
     setModalData(null);
     setLoading(false);
   };
-
 
   return (
     <div className="fixed inset-0 z-[1000] !mt-0 grid h-screen w-screen place-items-center overflow-hidden bg-white bg-opacity-10 p-4 backdrop-blur-sm">
@@ -185,16 +182,23 @@ export default function SubSectionModal({
               accept={{ "application/pdf": [".pdf"] }}
               helperText="Drag and drop a PDF file with lecture notes, or browse to upload one."
               viewData={view ? modalData?.notesPdfUrl : null}
-              editData={edit && !notesPdfRemoved ? modalData?.notesPdfUrl : null}
+              editData={
+                edit && !notesPdfRemoved ? modalData?.notesPdfUrl : null
+              }
               viewLabel={view ? modalData?.notesPdfName : null}
-              editLabel={edit && !notesPdfRemoved ? modalData?.notesPdfName : null}
+              editLabel={
+                edit && !notesPdfRemoved ? modalData?.notesPdfName : null
+              }
               onFileRemove={() => setNotesPdfRemoved(true)}
               onFileSelect={() => setNotesPdfRemoved(false)}
               disabled={view || loading}
             />
             {/* Lecture Title */}
             <div className="flex flex-col space-y-2">
-              <label className="text-sm text-richblack-5" htmlFor="lectureTitle">
+              <label
+                className="text-sm text-richblack-5"
+                htmlFor="lectureTitle"
+              >
                 Lecture Title {!view && <sup className="text-pink-200">*</sup>}
               </label>
               <input

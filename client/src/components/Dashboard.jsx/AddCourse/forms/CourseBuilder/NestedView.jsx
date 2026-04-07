@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { FaPlus } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
+import PropTypes from "prop-types";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RxDropdownMenu } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,7 +46,10 @@ export default function NestedView({ handleChangeEditSectionName }) {
   };
 
   const handleDeleteSubSection = async (subSectionId, sectionId) => {
-    const result = await deleteSubSection({ subSectionId, sectionId }, token);
+    const result = await deleteSubSection(
+      { course: JSON.stringify(course), subSectionId, sectionId },
+      token
+    );
     if (result) {
       // update the structure of course
       const updatedCourseContent = course?.courseContent.map((section) =>
@@ -197,3 +201,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
     </>
   );
 }
+
+NestedView.propTypes = {
+  handleChangeEditSectionName: PropTypes.func.isRequired,
+};

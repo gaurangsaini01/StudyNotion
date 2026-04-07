@@ -1,6 +1,8 @@
 const Course = require("../models/Course");
 const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
+const { deleteFileFromCloudinary } = require("../utils/imageUploader");
+const { deletePdfIngestionForSubSection } = require("../utils/pdfIngestion");
 
 async function createSection(req, res) {
   try {
@@ -87,6 +89,32 @@ async function deleteSection(req, res) {
     const deletedSection = await Section.findByIdAndDelete(sectionId, {
       new: true,
     });
+    const course = await Course.findById(courseId);
+    const subSections = await SubSection.find({
+      _id: { $in: deletedSection.subSection },
+    });
+
+    for (const subSection of subSections) {
+      if (subSection.notesPdfUrl) {
+        await deletePdfIngestionForSubSection({
+          course,
+          subSection,
+        });
+        await deleteFileFromCloudinary({
+          publicId: subSection.notesPdfPublicId,
+          fileUrl: subSection.notesPdfUrl,
+        });
+      }
+
+      if (subSection.videoURL) {
+        await deleteFileFromCloudinary({
+          publicId: subSection.videoPublicId,
+          fileUrl: subSection.videoURL,
+          resourceTypes: ["video"],
+        });
+      }
+    }
+
     await SubSection.deleteMany({ _id: { $in: deletedSection.subSection } });
     const updatedCourse = await Course.findByIdAndUpdate(
       courseId,

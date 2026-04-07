@@ -1,20 +1,37 @@
 const SubSection = require("../models/SubSection.js");
 const Section = require("../models/Section.js");
+const Course = require("../models/Course.js");
 const {
   deleteFileFromCloudinary,
   uploadImageToCloudinary,
 } = require("../utils/imageUploader.js");
+const {
+  deletePdfIngestionForSubSection,
+  ingestPdfForSubSection,
+} = require("../utils/pdfIngestion.js");
 require("dotenv").config();
+
+async function getCoursePayload(course, sectionId) {
+  if (course) {
+    return course;
+  }
+
+  if (!sectionId) {
+    return null;
+  }
+
+  return Course.findOne({ courseContent: sectionId });
+}
 
 async function createSubSection(req, res) {
   try {
     //fetch data from req body
-    const { timeDuration, title, description, sectionId } = req.body;
+    const { course, timeDuration, title, description, sectionId } = req.body;
     //video
     const video = req.files?.video;
     const notesPdf = req.files?.notesPdf;
     //validate
-    if ( !title || !description || !video || !sectionId) {
+    if (!title || !description || !video || !sectionId) {
       return res.status(400).json({
         success: false,
         message: "Field Missing",
@@ -22,16 +39,17 @@ async function createSubSection(req, res) {
     }
     //upload to cloudinary video for getting URL
     // Check video size (assuming size is in bytes)
-    if (video.size > 10 * 1024 * 1024) { // 10MB
+    if (video.size > 10 * 1024 * 1024) {
+      // 10MB
       return res.status(400).json({
-      success: false,
-      message: "Video size should not exceed 10MB",
+        success: false,
+        message: "Video size should not exceed 10MB",
       });
     }
 
     const uploadedVideo = await uploadImageToCloudinary(
       video,
-      process.env.FOLDER_NAME
+      process.env.FOLDER_NAME,
     );
 
     let uploadedNotesPdfUrl = "";
@@ -40,7 +58,7 @@ async function createSubSection(req, res) {
     if (notesPdf) {
       const uploadedNotesPdf = await uploadImageToCloudinary(
         notesPdf,
-        process.env.FOLDER_NAME
+        process.env.FOLDER_NAME,
       );
       uploadedNotesPdfUrl = uploadedNotesPdf.secure_url;
       uploadedNotesPdfName = notesPdf.name;
@@ -63,33 +81,46 @@ async function createSubSection(req, res) {
       {
         $push: { subSection: newSubSection._id },
       },
-      { new: true }
+      { new: true },
     ).populate("subSection");
+    // Call fastApi service to start Ingestion Process on the uploaded pdf.
+    if (notesPdf) {
+      try {
+        const coursePayload = await getCoursePayload(course, sectionId);
+        await ingestPdfForSubSection({
+          course: coursePayload,
+          subSection: newSubSection,
+          notesPdf,
+        });
+      } catch (error) {
+        return res.status(500).json({
+          success: false,
+          message: "PDF Ingestion Failed , Check the AI Layer",
+          error: error.message,
+        });
+      }
+    }
+
     return res.status(200).json({
       success: true,
       message: "SubSection Created Successfully",
-      data:updatedSection,
+      data: updatedSection,
       newSubSection,
     });
   } catch (err) {
     return res.status(500).json({
       success: false,
-      message: err.message
+      message: err.message,
     });
   }
 }
 
 async function updateSubSection(req, res) {
   try {
-    const { title, description, subSectionId, sectionId, removeNotesPdf } = req.body;
+    const { course, title, description, subSectionId, sectionId, removeNotesPdf } =
+      req.body;
     let video = req.body.video;
     const notesPdf = req.files?.notesPdf;
-    // if (!title || !description || !subSectionId) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "Incomplete Fields",
-    //   });
-    // }
 
     const subSection = await SubSection.findById(subSectionId);
 
@@ -100,18 +131,21 @@ async function updateSubSection(req, res) {
       });
     }
 
+    const previousSubSection = subSection.toObject();
+
     // Check if video is a URL or file
     if (req.files && req.files.video) {
       // Check video size (assuming size is in bytes)
-      if (req.files.video.size > 10 * 1024 * 1024) { // 10MB
-      return res.status(400).json({
-        success: false,
-        message: "Video size should not exceed 10MB",
-      });
+      if (req.files.video.size > 10 * 1024 * 1024) {
+        // 10MB
+        return res.status(400).json({
+          success: false,
+          message: "Video size should not exceed 10MB",
+        });
       }
       const uploadedVideo = await uploadImageToCloudinary(
-      req.files.video,
-      process.env.FOLDER_NAME,
+        req.files.video,
+        process.env.FOLDER_NAME,
       );
       if (subSection.videoURL) {
         await deleteFileFromCloudinary({
@@ -122,11 +156,11 @@ async function updateSubSection(req, res) {
       }
       subSection.videoURL = uploadedVideo.secure_url;
       subSection.videoPublicId = uploadedVideo.public_id;
-    } else if (video && !video.startsWith('http')) {
+    } else if (video && !video.startsWith("http")) {
       // Handle case when video is not a valid URL
       return res.status(400).json({
-      success: false,
-      message: "Invalid video URL",
+        success: false,
+        message: "Invalid video URL",
       });
     } else if (video) {
       subSection.videoURL = video;
@@ -135,7 +169,7 @@ async function updateSubSection(req, res) {
     if (notesPdf) {
       const uploadedNotesPdf = await uploadImageToCloudinary(
         notesPdf,
-        process.env.FOLDER_NAME
+        process.env.FOLDER_NAME,
       );
       if (subSection.notesPdfUrl) {
         await deleteFileFromCloudinary({
@@ -166,7 +200,36 @@ async function updateSubSection(req, res) {
     }
 
     await subSection.save();
-    const updatedSection = await Section.findById(sectionId).populate("subSection");
+    const updatedSection =
+      await Section.findById(sectionId).populate("subSection");
+
+    // Call fastApi service to start Ingestion Process on the uploaded pdf.
+    if (notesPdf || removeNotesPdf === "true") {
+      try {
+        const coursePayload = await getCoursePayload(course, sectionId);
+
+        if (previousSubSection.notesPdfUrl) {
+          await deletePdfIngestionForSubSection({
+            course: coursePayload,
+            subSection: previousSubSection,
+          });
+        }
+
+        if (notesPdf) {
+          await ingestPdfForSubSection({
+            course: coursePayload,
+            subSection,
+            notesPdf,
+          });
+        }
+      } catch (error) {
+        return res.status(500).json({
+          success: false,
+          message: "PDF Ingestion Sync Failed , Check the AI Layer",
+          error: error.message,
+        });
+      }
+    }
 
     return res.status(200).json({
       success: true,
@@ -183,60 +246,75 @@ async function updateSubSection(req, res) {
   }
 }
 
-
-  async function deleteSubSection(req, res) {
-    try {
-      const { subSectionId, sectionId } = req.body;
-      if (!subSectionId) {
-        return res.status(400).json({
-          success: false,
-          message: "Field Missing",
-        });
-      }
-      const deletedSubSection = await SubSection.findByIdAndDelete(subSectionId, {
-        new: true,
-      });
-  
-      if (!deletedSubSection) {
-        return res.status(404).json({
-          success: false,
-          message: "SubSection not found",
-        });
-      }
-
-      if (deletedSubSection.notesPdfUrl) {
-        await deleteFileFromCloudinary({
-          publicId: deletedSubSection.notesPdfPublicId,
-          fileUrl: deletedSubSection.notesPdfUrl,
-        });
-      }
-
-      if (deletedSubSection.videoURL) {
-        await deleteFileFromCloudinary({
-          publicId: deletedSubSection.videoPublicId,
-          fileUrl: deletedSubSection.videoURL,
-          resourceTypes: ["video"],
-        });
-      }
-  
-      const updatedSection = await Section.findByIdAndUpdate(
-        sectionId,
-        {
-          $pull: { subSection: deletedSubSection._id },
-        },
-        { new: true }
-      ).populate("subSection");
-      return res.status(200).json({
-        success: true,
-        message: "SubSection Deleted successfully",
-        data:updatedSection,
-      });
-    } catch (err) {
-      return res.status(500).json({
+async function deleteSubSection(req, res) {
+  try {
+    const { course, subSectionId, sectionId } = req.body;
+    if (!subSectionId) {
+      return res.status(400).json({
         success: false,
-        message: "Error in deleting SubSection",
+        message: "Field Missing",
       });
     }
-  }
+    const deletedSubSection = await SubSection.findByIdAndDelete(subSectionId, {
+      new: true,
+    });
 
-  module.exports={createSubSection,updateSubSection,deleteSubSection}
+    if (!deletedSubSection) {
+      return res.status(404).json({
+        success: false,
+        message: "SubSection not found",
+      });
+    }
+
+    if (deletedSubSection.notesPdfUrl) {
+      try {
+        const coursePayload = await getCoursePayload(course, sectionId);
+        await deletePdfIngestionForSubSection({
+          course: coursePayload,
+          subSection: deletedSubSection,
+        });
+      } catch (error) {
+        return res.status(500).json({
+          success: false,
+          message: "PDF Ingestion Deletion Failed , Check the AI Layer",
+          error: error.message,
+        });
+      }
+    }
+
+    if (deletedSubSection.notesPdfUrl) {
+      await deleteFileFromCloudinary({
+        publicId: deletedSubSection.notesPdfPublicId,
+        fileUrl: deletedSubSection.notesPdfUrl,
+      });
+    }
+
+    if (deletedSubSection.videoURL) {
+      await deleteFileFromCloudinary({
+        publicId: deletedSubSection.videoPublicId,
+        fileUrl: deletedSubSection.videoURL,
+        resourceTypes: ["video"],
+      });
+    }
+
+    const updatedSection = await Section.findByIdAndUpdate(
+      sectionId,
+      {
+        $pull: { subSection: deletedSubSection._id },
+      },
+      { new: true },
+    ).populate("subSection");
+    return res.status(200).json({
+      success: true,
+      message: "SubSection Deleted successfully",
+      data: updatedSection,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Error in deleting SubSection",
+    });
+  }
+}
+
+module.exports = { createSubSection, updateSubSection, deleteSubSection };

@@ -3,6 +3,8 @@ const Course = require("../models/Course");
 const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
 const User = require("../models/User");
+const { deleteFileFromCloudinary } = require("../utils/imageUploader");
+const { deletePdfIngestionForSubSection } = require("../utils/pdfIngestion");
 // const Course = require("../models/Course")
 
 async function createCategory(req, res) {
@@ -131,11 +133,35 @@ async function deleteCategory(req, res) {
         if (section) {
           const subSections = section.subSection;
           for (const subSectionId of subSections) {
-            await SubSection.findByIdAndDelete(subSectionId);
+            const deletedSubSection = await SubSection.findByIdAndDelete(subSectionId);
+            if (deletedSubSection?.notesPdfUrl) {
+              await deletePdfIngestionForSubSection({
+                course,
+                subSection: deletedSubSection,
+              });
+              await deleteFileFromCloudinary({
+                publicId: deletedSubSection.notesPdfPublicId,
+                fileUrl: deletedSubSection.notesPdfUrl,
+              });
+            }
+            if (deletedSubSection?.videoURL) {
+              await deleteFileFromCloudinary({
+                publicId: deletedSubSection.videoPublicId,
+                fileUrl: deletedSubSection.videoURL,
+                resourceTypes: ["video"],
+              });
+            }
           }
         }
         // Delete the section
         await Section.findByIdAndDelete(sectionId);
+      }
+      if (course.thumbnail) {
+        await deleteFileFromCloudinary({
+          publicId: course.thumbnailPublicId,
+          fileUrl: course.thumbnail,
+          resourceTypes: ["image"],
+        });
       }
       await Course.findByIdAndDelete(course.id);
       await User.findByIdAndUpdate(course.instructor, {

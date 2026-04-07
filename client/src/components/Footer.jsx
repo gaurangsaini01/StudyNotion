@@ -27,9 +27,11 @@ const Footer = () => {
           <div className="lg:w-[50%] flex flex-wrap flex-row justify-between lg:border-r lg:border-richblack-700 pl-3 lg:pr-5 gap-3">
             <div className="w-[30%] flex flex-col gap-3 lg:w-[30%] mb-7 lg:pl-0">
               <Link to="/" className="flex items-center gap-3 text-richblack-5">
-                <div className="grid h-10 w-10 place-items-center rounded-full bg-yellow-50 font-bold text-black drop-shadow-[0_1.5px_rgba(255,255,255,0.25)]">
-                  C
-                </div>
+                <img
+                  src="/coursenova-mark.svg"
+                  alt="CourseNova AI logo"
+                  className="h-10 w-10 rounded-xl object-contain"
+                />
                 <div className="flex flex-col leading-none">
                   <span className="text-lg font-semibold">CourseNova AI</span>
                   <span className="mt-1 text-[10px] uppercase tracking-[0.18em] text-richblack-25">

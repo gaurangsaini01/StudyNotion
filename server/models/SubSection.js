@@ -22,6 +22,9 @@ const subsectionSchema = new mongoose.Schema({
   },
   notesPdfName:{
     type:String
+  },
+  notesPdfPublicId:{
+    type:String
   }
 });
 module.exports = mongoose.model("SubSection", subsectionSchema);

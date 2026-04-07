@@ -1,0 +1,42 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="28" y1="20" x2="228" y2="236" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111827"/>
+      <stop offset="1" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="68" y1="54" x2="188" y2="196" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#A3E635"/>
+    </linearGradient>
+    <linearGradient id="orbit" x1="54" y1="70" x2="206" y2="186" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#38BDF8" stop-opacity="0.25"/>
+    </linearGradient>
+    <filter id="glow" x="37" y="37" width="182" height="182" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feBlend in="SourceGraphic" in2="blur" mode="screen"/>
+    </filter>
+  </defs>
+
+  <rect x="14" y="14" width="228" height="228" rx="52" fill="url(#bg)"/>
+  <circle cx="128" cy="128" r="62" fill="url(#accent)" opacity="0.18"/>
+
+  <g filter="url(#glow)">
+    <path
+      d="M190 88C177 71 154 60 128 60C90.4446 60 60 90.4446 60 128C60 165.555 90.4446 196 128 196C154 196 177 185 190 168"
+      stroke="url(#orbit)"
+      stroke-width="14"
+      stroke-linecap="round"
+    />
+    <circle cx="188" cy="84" r="10" fill="#A3E635"/>
+  </g>
+
+  <path
+    d="M149.314 88.344C142.681 83.448 135.094 81 126.551 81C113.778 81 103.38 85.086 95.357 93.257C87.334 101.355 83.322 111.827 83.322 124.673C83.322 137.666 87.334 148.212 95.357 156.309C103.38 164.407 113.667 168.456 126.218 168.456C134.687 168.456 142.459 165.971 149.535 161L149.535 143.203C142.829 150.133 135.241 153.598 126.773 153.598C120.066 153.598 114.469 151.483 109.98 147.25C105.492 143.018 103.248 135.605 103.248 125.009C103.248 114.93 105.455 107.48 109.869 102.658C114.357 97.8356 119.955 95.4242 126.662 95.4242C134.243 95.4242 141.794 98.8157 149.314 105.599V88.344Z"
+    fill="#F8FAFC"
+  />
+  <path
+    d="M145.467 168V81H164.838L187.693 132.898V81H206V168H187.029L163.774 115.747V168H145.467Z"
+    fill="#F8FAFC"
+  />
+</svg>

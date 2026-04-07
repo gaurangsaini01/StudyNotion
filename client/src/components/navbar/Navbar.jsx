@@ -40,9 +40,11 @@ function Navbar({ open, setOpen }) {
             className="flex items-center gap-3 text-richblack-5"
             aria-label="CourseNova AI"
           >
-            <div className="grid h-9 w-9 place-items-center rounded-full bg-yellow-50 font-bold text-black drop-shadow-[0_1.5px_rgba(255,255,255,0.25)]">
-              C
-            </div>
+            <img
+              src="/coursenova-mark.svg"
+              alt="CourseNova AI logo"
+              className="h-9 w-9 rounded-xl object-contain"
+            />
             <div className="flex flex-col leading-none">
               <span className="text-xl font-semibold">CourseNova AI</span>
               <span className="text-[10px] uppercase tracking-[0.18em] text-richblack-25">

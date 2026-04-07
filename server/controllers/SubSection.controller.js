@@ -1,6 +1,9 @@
 const SubSection = require("../models/SubSection.js");
 const Section = require("../models/Section.js");
-const { uploadImageToCloudinary } = require("../utils/imageUploader.js");
+const {
+  deleteFileFromCloudinary,
+  uploadImageToCloudinary,
+} = require("../utils/imageUploader.js");
 require("dotenv").config();
 
 async function createSubSection(req, res) {
@@ -33,6 +36,7 @@ async function createSubSection(req, res) {
 
     let uploadedNotesPdfUrl = "";
     let uploadedNotesPdfName = "";
+    let uploadedNotesPdfPublicId = "";
     if (notesPdf) {
       const uploadedNotesPdf = await uploadImageToCloudinary(
         notesPdf,
@@ -40,16 +44,18 @@ async function createSubSection(req, res) {
       );
       uploadedNotesPdfUrl = uploadedNotesPdf.secure_url;
       uploadedNotesPdfName = notesPdf.name;
+      uploadedNotesPdfPublicId = uploadedNotesPdf.public_id;
     }
-
     //create SubSection
     const newSubSection = await SubSection.create({
       title,
       timeDuration,
       description,
       videoURL: uploadedVideo.secure_url,
+      videoPublicId: uploadedVideo.public_id,
       notesPdfUrl: uploadedNotesPdfUrl,
       notesPdfName: uploadedNotesPdfName,
+      notesPdfPublicId: uploadedNotesPdfPublicId,
     });
     //updating Section with Subsection Id
     const updatedSection = await Section.findByIdAndUpdate(
@@ -107,7 +113,15 @@ async function updateSubSection(req, res) {
       req.files.video,
       process.env.FOLDER_NAME,
       );
+      if (subSection.videoURL) {
+        await deleteFileFromCloudinary({
+          publicId: subSection.videoPublicId,
+          fileUrl: subSection.videoURL,
+          resourceTypes: ["video"],
+        });
+      }
       subSection.videoURL = uploadedVideo.secure_url;
+      subSection.videoPublicId = uploadedVideo.public_id;
     } else if (video && !video.startsWith('http')) {
       // Handle case when video is not a valid URL
       return res.status(400).json({
@@ -123,11 +137,25 @@ async function updateSubSection(req, res) {
         notesPdf,
         process.env.FOLDER_NAME
       );
+      if (subSection.notesPdfUrl) {
+        await deleteFileFromCloudinary({
+          publicId: subSection.notesPdfPublicId,
+          fileUrl: subSection.notesPdfUrl,
+        });
+      }
       subSection.notesPdfUrl = uploadedNotesPdf.secure_url;
       subSection.notesPdfName = notesPdf.name;
+      subSection.notesPdfPublicId = uploadedNotesPdf.public_id;
     } else if (removeNotesPdf === "true") {
+      if (subSection.notesPdfUrl) {
+        await deleteFileFromCloudinary({
+          publicId: subSection.notesPdfPublicId,
+          fileUrl: subSection.notesPdfUrl,
+        });
+      }
       subSection.notesPdfUrl = "";
       subSection.notesPdfName = "";
+      subSection.notesPdfPublicId = "";
     }
 
     if (title !== undefined) {
@@ -173,6 +201,21 @@ async function updateSubSection(req, res) {
         return res.status(404).json({
           success: false,
           message: "SubSection not found",
+        });
+      }
+
+      if (deletedSubSection.notesPdfUrl) {
+        await deleteFileFromCloudinary({
+          publicId: deletedSubSection.notesPdfPublicId,
+          fileUrl: deletedSubSection.notesPdfUrl,
+        });
+      }
+
+      if (deletedSubSection.videoURL) {
+        await deleteFileFromCloudinary({
+          publicId: deletedSubSection.videoPublicId,
+          fileUrl: deletedSubSection.videoURL,
+          resourceTypes: ["video"],
         });
       }
   

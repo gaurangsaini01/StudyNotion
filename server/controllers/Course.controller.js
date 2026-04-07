@@ -1,7 +1,10 @@
 const User = require("../models/User");
 const Category = require("../models/Category");
 const Course = require("../models/Course");
-const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const {
+  deleteFileFromCloudinary,
+  uploadImageToCloudinary,
+} = require("../utils/imageUploader");
 const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
 const CourseProgress = require("../models/CourseProgress");
@@ -67,6 +70,7 @@ async function createCourse(req, res) {
       price,
       category,
       thumbnail: thumbnailImage?.secure_url,
+      thumbnailPublicId: thumbnailImage?.public_id,
       status,
       instructions,
     });
@@ -141,13 +145,6 @@ async function editCourse(req, res) {
       instructions,
     } = req.body;
 
-    let thumbnail;
-    if (req.files) {
-      thumbnail = req.files.thumbnail;
-    } else {
-      thumbnail = req.body.thumbnail;
-    }
-
     if (!courseId) {
       return res.status(400).json({
         success: false,
@@ -155,12 +152,28 @@ async function editCourse(req, res) {
       });
     }
     const updatedField = {};
-    if (thumbnail) {
+    const existingCourse = await Course.findById(courseId);
+    if (!existingCourse) {
+      return res.status(404).json({
+        success: false,
+        message: "Course Not Found",
+      });
+    }
+
+    if (req.files?.thumbnail) {
       const thumbnailImage = await uploadImageToCloudinary(
-        thumbnail,
+        req.files.thumbnail,
         process.env.FOLDER_NAME,
       );
+      if (existingCourse.thumbnail) {
+        await deleteFileFromCloudinary({
+          publicId: existingCourse.thumbnailPublicId,
+          fileUrl: existingCourse.thumbnail,
+          resourceTypes: ["image"],
+        });
+      }
       updatedField.thumbnail = thumbnailImage.secure_url;
+      updatedField.thumbnailPublicId = thumbnailImage.public_id;
     }
     if (category) {
       updatedField.category = category;
@@ -494,12 +507,33 @@ async function deleteCourse(req, res) {
       if (section) {
         const subSections = section.subSection;
         for (const subSectionId of subSections) {
-          await SubSection.findByIdAndDelete(subSectionId);
+          const deletedSubSection = await SubSection.findByIdAndDelete(subSectionId);
+          if (deletedSubSection?.videoURL) {
+            await deleteFileFromCloudinary({
+              publicId: deletedSubSection.videoPublicId,
+              fileUrl: deletedSubSection.videoURL,
+              resourceTypes: ["video"],
+            });
+          }
+          if (deletedSubSection?.notesPdfUrl) {
+            await deleteFileFromCloudinary({
+              publicId: deletedSubSection.notesPdfPublicId,
+              fileUrl: deletedSubSection.notesPdfUrl,
+            });
+          }
         }
       }
 
       // Delete the section
       await Section.findByIdAndDelete(sectionId);
+    }
+
+    if (course.thumbnail) {
+      await deleteFileFromCloudinary({
+        publicId: course.thumbnailPublicId,
+        fileUrl: course.thumbnail,
+        resourceTypes: ["image"],
+      });
     }
 
     // Delete the course

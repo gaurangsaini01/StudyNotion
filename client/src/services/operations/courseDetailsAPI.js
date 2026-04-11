@@ -1,8 +1,6 @@
 import { toast } from "react-hot-toast";
-
-import { updateCompletedLectures } from "../../redux/slices/viewCourseSlice";
 // import { setLoading } from "../../slices/profileSlice";
-import { apiConnector } from "../apiconnector";
+import { apiConnector, axiosInstance } from "../apiconnector";
 import { courseEndpoints } from "../apis";
 
 const {
@@ -23,6 +21,7 @@ const {
   CREATE_RATING_API,
   LECTURE_COMPLETION_API,
   COURSE_PROGRESS_API,
+  COURSE_CHATBOT_API,
 } = courseEndpoints;
 
 export const getAllCourses = async () => {
@@ -38,6 +37,43 @@ export const getAllCourses = async () => {
     toast.error(error.message);
   }
   toast.dismiss(toastId);
+  return result;
+};
+
+export const askCourseChatbot = async (data, token, signal) => {
+  let result = null;
+  try {
+    const response = await axiosInstance({
+      method: "POST",
+      url: COURSE_CHATBOT_API,
+      data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      signal,
+    });
+
+    if (!response?.data?.success) {
+      throw new Error("Could Not Get Chatbot Response");
+    }
+
+    result = response?.data?.data;
+  } catch (error) {
+    if (error?.name === "CanceledError" || error?.code === "ERR_CANCELED") {
+      result = {
+        cancelled: true,
+        answer: "Stopped the current response.",
+      };
+      return result;
+    }
+
+    result = {
+      answer:
+        error?.response?.data?.message ||
+        "I couldn't respond right now. Please try again.",
+    };
+  }
+
   return result;
 };
 
@@ -386,6 +422,7 @@ export const getCourseProgress = async (data, token) => {
     }
     result = response?.data?.data;
   } catch (err) {
+    result = null;
   }
   return result;
 };

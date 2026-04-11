@@ -15,7 +15,8 @@ const {
   getCourseProgress,
   getInstructorCourses,
   getQuizzesQuestion,
-  getRecommendedCourses
+  getRecommendedCourses,
+  chatWithCourseBot,
 } = require("../controllers/Course.controller");
 
 //category controllers
@@ -90,6 +91,7 @@ router.post("/getfullcoursedetails", auth, getFullCourseDetails);
 router.post("/updateCourseProgress", auth, updateCourseProgress);
 router.post("/getCourseProgress", auth, getCourseProgress);
 router.post("/getQuizzesQuestion", auth, isStudent, getQuizzesQuestion);
+router.post("/chatbot", auth, isStudent, chatWithCourseBot);
 router.post("/getReviews", getAllRatingAndReviews);
 router.get('/getRecommendedCourses',auth,isStudent,getRecommendedCourses)
 

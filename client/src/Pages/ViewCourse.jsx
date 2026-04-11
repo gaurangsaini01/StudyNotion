@@ -11,6 +11,7 @@ import {
 } from "../redux/slices/viewCourseSlice";
 import { useDispatch, useSelector } from "react-redux";
 import CourseReviewModal from "../components/ViewCourse/CourseReviewModal";
+import CourseCopilotChatbot from "../components/ViewCourse/CourseCopilotChatbot";
 
 function calculateTotalLectures(sections) {
   return sections?.reduce((acc, section) => {
@@ -65,6 +66,7 @@ function ViewCourse() {
         <Outlet />
       </div>
       {reviewModal && <CourseReviewModal setReviewModal={setReviewModal} />}
+      <CourseCopilotChatbot courseId={courseId} token={token} />
       {notesModalData?.notesPdfUrl && (
         <div className="fixed inset-x-0 bottom-0 top-14 z-[120] grid place-items-center bg-black/80 p-4 backdrop-blur-sm md:p-6">
           <div className="relative flex h-full max-h-[calc(100vh-5.5rem)] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-richblack-700 bg-richblack-800 shadow-2xl">

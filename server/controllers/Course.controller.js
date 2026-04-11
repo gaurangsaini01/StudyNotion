@@ -620,6 +620,61 @@ async function getRecommendedCourses(req, res) {
   }
 }
 
+async function chatWithCourseBot(req, res) {
+  try {
+    const { course_id, user_query } = req.body;
+    const userId = req.user.id;
+
+    if (!course_id || !user_query) {
+      return res.status(400).json({
+        success: false,
+        message: "course_id and user_query are required",
+      });
+    }
+
+    const student = await User.findById(userId);
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const isEnrolled = student.courses.some(
+      (enrolledCourseId) => enrolledCourseId.toString() === course_id
+    );
+
+    if (!isEnrolled) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not enrolled in this course",
+      });
+    }
+
+    const response = await axios.post(
+      `${process.env.FAST_API_URL}/chatbot`,
+      { course_id, query:user_query },
+      {
+        headers: {
+          "x-secret-key": process.env.X_SECRET_KEY,
+        },
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Chatbot response fetched successfully",
+      data: response?.data,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to get chatbot response",
+      error: error.message,
+    });
+  }
+}
+
 module.exports = {
   createCourse,
   getAllCourses,
@@ -633,4 +688,5 @@ module.exports = {
   getInstructorCourses,
   getQuizzesQuestion,
   getRecommendedCourses,
+  chatWithCourseBot,
 };

@@ -60,7 +60,7 @@ export async function getQuizQuestions(data, token) {
 
     result = response?.data;
   } catch (error) {
-    toast.error("Could Not Fetch Quiz Questions");
+    toast.error(error.response.data.message);
   }
 
   return result;

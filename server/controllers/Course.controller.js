@@ -477,7 +477,7 @@ async function getQuizzesQuestion(req, res) {
     return res.status(500).json({
       success: false,
       message: "Failed to get quiz questions",
-      error: error.message,
+      error: error?.response?.data?.detail,
     });
   }
 }
@@ -670,7 +670,7 @@ async function chatWithCourseBot(req, res) {
     return res.status(500).json({
       success: false,
       message: "Failed to get chatbot response",
-      error: error.message,
+      error: error?.response?.data?.detail,
     });
   }
 }

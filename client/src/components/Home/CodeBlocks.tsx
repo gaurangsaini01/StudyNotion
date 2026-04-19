@@ -17,6 +17,7 @@ interface CodeBlocksProps {
   ctabtn1: CodeBlockButton;
   ctabtn2: CodeBlockButton;
   codeblock: string;
+  codeColor?: string;
   gradientimg: string;
 }
 

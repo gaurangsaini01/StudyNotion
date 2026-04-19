@@ -1,27 +1,38 @@
-import { useEffect, useState } from "react";
-import OtpInput from "react-otp-input";
-import { Link } from "react-router-dom";
+import { type FormEvent, useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 import { RxCountdownTimer } from "react-icons/rx";
-import { useDispatch, useSelector } from "react-redux";
+import OtpInput from "react-otp-input";
+import { Link, useNavigate } from "react-router-dom";
+
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { sendOtp, signUp } from "../services/operations/authAPI";
-import { useNavigate } from "react-router-dom";
+import type { AccountType } from "../types/domain";
+
+interface SignupDataShape {
+  accountType: AccountType;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
 function VerifyEmail() {
   const [otp, setOtp] = useState("");
-  const { signupData, loading } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const { signupData, loading } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Only allow access of this route when user has filled the signup form
     if (!signupData) {
       navigate("/signup");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleVerifyAndSignup = (e) => {
+  const handleVerifyAndSignup = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!signupData) return;
     const {
       accountType,
       firstName,
@@ -29,8 +40,7 @@ function VerifyEmail() {
       email,
       password,
       confirmPassword,
-    } = signupData;
-
+    } = signupData as unknown as SignupDataShape;
 
     dispatch(
       signUp(
@@ -94,7 +104,11 @@ function VerifyEmail() {
             </Link>
             <button
               className="flex items-center text-blue-100 gap-x-2"
-              onClick={() => dispatch(sendOtp(signupData.email, navigate))}
+              onClick={() => {
+                if (!signupData) return;
+                const data = signupData as unknown as SignupDataShape;
+                dispatch(sendOtp(data.email, navigate));
+              }}
             >
               <RxCountdownTimer />
               Resend it

@@ -39,7 +39,7 @@ export interface ChangePasswordPayload {
 }
 
 export async function changePasswordService(
-  token: string,
+  _token: string,
   formData: ChangePasswordPayload
 ): Promise<void> {
   const toastId = toast.loading("Changing...");
@@ -47,10 +47,7 @@ export async function changePasswordService(
     const response = await apiConnector<ApiResponse>(
       "PUT",
       CHANGE_PASSWORD_API,
-      formData,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      formData
     );
 
     if (!response.data.success) {
@@ -63,7 +60,7 @@ export async function changePasswordService(
   toast.dismiss(toastId);
 }
 
-export function updateDisplayPicture(token: string, formData: FormData) {
+export function updateDisplayPicture(_token: string, formData: FormData) {
   return async (dispatch: AppDispatch) => {
     const toastId = toast.loading("Loading...");
     try {
@@ -73,7 +70,6 @@ export function updateDisplayPicture(token: string, formData: FormData) {
         formData,
         {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
         }
       );
 
@@ -101,17 +97,14 @@ export interface ProfileUpdatePayload {
   gender?: string;
 }
 
-export function updateProfile(token: string, formData: ProfileUpdatePayload) {
+export function updateProfile(_token: string, formData: ProfileUpdatePayload) {
   return async (dispatch: AppDispatch) => {
     const toastId = toast.loading("Loading...");
     try {
       const response = await apiConnector<ApiResponse>(
         "PUT",
         UPDATE_PROFILE_API,
-        formData,
-        {
-          Authorization: `Bearer ${token}`,
-        }
+        formData
       );
 
       if (!response.data.success) {
@@ -129,17 +122,13 @@ export function updateProfile(token: string, formData: ProfileUpdatePayload) {
   };
 }
 
-export function deleteProfile(token: string, navigate: NavigateFunction) {
+export function deleteProfile(_token: string, navigate: NavigateFunction) {
   return async (dispatch: AppDispatch) => {
     const toastId = toast.loading("Loading...");
     try {
       const response = await apiConnector<ApiResponse>(
         "DELETE",
-        DELETE_PROFILE_API,
-        null,
-        {
-          Authorization: `Bearer ${token}`,
-        }
+        DELETE_PROFILE_API
       );
 
       if (!response.data.success) {

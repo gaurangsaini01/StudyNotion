@@ -1,38 +1,49 @@
 import { useEffect, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
 import { Outlet, useParams } from "react-router-dom";
-import ViewCourseSidebar from "../components/ViewCourse/ViewCourseSidebar";
-import { getFullDetailsOfCourse } from "../services/operations/courseDetailsAPI";
+
+import CourseCopilotChatbot from "../components/ViewCourse/CourseCopilotChatbot";
+import CourseReviewModal from "../components/ViewCourse/CourseReviewModal";
+import ViewCourseSidebar, {
+  type NotesPayload,
+} from "../components/ViewCourse/ViewCourseSidebar";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
-  setCourseSectionData,
   setCompletedLectures,
+  setCourseSectionData,
   setEntireCourseData,
   setTotalNoOfLectures,
 } from "../redux/slices/viewCourseSlice";
-import { useDispatch, useSelector } from "react-redux";
-import CourseReviewModal from "../components/ViewCourse/CourseReviewModal";
-import CourseCopilotChatbot from "../components/ViewCourse/CourseCopilotChatbot";
+import { getFullDetailsOfCourse } from "../services/operations/courseDetailsAPI";
+import type { Section } from "../types/domain";
 
-function calculateTotalLectures(sections) {
-  return sections?.reduce((acc, section) => {
-    return acc + (section?.subSection.length || 0);
-  }, 0);
+function calculateTotalLectures(sections: Section[] | undefined): number {
+  return (
+    sections?.reduce((acc, section) => {
+      return acc + (section?.subSection?.length || 0);
+    }, 0) ?? 0
+  );
 }
 
 function ViewCourse() {
   const [reviewModal, setReviewModal] = useState(false);
-  const [notesModalData, setNotesModalData] = useState(null);
-  const { courseId } = useParams();
-  const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.auth);
+  const [notesModalData, setNotesModalData] = useState<NotesPayload | null>(
+    null
+  );
+  const { courseId } = useParams<{ courseId: string }>();
+  const dispatch = useAppDispatch();
+  const { token } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     const getCourseFullDetails = async () => {
+      if (!courseId || !token) return;
       try {
         const result = await getFullDetailsOfCourse(courseId, token);
-        dispatch(setEntireCourseData(result?.courseDetails));
-        dispatch(setCourseSectionData(result?.courseDetails?.courseContent));
-        dispatch(setCompletedLectures(result?.completedVideos));
+        dispatch(setEntireCourseData(result?.courseDetails ?? null));
+        dispatch(
+          setCourseSectionData(result?.courseDetails?.courseContent ?? [])
+        );
+        dispatch(setCompletedLectures(result?.completedVideos ?? []));
         dispatch(
           setTotalNoOfLectures(
             calculateTotalLectures(result?.courseDetails?.courseContent)
@@ -66,7 +77,7 @@ function ViewCourse() {
         <Outlet />
       </div>
       {reviewModal && <CourseReviewModal setReviewModal={setReviewModal} />}
-      <CourseCopilotChatbot courseId={courseId} token={token} />
+      {courseId && <CourseCopilotChatbot courseId={courseId} token={token} />}
       {notesModalData?.notesPdfUrl && (
         <div className="fixed inset-x-0 bottom-0 top-14 z-[120] grid place-items-center bg-black/80 p-4 backdrop-blur-sm md:p-6">
           <div className="relative flex h-full max-h-[calc(100vh-5.5rem)] w-full max-w-6xl flex-col overflow-hidden rounded-2xl border border-richblack-700 bg-richblack-800 shadow-2xl">

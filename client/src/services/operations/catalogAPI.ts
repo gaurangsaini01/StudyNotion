@@ -58,17 +58,13 @@ export async function getCatalogPageData(
 }
 
 export async function getAllRecomenddedCourses(
-  token: string
+  _token: string
 ): Promise<RecommendedCourseSeed[]> {
   let result: RecommendedCourseSeed[] = [];
   try {
     const response = await apiConnector<ApiResponse<RecommendedCourseSeed[]>>(
       "GET",
-      GET_ALL_RECOMMENDED_COURSES,
-      null,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      GET_ALL_RECOMMENDED_COURSES
     );
     if (!response?.data?.success) {
       throw new Error("Could Not get Category page Details");
@@ -119,7 +115,7 @@ export async function fetchRecommendedCourseCards(
   );
 
   return recommendations
-    .map((recommendation) => {
+    .map((recommendation): Course | null => {
       const matchedCourse = courseMap.get(recommendation?.courseId?.toString());
 
       if (!matchedCourse) {

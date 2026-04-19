@@ -39,18 +39,14 @@ export interface InstructorCourseData {
 }
 
 export async function getUserEnrolledCourses(
-  token: string
+  _token: string
 ): Promise<EnrolledCourse[]> {
   const toastId = toast.loading("Loading...");
   let result: EnrolledCourse[] = [];
   try {
     const response = await apiConnector<ApiResponse<EnrolledCourse[]>>(
       "GET",
-      GET_USER_ENROLLED_COURSES_API,
-      null,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      GET_USER_ENROLLED_COURSES_API
     );
 
     if (!response.data.success) {
@@ -65,18 +61,14 @@ export async function getUserEnrolledCourses(
 }
 
 export async function getInstructorData(
-  token: string
+  _token: string
 ): Promise<InstructorCourseData[]> {
   const toastId = toast.loading("Loading...");
   let result: InstructorCourseData[] = [];
   try {
     const response = await apiConnector<{ courses: InstructorCourseData[] }>(
       "GET",
-      GET_INSTRUCTOR_DATA_API,
-      null,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      GET_INSTRUCTOR_DATA_API
     );
     result = response?.data?.courses ?? [];
   } catch {
@@ -98,17 +90,14 @@ export interface QuizQuestionsResponse {
 
 export async function getQuizQuestions(
   data: { courseName?: string; courseDescription?: string },
-  token: string
+  _token: string
 ): Promise<QuizQuestionsResponse | null> {
   let result: QuizQuestionsResponse | null = null;
   try {
     const response = await apiConnector<QuizQuestionsResponse>(
       "POST",
       GET_QUIZ_QUESTIONS_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
 
     if (!response?.data?.success) {

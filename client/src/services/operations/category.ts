@@ -25,16 +25,13 @@ function getErrorMessage(error: unknown, fallback = "Something went wrong"): str
 
 export async function createCategory(
   data: { name: string; description?: string },
-  token: string
+  _token: string
 ): Promise<AxiosResponse<ApiResponse> | undefined> {
   try {
     const response = await apiConnector<ApiResponse>(
       "POST",
       CREATE_CATEGORY_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
     if (!response.data.success) {
       throw new Error(response.data.message);
@@ -49,16 +46,13 @@ export async function createCategory(
 
 export async function editCategory(
   data: { categoryId: string; name?: string; description?: string },
-  token: string
+  _token: string
 ): Promise<AxiosResponse<ApiResponse> | undefined> {
   try {
     const response = await apiConnector<ApiResponse>(
       "PUT",
       EDIT_CATEGORY_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
 
     if (!response.data.success) {
@@ -74,16 +68,13 @@ export async function editCategory(
 
 export async function deleteCategory(
   categoryId: string,
-  token: string
+  _token: string
 ): Promise<AxiosResponse<ApiResponse> | undefined> {
   try {
     const response = await apiConnector<ApiResponse>(
       "DELETE",
       DELETE_CATEGORY_API,
-      { categoryId },
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      { categoryId }
     );
 
     if (!response.data.success) {

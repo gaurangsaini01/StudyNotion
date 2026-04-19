@@ -9,10 +9,12 @@ import { ratingsEndpoints } from "../../services/apis";
 import type { RatingAndReview } from "../../types/domain";
 import { StarRating } from "../StarComponent/Star";
 
-interface ReviewWithCourse extends RatingAndReview {
-  course?: {
-    courseName: string;
-  } | string;
+interface ReviewWithCourse extends Omit<RatingAndReview, "course"> {
+  course?:
+    | {
+        courseName: string;
+      }
+    | string;
 }
 
 function ReviewSlider() {

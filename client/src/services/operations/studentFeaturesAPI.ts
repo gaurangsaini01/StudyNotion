@@ -75,7 +75,7 @@ function loadScript(src: string): Promise<boolean> {
 async function sendPaymentSuccessEmail(
   response: RazorpayPaymentResponse,
   amount: number,
-  token: string
+  _token: string
 ): Promise<void> {
   try {
     await apiConnector(
@@ -85,9 +85,6 @@ async function sendPaymentSuccessEmail(
         orderId: response.razorpay_order_id,
         paymentId: response.razorpay_payment_id,
         amount,
-      },
-      {
-        Authorization: `Bearer ${token}`,
       }
     );
   } catch (err) {
@@ -97,7 +94,7 @@ async function sendPaymentSuccessEmail(
 
 async function verifyPayment(
   bodyData: RazorpayPaymentResponse & { courses: string[] },
-  token: string,
+  _token: string,
   navigate: NavigateFunction,
   dispatch: AppDispatch
 ): Promise<void> {
@@ -107,10 +104,7 @@ async function verifyPayment(
     const result = await apiConnector<{ success: boolean; message?: string }>(
       "POST",
       COURSE_VERIFY_API,
-      bodyData,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      bodyData
     );
     if (!result?.data?.success) {
       throw new Error(result?.data?.message);
@@ -144,10 +138,7 @@ export async function buyCourse(
     const orderRes = await apiConnector<OrderResponse>(
       "POST",
       COURSE_PAYMENT_API,
-      { courses },
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      { courses }
     );
 
     if (orderRes?.data?.ap) {

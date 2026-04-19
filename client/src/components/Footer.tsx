@@ -158,7 +158,7 @@ const Footer = () => {
           </div>
 
           <div className="text-center">
-            Made with ❤️ Gaurang Saini © 2024 CourseNova AI
+            Made with ❤️ Gaurang Saini © 2026 CourseNova AI
           </div>
         </div>
       </div>

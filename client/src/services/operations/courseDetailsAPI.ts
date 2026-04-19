@@ -82,7 +82,7 @@ export interface ChatbotResponse {
 
 export const askCourseChatbot = async (
   data: Record<string, unknown>,
-  token: string,
+  _token: string,
   signal?: AbortSignal
 ): Promise<ChatbotResponse> => {
   let result: ChatbotResponse = { answer: "" };
@@ -91,9 +91,6 @@ export const askCourseChatbot = async (
       method: "POST",
       url: COURSE_CHATBOT_API,
       data,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
       signal,
     });
 
@@ -171,7 +168,7 @@ export const fetchCourseCategories = async (): Promise<CourseCategoryOption[]> =
 
 export const addCourseDetails = async (
   data: FormData,
-  token: string
+  _token: string
 ): Promise<Course | null> => {
   let result: Course | null = null;
   const toastId = toast.loading("Loading...");
@@ -182,7 +179,6 @@ export const addCourseDetails = async (
       data,
       {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
       }
     );
 
@@ -200,7 +196,7 @@ export const addCourseDetails = async (
 
 export const editCourseDetails = async (
   data: FormData,
-  token: string
+  _token: string
 ): Promise<Course | null> => {
   let result: Course | null = null;
   const toastId = toast.loading("Loading...");
@@ -211,7 +207,6 @@ export const editCourseDetails = async (
       data,
       {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
       }
     );
     if (!response?.data?.success) {
@@ -228,7 +223,7 @@ export const editCourseDetails = async (
 
 export const createSection = async (
   data: { sectionName: string; courseId: string },
-  token: string
+  _token: string
 ): Promise<Course | null> => {
   let result: Course | null = null;
   const toastId = toast.loading("Loading...");
@@ -236,10 +231,7 @@ export const createSection = async (
     const response = await apiConnector<ApiResponse<Course>>(
       "POST",
       CREATE_SECTION_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
 
     if (!response?.data?.success) {
@@ -256,7 +248,7 @@ export const createSection = async (
 
 export const createSubSection = async (
   data: FormData,
-  token: string
+  _token: string
 ): Promise<Section | null> => {
   let result: Section | null = null;
   const toastId = toast.loading("Loading...");
@@ -264,10 +256,7 @@ export const createSubSection = async (
     const response = await apiConnector<ApiResponse<Section>>(
       "POST",
       CREATE_SUBSECTION_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
 
     if (!response?.data?.success) {
@@ -284,7 +273,7 @@ export const createSubSection = async (
 
 export const updateSection = async (
   data: { sectionName: string; sectionId: string; courseId: string },
-  token: string
+  _token: string
 ): Promise<Course | null> => {
   let result: Course | null = null;
   const toastId = toast.loading("Loading...");
@@ -292,10 +281,7 @@ export const updateSection = async (
     const response = await apiConnector<ApiResponse<Course>>(
       "PUT",
       UPDATE_SECTION_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
 
     if (!response?.data?.success) {
@@ -312,7 +298,7 @@ export const updateSection = async (
 
 export const updateSubSection = async (
   data: FormData,
-  token: string
+  _token: string
 ): Promise<Section | null> => {
   let result: Section | null = null;
   const toastId = toast.loading("Loading...");
@@ -320,10 +306,7 @@ export const updateSubSection = async (
     const response = await apiConnector<ApiResponse<Section>>(
       "PUT",
       UPDATE_SUBSECTION_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
     if (!response?.data?.success) {
       throw new Error("Could Not Update Lecture");
@@ -339,7 +322,7 @@ export const updateSubSection = async (
 
 export const deleteSection = async (
   data: { sectionId: string; courseId: string },
-  token: string
+  _token: string
 ): Promise<Course | null> => {
   let result: Course | null = null;
   const toastId = toast.loading("Loading...");
@@ -347,10 +330,7 @@ export const deleteSection = async (
     const response = await apiConnector<ApiResponse<Course>>(
       "DELETE",
       DELETE_SECTION_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
     if (!response?.data?.success) {
       throw new Error("Could Not Delete Section");
@@ -366,7 +346,7 @@ export const deleteSection = async (
 
 export const deleteSubSection = async (
   data: { subSectionId: string; sectionId: string },
-  token: string
+  _token: string
 ): Promise<Course | null> => {
   let result: Course | null = null;
   const toastId = toast.loading("Loading...");
@@ -374,10 +354,7 @@ export const deleteSubSection = async (
     const response = await apiConnector<ApiResponse<Course>>(
       "DELETE",
       DELETE_SUBSECTION_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
 
     if (!response?.data?.success) {
@@ -393,18 +370,14 @@ export const deleteSubSection = async (
 };
 
 export const fetchInstructorCourses = async (
-  token: string
+  _token: string
 ): Promise<Course[]> => {
   let result: Course[] = [];
   const toastId = toast.loading("Loading...");
   try {
     const response = await apiConnector<ApiResponse<Course[]>>(
       "GET",
-      GET_ALL_INSTRUCTOR_COURSES_API,
-      null,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      GET_ALL_INSTRUCTOR_COURSES_API
     );
 
     if (!response?.data?.success) {
@@ -420,17 +393,14 @@ export const fetchInstructorCourses = async (
 
 export const deleteCourse = async (
   data: { courseId: string },
-  token: string
+  _token: string
 ): Promise<void> => {
   const toastId = toast.loading("Loading...");
   try {
     const response = await apiConnector<ApiResponse>(
       "DELETE",
       DELETE_COURSE_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
 
     if (!response?.data?.success) {
@@ -451,7 +421,7 @@ export interface FullCourseDetails {
 
 export const getFullDetailsOfCourse = async (
   courseId: string,
-  token: string
+  _token: string
 ): Promise<FullCourseDetails | null> => {
   const toastId = toast.loading("Loading...");
   let result: FullCourseDetails | null = null;
@@ -459,10 +429,7 @@ export const getFullDetailsOfCourse = async (
     const response = await apiConnector<ApiResponse<FullCourseDetails>>(
       "POST",
       GET_FULL_COURSE_DETAILS_AUTHENTICATED,
-      { courseId },
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      { courseId }
     );
 
     if (!response.data.success) {
@@ -482,7 +449,7 @@ export const getFullDetailsOfCourse = async (
 
 export const markLectureAsComplete = async (
   data: { courseId: string; subSectionId: string },
-  token: string
+  _token: string
 ): Promise<boolean> => {
   let result = false;
   const toastId = toast.loading("Loading...");
@@ -490,10 +457,7 @@ export const markLectureAsComplete = async (
     const response = await apiConnector<ApiResponse>(
       "POST",
       LECTURE_COMPLETION_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
 
     if (!response.data.message) {
@@ -511,7 +475,7 @@ export const markLectureAsComplete = async (
 
 export const createRating = async (
   data: { courseId: string; rating: number; review: string },
-  token: string
+  _token: string
 ): Promise<boolean> => {
   const toastId = toast.loading("Loading...");
   let success = false;
@@ -519,10 +483,7 @@ export const createRating = async (
     const response = await apiConnector<ApiResponse<RatingAndReview>>(
       "POST",
       CREATE_RATING_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
 
     if (!response?.data?.success) {
@@ -544,17 +505,14 @@ export interface CourseProgressData {
 
 export const getCourseProgress = async (
   data: { courseId: string },
-  token: string
+  _token: string
 ): Promise<number | null> => {
   let result: number | null = null;
   try {
     const response = await apiConnector<ApiResponse<number>>(
       "POST",
       COURSE_PROGRESS_API,
-      data,
-      {
-        Authorization: `Bearer ${token}`,
-      }
+      data
     );
     if (!response?.data?.success) {
       throw new Error("Could Not Get Progress");
